@@ -62,41 +62,30 @@ const notFoundRouter = {
 
 // 根级菜单
 const rootRouter = {
-  key: '',
-  name: 'index',
-  path: '',
+  id: '',
+  name: '首页',
+  path: '/',
   component: 'BasicLayout',
-  redirect: '/dashboard',
-  meta: {
-    title: '首页'
-  },
+  redirect: '/sample/work/flow',
   children: []
 }
 
 /**
  * 动态生成菜单
- * @param token
+ * @param menus
  * @returns {Promise<Router>}
  */
-export const generatorDynamicRouter = (token) => {
+export const generatorDynamicRouter = (menus) => {
   return new Promise((resolve, reject) => {
-    loginService.getCurrentUserNav(token).then(res => {
-      console.log('res', res)
-      const { result } = res
-      const menuNav = []
-      const childrenNav = []
-      //      后端数据, 根级树数组,  根级 PID
-      listToTree(result, childrenNav, 0)
-      rootRouter.children = childrenNav
-      menuNav.push(rootRouter)
-      console.log('menuNav', menuNav)
-      const routers = generator(menuNav)
-      routers.push(notFoundRouter)
-      console.log('routers', routers)
-      resolve(routers)
-    }).catch(err => {
-      reject(err)
-    })
+    const menuNav = []
+    const childrenNav = []
+    // 后端数据, 根级树数组,  根级 PID
+    listToTree(menus, childrenNav, '0')
+    rootRouter.children = childrenNav
+    menuNav.push(rootRouter)
+    const routers = generator(menuNav)
+    routers.push(notFoundRouter)
+    resolve(routers)
   })
 }
 
@@ -109,24 +98,22 @@ export const generatorDynamicRouter = (token) => {
  */
 export const generator = (routerMap, parent) => {
   return routerMap.map(item => {
-    const { title, show, hideChildren, hiddenHeaderContent, target, icon } = item.meta || {}
+    const { name, show, hideChildren, hiddenHeaderContent, target, icon } = item || {}
     const currentRouter = {
       // 如果路由设置了 path，则作为默认 path，否则 路由地址 动态拼接生成如 /dashboard/workplace
-      path: item.path || `${parent && parent.path || ''}/${item.key}`,
+      path: item.path || `${parent && parent.path || ''}/${item.id}`,
       // 路由名称，建议唯一
-      name: item.name || item.key || '',
-      // 该路由对应页面的 组件 :方案1
-      // component: constantRouterComponents[item.component || item.key],
-      // 该路由对应页面的 组件 :方案2 (动态加载)
-      component: (constantRouterComponents[item.component || item.key]) || (() => import(`@/views/${item.component}`)),
+      name: `${item.name}-${item.id}`,
+      // 该路由对应页面
+      component: item.component ? (constantRouterComponents[item.component]) || (() => import(`@/views${item.component}`)) : RouteView,
 
       // meta: 页面标题, 菜单图标, 页面权限(供指令权限用，可去掉)
       meta: {
-        title: title,
+        title: name,
         icon: icon || undefined,
         hiddenHeaderContent: hiddenHeaderContent,
         target: target,
-        permission: item.name
+        permission: item.code
       }
     }
     // 是否设置了隐藏菜单
@@ -156,15 +143,15 @@ export const generator = (routerMap, parent) => {
  * 数组转树形结构
  * @param list 源数组
  * @param tree 树
- * @param parentId 父ID
+ * @param pId 父ID
  */
-const listToTree = (list, tree, parentId) => {
+const listToTree = (list, tree, pId) => {
   list.forEach(item => {
     // 判断是否为父级菜单
-    if (item.parentId === parentId) {
+    if (item.pId === pId) {
       const child = {
         ...item,
-        key: item.key || item.name,
+        id: item.id || item.name,
         children: []
       }
       // 迭代 list， 找到当前菜单相符合的所有子菜单

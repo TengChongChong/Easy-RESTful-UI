@@ -2,6 +2,7 @@
   <a-form @submit="handleSubmit" :form="form" class="form">
     <a-row class="form-row" :gutter="16">
       <a-col :lg="6" :md="12" :sm="24">
+
         <a-form-item label="仓库名">
           <a-input
             placeholder="请输入仓库名称"
@@ -10,6 +11,7 @@
               {rules: [{ required: true, message: '请输入仓库名称', whitespace: true}]}
             ]" />
         </a-form-item>
+
       </a-col>
       <a-col :xl="{span: 7, offset: 1}" :lg="{span: 8}" :md="{span: 12}" :sm="24">
         <a-form-item

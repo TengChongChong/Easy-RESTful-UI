@@ -7,7 +7,7 @@
         </div>
         <div class="content">
           <div class="content-title">
-            {{ timeFix }}，{{ user.name }}<span class="welcome-text">，{{ welcome }}</span>
+            {{ timeFix }}，{{ user.name }}
           </div>
           <div>前端工程师 | 蚂蚁金服 - 某某某事业群 - VUE平台</div>
         </div>
@@ -192,13 +192,12 @@ export default {
   },
   computed: {
     ...mapState({
-      nickname: (state) => state.user.nickname,
-      welcome: (state) => state.user.welcome
+      nickname: (state) => state.user.nickname
     }),
     currentUser () {
       return {
-        name: 'Serati Ma',
-        avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
+        name: this.$store.getters.nickname,
+        avatar: this.$store.getters.avatar
       }
     },
     userInfo () {
@@ -379,10 +378,6 @@ export default {
       border: 0;
       padding-top: 16px;
       margin: 16px 0 16px;
-    }
-
-    .headerContent .title .welcome-text {
-      display: none;
     }
   }
 

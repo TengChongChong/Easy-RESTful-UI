@@ -36,7 +36,10 @@ export default {
   data () {
     return {
       showMenu: true,
-      currentUser: {}
+      currentUser: {
+        nickname: this.$store.getters.nickname,
+        avatar: this.$store.getters.avatar
+      }
     }
   },
   computed: {
@@ -46,13 +49,6 @@ export default {
         [`ant-pro-global-header-index-${(this.isMobile || !this.topMenu) ? 'light' : this.theme}`]: true
       }
     }
-  },
-  mounted () {
-    setTimeout(() => {
-      this.currentUser = {
-        name: 'Serati Ma'
-      }
-    }, 1500)
   }
 }
 </script>

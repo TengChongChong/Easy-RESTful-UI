@@ -92,7 +92,10 @@ const vueConfig = {
 
           // 'primary-color': '#F5222D',
           // 'link-color': '#F5222D',
-          'border-radius-base': '2px'
+          'border-radius-base': '2px',
+          'layout-header-height': '48px'
+          // 'table-padding-vertical': '12px',
+          // 'table-padding-horizontal': '8px'
         },
         // DO NOT REMOVE THIS LINE
         javascriptEnabled: true

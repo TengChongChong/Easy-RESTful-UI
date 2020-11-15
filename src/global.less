@@ -34,6 +34,7 @@ ol {
 .table-alert {
   margin-bottom: 16px;
 }
+
 // 数据列表 操作
 .table-operator {
   margin-bottom: 18px;
@@ -42,8 +43,16 @@ ol {
     margin-right: 8px;
   }
 }
+
 // 数据列表 搜索条件
 .table-page-search-wrapper {
+  margin-bottom: 20px;
+
+  .ant-card {
+    .ant-card-body {
+      padding-bottom: 0;
+    }
+  }
 
   .ant-form-inline {
     .ant-form-item {
@@ -62,6 +71,7 @@ ol {
         padding-right: 8px;
         width: auto;
       }
+
       .ant-form-item-control {
         height: 32px;
         line-height: 32px;
@@ -76,15 +86,71 @@ ol {
   }
 }
 
+.card-table {
+  .ant-card-body {
+    padding: 0;
+  }
+
+  .table-list-toolbar {
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    .table-list-toolbar-container {
+      display: flex;
+      justify-content: space-between;
+      height: 64px;
+      padding: 0 24px;
+      line-height: 64px;
+
+      .table-list-toolbar-left {
+        display: flex;
+        justify-content: flex-start;
+
+        .table-list-toolbar-title {
+          color: rgba(0, 0, 0, .85);
+          font-size: 16px;
+          font-weight: 500;
+        }
+      }
+
+      .table-list-toolbar-right {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        .toolbar-item {
+          border: 0;
+          box-shadow: none;
+        }
+      }
+    }
+  }
+
+  .table-alert {
+    margin-bottom: 16px;
+    padding: 0 24px;
+  }
+}
+
+.input-btn-group {
+  text-align: center;
+
+  .ant-btn {
+    margin-right: 5px;
+  }
+}
+
 @media (max-width: @screen-xs) {
   .ant-table {
     width: 100%;
     overflow-x: auto;
+
     &-thead > tr,
     &-tbody > tr {
       > th,
       > td {
         white-space: pre;
+
         > span {
           display: block;
         }

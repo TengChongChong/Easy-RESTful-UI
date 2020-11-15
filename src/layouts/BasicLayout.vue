@@ -9,13 +9,6 @@
     :i18nRender="i18nRender"
     v-bind="settings"
   >
-    <!-- Ads begin
-      广告代码 真实项目中请移除
-      production remove this Ads
-    -->
-    <ads v-if="isProPreviewSite && !collapsed"/>
-    <!-- Ads end -->
-
     <!-- 1.0.0+ 版本 pro-layout 提供 API，
           我们推荐使用这种方式进行 LOGO 和 title 自定义
     -->
@@ -33,6 +26,7 @@
     <template v-slot:footerRender>
       <global-footer />
     </template>
+    <multi-tab v-if="multiTab"></multi-tab>
     <router-view />
   </pro-layout>
 </template>
@@ -48,6 +42,7 @@ import RightContent from '@/components/GlobalHeader/RightContent'
 import GlobalFooter from '@/components/GlobalFooter'
 import Ads from '@/components/Other/CarbonAds'
 import LogoSvg from '../assets/logo.svg?inline'
+import MultiTab from '@/components/MultiTab'
 
 export default {
   name: 'BasicLayout',
@@ -56,7 +51,8 @@ export default {
     RightContent,
     GlobalFooter,
     LogoSvg,
-    Ads
+    Ads,
+    MultiTab
   },
   data () {
     return {
@@ -95,7 +91,8 @@ export default {
   computed: {
     ...mapState({
       // 动态主路由
-      mainMenu: state => state.permission.addRouters
+      mainMenu: state => state.permission.addRouters,
+      multiTab: (state) => state.app.multiTab
     })
   },
   created () {
