@@ -1,12 +1,14 @@
 <template>
   <a-row :gutter="20">
     <a-col :xl="6" :md="8">
-      <a-card title="菜单管理" :bordered="false" id="tree-card">
+      <a-card title="部门管理" :bordered="false" id="tree-card">
+        <router-link slot="extra" to="/sys/dept/type">部门类型管理</router-link>
+
         <a-tooltip placement="top" :visible="searchTooltipVisible">
           <template slot="title">
-            <span>请输入菜单名称后查询</span>
+            <span>请输入部门名称后查询</span>
           </template>
-          <a-input-search v-model="query" placeholder="输入菜单名称搜索" @search="onSearch"/>
+          <a-input-search v-model="query" placeholder="输入部门名称搜索" @search="onSearch"/>
         </a-tooltip>
 
         <div class="tree-wrapper">
@@ -19,7 +21,6 @@
             show-icon
             draggable
             show-line
-            @drop="onDrop"
             @select="onSelect"
             @expand="onExpand"
             @rightClick="rightClick"
@@ -80,49 +81,47 @@
       </a-card>
     </a-col>
     <a-col :xl="18" :md="16">
-      <a-card title="菜单详情" :bordered="false">
+      <a-card title="部门详情" :bordered="false">
         <a-form-model
           ref="form"
           :model="object"
           :rules="rules"
           v-if="hasData"
-          :label-col="formLayout.labelCol"
-          :wrapper-col="formLayout.wrapperCol">
+          :label-col="labelCol"
+          :wrapper-col="wrapperCol">
           <a-row class="form-row" :gutter="16">
             <a-col :lg="12" :sm="24">
-              <a-form-model-item label="上级菜单">
-                <a-input v-model="object.pName" :disabled="true"/>
+              <a-form-model-item label="部门类型" prop="typeCode">
+                <a-select show-search option-filter-prop="children" v-model="object.typeCode">
+                  <a-select-option v-for="item in departTypes" :key="item.value">
+                    {{ item.text }}
+                  </a-select-option>
+                </a-select>
               </a-form-model-item>
             </a-col>
             <a-col :lg="12" :sm="24">
-              <a-form-model-item label="菜单类型" prop="type">
-                <dict-radio name="type" v-model="object.type" type="permissionsType"/>
+              <a-form-model-item label="上级部门" prop="pId">
+                <a-select show-search option-filter-prop="children" v-model="object.pId">
+                  <a-select-option v-if="parentDeparts.length > 0" v-for="item in parentDeparts" :key="item.value">
+                    {{ item.text }}
+                  </a-select-option>
+                  <a-select-option v-if="parentDeparts.length === 0" key="0">无</a-select-option>
+                </a-select>
               </a-form-model-item>
             </a-col>
             <a-col :lg="12" :sm="24">
-              <a-form-model-item label="菜单名称" prop="name">
+              <a-form-model-item label="部门名称" prop="name">
                 <a-input v-model="object.name"/>
               </a-form-model-item>
             </a-col>
             <a-col :lg="12" :sm="24">
-              <a-form-model-item prop="code">
-                <span slot="label">
-                  权限标识
-                  <a-tooltip title="controller中定义的权限标识">
-                    <a-icon type="question-circle-o" />
-                  </a-tooltip>
-                </span>
+              <a-form-model-item label="部门编码" prop="code">
                 <a-input v-model="object.code"/>
               </a-form-model-item>
             </a-col>
             <a-col :lg="12" :sm="24">
-              <a-form-model-item label="链接(Path)" prop="path">
-                <a-input v-model="object.path"/>
-              </a-form-model-item>
-            </a-col>
-            <a-col :lg="12" :sm="24">
-              <a-form-model-item label="页面地址" class="component-input" prop="component">
-                <a-input v-model="object.component" prefix="@/views"/>
+              <a-form-model-item label="部门简称" prop="simpleName">
+                <a-input v-model="object.simpleName"/>
               </a-form-model-item>
             </a-col>
             <a-col :lg="12" :sm="24">
@@ -130,20 +129,13 @@
                 <dict-radio name="status" v-model="object.status" type="commonStatus"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24" v-if="object.type === '1'">
-              <a-form-model-item label="是否显示" prop="hide">
-                <dict-radio name="hide" v-model="object.hide" type="hideMenu"/>
-              </a-form-model-item>
-            </a-col>
             <a-col :lg="12" :sm="24">
-              <a-form-model-item label="图标" prop="icon">
-                <a-input v-model="object.icon" @click="handleIconInputClick">
-                  <a-icon slot="addonAfter" v-if="object.icon != null && object.icon !== ''" :type="object.icon"/>
-                </a-input>
+              <a-form-model-item label="排序值" prop="orderNo">
+                <a-input-number v-model="object.orderNo"/>
               </a-form-model-item>
             </a-col>
             <a-col :sm="24">
-              <a-form-model-item label="备注" :labelCol="{ span: 3 }" :wrapperCol="{ span: 19 }" prop="tips">
+              <a-form-model-item label="备注" :labelCol="{ span: 3 }" :wrapperCol="{ span: 19 }">
                 <a-textarea v-model="object.tips"/>
               </a-form-model-item>
             </a-col>
@@ -161,45 +153,51 @@
                   </a-button>
                 </a-popconfirm>
 
-                <a-button type="default" icon="plus" @click="add(object.id)" v-if="object.id != null && object.id !== ''">
+                <a-button type="default" icon="plus" @click="add(object.id)" v-if="object.id != null && object.id !== '' && canAdd">
                   新增下级
                 </a-button>
               </div>
             </a-col>
           </a-row>
         </a-form-model>
-        <a-modal width="960px" v-model="iconModalVisible" title="选择图标" @ok="handleOk">
-          <icon-selector v-model="currentSelectedIcon" @change="handleIconChange"/>
-        </a-modal>
       </a-card>
     </a-col>
   </a-row>
 </template>
 <script>
-  import IconSelector from '@/components/IconSelector'
   import { Tree } from 'ant-design-vue'
-  import { selectByPId, get, save, add, remove, move, setStatus, copyNodes, selectByTitle } from '@/api/sys/permissions'
-  import { convertTree, getElementOffset, isNotBlank } from '@/utils/util'
+  import {
+    selectByPId,
+    get,
+    save,
+    add,
+    remove,
+    setStatus,
+    selectByTitle,
+    selectDeptTypeOption,
+    selectUpDeptOption
+  } from '@/api/sys/dept'
+  import { convertTree, getElementOffset, isBlank, isNotBlank } from '@/utils/util'
   import DictRadio from '@/components/Easy/data-entry/DictRadio'
   import DictCheckbox from '@/components/Easy/data-entry/DictCheckbox'
   import { removeSuccessTip, saveSuccessTip, successTip } from '@/utils/tips'
   import {
-    convertTreeData, dropNode,
-    generatorNodeIcon,
+    convertTreeData,
     getTreeNode,
     removeTreeNode, updateNodeLeaf,
-    updateTreeNode
+    updateTreeNode,
+    generatorNodeIcon
   } from '@/utils/ant-design/data-display/tree'
-  import { FORM_LAYOUT } from '@/utils/const/form'
+  import { checkHasChild } from '@/api/sys/dept-type'
+
   const baseId = '0'
 
   export default {
-    name: 'SysPermissionsView',
+    name: 'SysDeptView',
     components: {
       DictCheckbox,
       DictRadio,
-      Tree,
-      IconSelector
+      Tree
     },
     data () {
       return {
@@ -207,9 +205,6 @@
         search: false,
         noResults: false,
         searchTooltipVisible: false,
-        // 显示图标对话框
-        iconModalVisible: false,
-        currentSelectedIcon: null,
 
         elementOffset: {},
         // 树相关
@@ -237,39 +232,42 @@
 
         // 表单
         hasData: false,
-        formLayout: FORM_LAYOUT,
+        labelCol: { span: 6 },
+        wrapperCol: { span: 14 },
         object: {},
+        canAdd: false,
+        departTypes: [],
+        parentDeparts: [],
         rules: {
-          type: [
-            { required: true, message: '请选择菜单类型', trigger: 'blur' }
+          typeCode: [
+            { required: true, message: '请选择部门类型', trigger: 'blur' }
+          ],
+          pId: [
+            { required: true, message: '请选择上级部门', trigger: 'blur' }
           ],
           name: [
-            { required: true, message: '请输入菜单名称', trigger: 'blur' },
-            { max: 10, message: '菜单名称字数不能超过10个字符', trigger: 'blur' }
+            { required: true, message: '请输入部门名称', trigger: 'blur' },
+            { max: 100, message: '部门名称字数不能超过100个字符', trigger: 'blur' }
           ],
           code: [
-            { max: 50, message: '权限标识不能超过50个字符', trigger: 'blur' }
+            { max: 50, message: '部门编码字数不能超过50个字符', trigger: 'blur' }
           ],
-          path: [
-            { max: 200, message: '链接(Path)不能超过200个字符', trigger: 'blur' }
-          ],
-          component: [
-            { max: 200, message: '页面地址不能超过200个字符', trigger: 'blur' }
+          sampleName: [
+            { max: 20, message: '部门简称字数不能超过20个字符', trigger: 'blur' }
           ],
           status: [
-            { required: true, message: '请选择菜单状态', trigger: 'blur' }
+            { required: true, message: '请选择部门状态', trigger: 'blur' }
           ],
-          hide: [
-            { required: true, message: '请选择是否显示', trigger: 'blur' }
-          ],
-          icon: [
-            { max: 32, message: '图标不能超过32个字符', trigger: 'blur' }
+          orderNo: [
+            { required: true, message: '请输入排序值', trigger: 'blur' },
+            { type: 'number', max: 999, message: '排序值不能大于999', trigger: 'blur' },
+            { type: 'number', min: 0, message: '排序值不能小于0', trigger: 'blur' }
           ],
           tips: [
             { max: 200, message: '备注不能超过200个字符', trigger: 'blur' }
           ]
-        },
-        created: false
+
+        }
       }
     },
     created () {
@@ -352,19 +350,6 @@
           this.edit(e.node.dataRef.id)
         }
       },
-      onDrop (info) {
-        const { data, loadDataNode, id, parent, oldParent, position, oldPosition } = dropNode(this.treeData, info)
-        if (parent !== oldParent || position !== oldPosition) {
-          move(id, parent, oldParent, position, oldPosition).then(() => {
-            saveSuccessTip()
-
-            if (loadDataNode) {
-              this.loadData(loadDataNode)
-            }
-          })
-        }
-        this.treeData = data
-      },
       rightClick ({ event, node }) {
         this.rightClickChoseNode = node.dataRef
         this.rightMenu.left = event.pageX - this.elementOffset.actualLeft
@@ -406,12 +391,6 @@
                 }
               })
               break
-            case 'copy':
-              this.copyCacheNode = this.rightClickChoseNode
-              break
-            case 'paste':
-              this.copyNodes()
-              break
             case 'enable':
               this.setStatus(this.rightClickChoseNode.id, 1)
               break
@@ -438,12 +417,32 @@
           this.hasData = true
           this.selectedKeys = []
           this.object = res.data
+          selectDeptTypeOption(this.object.pId, this.object.typeCode).then(res => {
+            this.departTypes = res.data
+            if (isBlank(this.object.typeCode) && this.departTypes.length > 0) {
+              // 默认第一个类型
+              this.object.typeCode = this.departTypes[0].value
+            }
+            selectUpDeptOption(this.object.pId, this.object.typeCode).then(res => {
+              this.parentDeparts = res.data
+            })
+          })
         })
       },
       edit (id) {
         get(id).then((res) => {
           this.hasData = true
           this.object = res.data
+          selectDeptTypeOption(this.object.pId, this.object.typeCode).then(res => {
+            this.departTypes = res.data
+          })
+          selectUpDeptOption(this.object.pId, this.object.typeCode).then(res => {
+            this.parentDeparts = res.data
+          })
+
+          checkHasChild(this.object.typeCode).then(res => {
+            this.canAdd = res.data
+          })
         })
       },
       save () {
@@ -491,42 +490,11 @@
       setStatus (id, status) {
         setStatus(id, status).then((res) => {
           successTip()
-          if (this.role.id === id) {
+          if (this.object.id === id) {
             this.object.status = status
           }
-        })
-      },
-      copyNodes () {
-        const nodeIds = this.copyCacheNode.id
-        const targetId = this.rightClickChoseNode.id
-        copyNodes(nodeIds, targetId).then((res) => {
-          const treeNode = getTreeNode(this.treeData, targetId)
-          if (treeNode.children) {
-            res.data.forEach((item) => {
-              treeNode.children.push({
-                id: item.id,
-                key: item.id,
-                title: item.name,
-                slots: { icon: item.icon ? item.icon : null },
-                isLeaf: true
-              })
-            })
-            updateNodeLeaf(treeNode)
-          } else {
-            this.loadData(treeNode)
-          }
-          successTip()
         })
       }
     }
   }
 </script>
-<style>
-  .component-input .ant-input-affix-wrapper .ant-input:not(:first-child) {
-    padding-left: 70px;
-  }
-
-  .component-input .ant-input-affix-wrapper .ant-input-prefix {
-    color: #888;
-  }
-</style>

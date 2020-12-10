@@ -1,5 +1,3 @@
-import { SYS_DICT } from '@/utils/sys-dict'
-
 export function timeFix () {
   const time = new Date()
   const hour = time.getHours()
@@ -141,82 +139,50 @@ export function convertTree (data, root = '#', idTxt = 'id', pidTxt = 'pId', pus
   return getNode(root)
 }
 
-export function convertTreeData (data) {
-  function convert (node) {
-    if (isNotBlank(node.icon)) {
-      node.slots = { icon: node.icon }
-    }
-    node.key = node.id
-    return node
-  }
-
-  for (let i = 0; i < data.length; i += 1) {
-    if (isArray(data[i].children)) {
-      data[i].children = convertTreeData(data[i].children)
-    }
-    data[i] = convert(data[i])
-  }
-  return data
-}
-
-/** ****************** Tree ********************/
 /**
- * 更新树数据
+ * 获取某dom到根元素的offsetLeft/offsetTop
  *
- * @param treeData 树数据
- * @param key 新数据
- * @return {*}
+ * @param element element
+ * @return {{actualTop: *, actualLeft: number}}
  */
-export function getTreeNode (treeData, key) {
-  let treeNode
-  for (let i = 0; i < treeData.length; i += 1) {
-    if (isArray(treeData[i].children)) {
-      treeNode = getTreeNode(treeData[i].children, key)
-    }
-    if (treeData[i].key === key) {
-      treeNode = treeData[i]
-    }
+export function getElementOffset (element) {
+  let actualTop = element.offsetTop
+  let actualLeft = element.offsetLeft
+
+  let current = element.offsetParent
+
+  while (current !== null) {
+    actualTop += current.offsetTop
+    actualLeft += current.offsetLeft
+    current = current.offsetParent
   }
-  return treeNode
-}
-/**
- * 更新树数据
- *
- * @param treeData 树数据
- * @param data 新数据
- * @return {*}
- */
-export function updateTreeNode (treeData, data) {
-  for (let i = 0; i < treeData.length; i += 1) {
-    if (isArray(treeData[i].children)) {
-      treeData[i].children = updateTreeNode(treeData[i].children, data)
-    }
-    if (treeData[i].key === data.key) {
-      Object.assign(treeData[i], data)
-    }
-  }
-  return treeData
+  return { actualLeft, actualTop }
 }
 
-/**
- * 删除树数据
- *
- * @param treeData 树数据
- * @param keys 要删除的keys
- * @return {*}
- */
-export function removeTreeNode (treeData, keys) {
-  for (let i = 0; i < treeData.length; i += 1) {
-    if (isArray(treeData[i].children)) {
-      treeData[i].children = removeTreeNode(treeData[i].children, keys)
-    }
-    if (keys.indexOf(treeData[i].key) > -1) {
-      treeData[i].splice(i, 1)
-    }
-  }
-  return treeData
+export function openView (router, to, tabName, query) {
+  query = Object.assign((query || {}), { customTabName: tabName || '未命名' })
+  router.push({
+    path: to,
+    query: query
+  })
 }
 
+export function deepClone (source, ignore) {
+  if (!source && typeof source !== 'object') {
+    throw new Error('error arguments deepClone')
+  }
+  const targetObj = source.constructor === Array ? [] : {}
+  Object.keys(source).forEach(keys => {
+    if (!ignore.includes(keys)) {
+      if (source[keys] && typeof source[keys] === 'object') {
+        targetObj[keys] = deepClone(source[keys], ignore)
+      } else {
+        targetObj[keys] = source[keys]
+      }
+    }
+  })
+  return targetObj
+}
 /** ****************** 字典 ********************/
 /**
  * 根据字典类型获取字典数组
@@ -226,6 +192,7 @@ export function removeTreeNode (treeData, keys) {
  */
 export function getSysDictArrayByDictType (dictType) {
   if (typeof SYS_DICT !== 'undefined' && isNotBlank(dictType)) {
+    // eslint-disable-next-line no-undef
     return SYS_DICT[dictType]
   }
   return null

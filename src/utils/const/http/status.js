@@ -1,4 +1,4 @@
-export const HttpStatus = {
+export const HTTP_STATUS = {
   /* 2XX: generally "OK" */
 
   /**

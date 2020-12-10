@@ -11,8 +11,58 @@
 }
 */
 .@{multi-tab-prefix-cls} {
-  margin: -23px -24px 24px -24px;
+  position: fixed;
+  top: @layout-header-height;
+  z-index: 1;
+  width: calc(100% - 256px);
+  margin: 0 -20px 60px -20px;
   background: #fff;
+
+  .ant-tabs-bar {
+    border-bottom: 0;
+  }
+
+  .ant-tabs.ant-tabs-card {
+    .ant-tabs-card-bar {
+      .ant-tabs-tab {
+        max-width: 180px;
+        height: 39px;
+        padding: 0 15px;
+        border: 0;
+        border-radius: 0;
+
+        > div {
+          height: 39px;
+        }
+
+        &.ant-tabs-tab-active {
+          background-color: #f0f2f5;
+        }
+
+        .ant-tabs-tab-unclosable {
+          .ant-dropdown-trigger {
+            padding-right: 0;
+          }
+        }
+
+        .ant-dropdown-trigger {
+          user-select: none;
+          display: inline-block;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          width: 100%;
+          padding-right: 18px;
+        }
+
+        .ant-tabs-close-x {
+          position: absolute;
+          top: 13px;
+          right: 15px;
+        }
+      }
+    }
+  }
 }
 
 .topmenu .@{multi-tab-wrapper-prefix-cls} {
@@ -25,16 +75,3 @@
   margin: 0 auto;
 }
 
-.ant-tabs.ant-tabs-card {
-  .ant-tabs-card-bar {
-    .ant-tabs-tab {
-      border: 0;
-      border-radius: 0;
-      &.ant-tabs-tab-active {
-        background-color: #f0f2f5;
-      }
-    }
-
-
-  }
-}

@@ -1,40 +1,28 @@
 <template>
-  <pro-table title="字典管理" :advanced.sync="advanced">
+  <pro-table title="系统参数" :advanced.sync="advanced">
     <template slot="query">
       <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
-        <a-form-model-item label="字典类型">
-          <a-select show-search option-filter-prop="children" :allowClear="allowClear" v-model="queryParam.dictType" @change="$refs.table.refresh(true)">
-            <a-select-option v-for="item in dictTypes" :key="item.type">
-              {{ item.name }}（{{ item.type }}）
-            </a-select-option>
-          </a-select>
+        <a-form-model-item label="key">
+          <a-input v-model="queryParam.sysKey"/>
         </a-form-model-item>
       </a-col>
       <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
-        <a-form-model-item label="字典编码">
-          <a-input v-model="queryParam.code"/>
-        </a-form-model-item>
-      </a-col>
-      <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
-        <a-form-model-item label="字典名称">
-          <a-input v-model="queryParam.name"/>
+        <a-form-model-item label="value">
+          <a-input v-model="queryParam.value"/>
         </a-form-model-item>
       </a-col>
       <template v-if="advanced">
         <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
-          <a-form-model-item label="状态">
-            <dict-select type="commonStatus" v-model="queryParam.status" @change="$refs.table.refresh(true)"></dict-select>
+          <a-form-model-item label="类型">
+            <dict-select type="dataType" v-model="queryParam.type" @change="$refs.table.refresh(true)"></dict-select>
           </a-form-model-item>
         </a-col>
       </template>
     </template>
 
     <template slot="button">
-      <btn-add to="/sys/dict/add" :params="{dictType: queryParam.dictType}"></btn-add>
-      <router-link to="/sys/dict/type/list">
-        <a-button icon="bars">字典类型管理</a-button>
-      </router-link>
-      <a-button icon="sync" @click="generateDictData">更新字典资源</a-button>
+      <btn-add to="/sys/config/add"></btn-add>
+      <a-button type="primary" icon="sync" @click="refreshCache">更新缓存数据</a-button>
       <btn-remove-batch :ids="selectedRowKeys" :on-click="remove"/>
     </template>
 
@@ -47,27 +35,13 @@
         :rowSelection="rowSelection"
         showPagination="auto"
       >
-        <span slot="name" slot-scope="text, record">
-          <template v-if="record.css != null && record.css !== ''">
-            <a-tag :color="record.css">{{ record.name }}</a-tag>
-          </template>
-          <template v-if="record.css == null || record.css === ''">
-            {{ record.name }}
-          </template>
-        </span>
-        <span slot="status" slot-scope="text, record">
-          <dict-tag type="commonStatus" :code="record.status"></dict-tag>
+        <span slot="type" slot-scope="text, record">
+          <dict-tag type="dataType" :code="record.type"></dict-tag>
         </span>
 
-        <span slot="dictType" slot-scope="text, record">
-          {{ record.dictTypeName }}（{{ record.dictType }}）
-        </span>
         <span slot="action" slot-scope="text, record">
           <template>
-            <btn-add-sub :to="`/sys/dict/add`" :tab-name="`新增下级 - ${record.name}`" :params="{ pId: record.id, dictType: record.dictType }"></btn-add-sub>
-
-            <btn-edit :to="`/sys/dict/input`" :tab-name="record.name" :id="record.id"></btn-edit>
-
+            <btn-edit :to="`/sys/config/input`" :tab-name="record.name" :id="record.id"></btn-edit>
             <btn-remove :id="record.id" :divider="false" :on-click="remove"></btn-remove>
           </template>
         </span>
@@ -78,8 +52,7 @@
 
 <script>
 import { STable, Ellipsis } from '@/components'
-import { select, remove, generateDictData } from '@/api/sys/dict'
-import { selectAll } from '@/api/sys/dict-type'
+import { select, remove, refreshCache } from '@/api/sys/config'
 import DictTag from '@/components/Easy/data-entry/DictTag'
 import DictSelect from '@/components/Easy/data-entry/DictSelect'
 import ProTable from '@/components/ProTable/Index'
@@ -92,32 +65,25 @@ import BtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
 
 const columns = [
   {
-    title: '字典编码',
-    dataIndex: 'code',
+    title: 'sysKey',
+    dataIndex: 'sysKey',
     sorter: true
   },
   {
-    title: '字典名称',
-    dataIndex: 'name',
-    sorter: true,
-    scopedSlots: { customRender: 'name' }
-  },
-  {
-    title: '字典类型',
-    dataIndex: 'dictType',
-    sorter: true,
-    scopedSlots: { customRender: 'dictType' }
-  },
-  {
-    title: '排序值',
-    dataIndex: 'orderNo',
+    title: 'value',
+    dataIndex: 'value',
     sorter: true
   },
   {
-    title: '状态',
-    dataIndex: 'status',
+    title: '类型',
+    dataIndex: 'type',
     sorter: true,
-    scopedSlots: { customRender: 'status' }
+    scopedSlots: { customRender: 'type' }
+  },
+  {
+    title: '备注',
+    dataIndex: 'tips',
+    sorter: true
   },
   {
     title: '操作',
@@ -149,7 +115,6 @@ export default {
       // 查询参数
       queryParam: {},
       allowClear: true,
-      dictTypes: [],
       selectedRowKeys: [],
       selectedRows: []
     }
@@ -177,11 +142,6 @@ export default {
           return res.data
         })
     },
-    loadDictTypes () {
-      selectAll().then(res => {
-        this.dictTypes = res.data
-      })
-    },
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
@@ -191,8 +151,8 @@ export default {
         this.$refs.table.refresh(true)
       })
     },
-    generateDictData () {
-      generateDictData().then(res => {
+    refreshCache () {
+      refreshCache().then(res => {
         successTip()
       })
     }

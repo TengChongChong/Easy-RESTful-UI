@@ -1,98 +1,101 @@
 <script>
-import events from './events'
-
 export default {
   name: 'MultiTab',
+  inject: ['reload'],
   data () {
     return {
-      fullPathList: [],
-      pages: [],
-      activeKey: '',
-      newTabIndex: 0
+      activeKey: ''
     }
   },
-  created () {
-    // bind event
-    events.$on('open', val => {
-      if (!val) {
-        throw new Error(`multi-tab: open tab ${val} err`)
-      }
-      this.activeKey = val
-    }).$on('close', val => {
-      if (!val) {
-        this.closeThat(this.activeKey)
-        return
-      }
-      this.closeThat(val)
-    }).$on('rename', ({ key, name }) => {
-      console.log('rename', key, name)
-      try {
-        const item = this.pages.find(item => item.path === key)
-        item.meta.customTitle = name
-        this.$forceUpdate()
-      } catch (e) {
-      }
-    })
-
-    this.pages.push(this.$route)
-    this.fullPathList.push(this.$route.fullPath)
-    this.selectedLastPath()
-  },
   methods: {
+    /**
+     * 查找路由
+     *
+     * @param fullPath {string} fullPath
+     */
+    findView (fullPath) {
+      let viewLength = this.visitedViews.length
+      while (viewLength--) {
+        if (this.visitedViews[viewLength].fullPath === fullPath) {
+          return this.visitedViews[viewLength]
+        }
+      }
+      return null
+    },
+    /**
+     * 为当前页面添加标签页
+     */
+    addTags () {
+      const { name } = this.$route
+      if (name) {
+        this.$store.dispatch('tagsView/addView', this.$route)
+      }
+      this.activeKey = this.$route.fullPath
+      return false
+    },
+    /**
+     * 关闭标签页
+     * @param view {{fullPath: string}}
+     */
+    closeSelectedTag (view) {
+      this.$store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
+        if (this.activeKey === view.fullPath) {
+          this.selectedLastPath()
+        }
+      })
+    },
+    /**
+     * 标签页发生改变
+     *
+     * @param targetKey {string} fullPath
+     * @param action {string} remove
+     */
     onEdit (targetKey, action) {
       this[action](targetKey)
     },
+
+    /**
+     * 关闭标签页回调
+     *
+     * @param targetKey {string} fullPath
+     */
     remove (targetKey) {
-      this.pages = this.pages.filter(page => page.fullPath !== targetKey)
-      this.fullPathList = this.fullPathList.filter(path => path !== targetKey)
-      // 判断当前标签是否关闭，若关闭则跳转到最后一个还存在的标签页
-      if (!this.fullPathList.includes(this.activeKey)) {
-        this.selectedLastPath()
-      }
+      this.closeSelectedTag(this.findView(targetKey))
     },
+    /**
+     * 选中最后一个标签页
+     */
     selectedLastPath () {
-      this.activeKey = this.fullPathList[this.fullPathList.length - 1]
+      this.activeKey = this.visitedViews[this.visitedViews.length - 1].fullPath
     },
 
-    // content menu
-    closeThat (e) {
-      // 判断是否为最后一个标签页，如果是最后一个，则无法被关闭
-      if (this.fullPathList.length > 1) {
-        this.remove(e)
-      } else {
-        this.$message.info('这是最后一个标签了, 无法被关闭')
-      }
+    // 右键菜单
+    /**
+     * 关闭当前标签页
+     *
+     * @param targetKey {string} fullPath
+     */
+    closeThat (targetKey) {
+      this.closeSelectedTag({ fullPath: targetKey })
     },
-    closeLeft (e) {
-      const currentIndex = this.fullPathList.indexOf(e)
-      if (currentIndex > 0) {
-        this.fullPathList.forEach((item, index) => {
-          if (index < currentIndex) {
-            this.remove(item)
-          }
-        })
-      } else {
-        this.$message.info('左侧没有标签')
-      }
+    /**
+     * 关闭其他标签页
+     *
+     * @param targetKey {string} fullPath
+     */
+    closeOther (targetKey) {
+      this.$store.dispatch('tagsView/delOthersViews', { fullPath: targetKey }).then(() => {
+        this.selectedLastPath()
+      })
     },
-    closeRight (e) {
-      const currentIndex = this.fullPathList.indexOf(e)
-      if (currentIndex < (this.fullPathList.length - 1)) {
-        this.fullPathList.forEach((item, index) => {
-          if (index > currentIndex) {
-            this.remove(item)
-          }
-        })
-      } else {
-        this.$message.info('右侧没有标签')
-      }
-    },
-    closeAll (e) {
-      const currentIndex = this.fullPathList.indexOf(e)
-      this.fullPathList.forEach((item, index) => {
-        if (index !== currentIndex) {
-          this.remove(item)
-        }
+    /**
+     * 刷新当前标签页
+     *
+     * @param targetKey  {string} fullPath
+     */
+    refreshThat (targetKey) {
+      this.$store.dispatch('tagsView/delCachedView', this.findView(targetKey)).then(() => {
+        this.reload()
       })
     },
     closeMenuClick (key, route) {
@@ -101,10 +104,9 @@ export default {
     renderTabPaneMenu (e) {
       return (
         <a-menu {...{ on: { click: ({ key, item, domEvent }) => { this.closeMenuClick(key, e) } } }}>
-          <a-menu-item key="closeThat">关闭当前标签</a-menu-item>
-          <a-menu-item key="closeRight">关闭右侧</a-menu-item>
-          <a-menu-item key="closeLeft">关闭左侧</a-menu-item>
-          <a-menu-item key="closeAll">关闭全部</a-menu-item>
+          <a-menu-item key="refreshThat"><a-icon type="sync" /> 刷新当前</a-menu-item>
+          <a-menu-item key="closeThat"><a-icon type="close" /> 关闭当前</a-menu-item>
+          <a-menu-item key="closeOther"><a-icon type="close" /> 关闭其他</a-menu-item>
         </a-menu>
       )
     },
@@ -120,25 +122,30 @@ export default {
     }
   },
   watch: {
-    '$route': function (newVal) {
-      this.activeKey = newVal.fullPath
-      if (this.fullPathList.indexOf(newVal.fullPath) < 0) {
-        this.fullPathList.push(newVal.fullPath)
-        this.pages.push(newVal)
-      }
+    '$route': function () {
+      this.addTags()
     },
     activeKey: function (newPathKey) {
       this.$router.push({ path: newPathKey })
     }
   },
+  computed: {
+    visitedViews () {
+      return this.$store.state.tagsView.visitedViews
+    }
+  },
+  mounted () {
+    this.addTags()
+    this.selectedLastPath()
+  },
   render () {
-    const { onEdit, $data: { pages } } = this
-    const panes = pages.map(page => {
+    const { onEdit } = this
+    const panes = this.visitedViews.map(page => {
       return (
         <a-tab-pane
           style={{ height: 0 }}
-          tab={this.renderTabPane(page.meta.customTitle || page.meta.title, page.fullPath)}
-          key={page.fullPath} closable={pages.length > 1}
+          tab={this.renderTabPane(page.query.customTabName || page.meta.customTitle || page.meta.title, page.fullPath)}
+          key={page.fullPath} closable={this.visitedViews.length > 1}
         >
         </a-tab-pane>)
     })

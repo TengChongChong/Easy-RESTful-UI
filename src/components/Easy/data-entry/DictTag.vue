@@ -1,5 +1,8 @@
 <template>
-  <a-tag :color="error != null ? 'red' : dict.css">{{ error != null ? error : dict.name }}</a-tag>
+  <span>
+    <a-tag v-if="dict.css" :color="error != null ? 'red' : dict.css">{{ error != null ? error : dict.name }}</a-tag>
+    <template v-else>{{ dict.name }}</template>
+  </span>
 </template>
 <script>
   import { getSysDictObjectByQuery, isBlank } from '@/utils/util'

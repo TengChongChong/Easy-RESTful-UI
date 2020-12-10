@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import { HTTP_METHOD } from '@/utils/const/http/method'
 
-const baseUrl = '/auth/sys/permissions/'
+const baseUrl = '/auth/sys/role/'
 const api = {
   add: baseUrl + 'add/',
   batchRemove: baseUrl + 'batch/',
@@ -52,18 +52,6 @@ export function batchRemove (ids) {
 export function setStatus (ids, status) {
   return request({
     url: baseUrl + 'set/' + ids + '/status/' + status,
-    method: HTTP_METHOD.POST
-  })
-}
-/**
- * 复制节点到目标id
- *
- * @param nodeIds  复制的节点ids [1,2,3]
- * @param targetId 目标节点id
- */
-export function copyNodes (nodeIds, targetId) {
-  return request({
-    url: baseUrl + 'copy/' + nodeIds + '/to/' + targetId,
     method: HTTP_METHOD.POST
   })
 }

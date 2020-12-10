@@ -5,7 +5,7 @@ import notification from 'ant-design-vue/es/notification'
 import { VueAxios } from './axios'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import qs from 'qs'
-import { HttpStatus } from '@/utils/const/http-status'
+import { HTTP_STATUS } from '@/utils/const/http/status'
 import { SHOW_TYPE } from '@/utils/const/result'
 
 const codeMessage = {
@@ -80,7 +80,7 @@ const errorHandler = (error) => {
       }
     } else if (response && response.status) {
       // 用户没有权限（令牌、用户名、密码错误）
-      if (HttpStatus.HTTP_UNAUTHORIZED === status) {
+      if (HTTP_STATUS.HTTP_UNAUTHORIZED === status) {
         store.dispatch('Logout').then(() => {
           setTimeout(() => {
             window.location.reload()

@@ -1,11 +1,9 @@
 import request from '@/utils/request'
 import { HTTP_METHOD } from '@/utils/const/http/method'
 
-const baseUrl = '/auth/sys/dict/'
+const baseUrl = '/auth/sys/config/'
 const api = {
-  selectByDictType: baseUrl + 'dict-type',
-  add: baseUrl + 'add/',
-  generateDictData: baseUrl + 'generate/dict/data'
+  refreshCache: baseUrl + 'refresh/cache'
 }
 
 export function select (params) {
@@ -13,26 +11,6 @@ export function select (params) {
     url: baseUrl,
     method: HTTP_METHOD.GET,
     params
-  })
-}
-
-export function selectByDictType (dictType) {
-  return request({
-    url: api.selectByDictType,
-    method: HTTP_METHOD.GET,
-    params: {
-      dictType
-    }
-  })
-}
-
-export function add (id, dictType) {
-  return request({
-    url: api.add + (id || ''),
-    method: HTTP_METHOD.GET,
-    params: {
-      dictType: dictType
-    }
   })
 }
 
@@ -57,10 +35,9 @@ export function get (id) {
     method: HTTP_METHOD.GET
   })
 }
-
-export function generateDictData () {
+export function refreshCache (id) {
   return request({
-    url: api.generateDictData,
+    url: api.refreshCache,
     method: HTTP_METHOD.POST
   })
 }

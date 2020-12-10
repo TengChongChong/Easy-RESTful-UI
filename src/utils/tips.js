@@ -23,6 +23,16 @@ const commonTips = {
 }
 
 /**
+ * 操作成功提示
+ */
+export function successTip () {
+  notification.success({
+    message: commonTips.success,
+    description: '操作成功'
+  })
+}
+
+/**
  * 保存成功提示
  */
 export function saveSuccessTip () {

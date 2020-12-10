@@ -1,4 +1,4 @@
-const HttpMethod = {
+export const HTTP_METHOD = {
   GET: 'GET',
   HEAD: 'HEAD',
   POST: 'POST',
@@ -8,5 +8,3 @@ const HttpMethod = {
   OPTIONS: 'OPTIONS',
   TRACE: 'TRACE'
 }
-
-export default HttpMethod

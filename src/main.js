@@ -30,6 +30,9 @@ Vue.component('pro-layout', ProLayout)
 Vue.component('page-container', PageHeaderWrapper)
 Vue.component('page-header-wrapper', PageHeaderWrapper)
 
+// eslint-disable-next-line no-undef
+Vue.prototype.SYS_DICT = SYS_DICT
+
 window.umi_plugin_ant_themeVar = themePluginConfig.theme
 
 new Vue({

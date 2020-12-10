@@ -1,5 +1,6 @@
 <template>
   <a-select
+    style="min-width: 120px"
     show-search
     option-filter-prop="children"
     :mode="mode"

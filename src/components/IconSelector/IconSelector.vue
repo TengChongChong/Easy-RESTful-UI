@@ -3,8 +3,12 @@
     <a-tabs v-model="currentTab" @change="handleTabChange">
       <a-tab-pane v-for="v in icons" :tab="v.title" :key="v.key">
         <ul>
-          <li v-for="(icon, key) in v.icons" :key="`${v.key}-${key}`" :class="{ 'active': selectedIcon==icon }" @click="handleSelectedIcon(icon)" >
-            <a-icon :type="icon" :style="{ fontSize: '36px' }" />
+          <li
+            v-for="(icon, key) in v.icons"
+            :key="`${v.key}-${key}`"
+            :class="{ 'active': selectedIcon === icon }"
+            @click="handleSelectedIcon(icon)">
+            <a-icon :type="icon" :style="{ fontSize: '24px' }"/>
           </li>
         </ul>
       </a-tab-pane>
@@ -13,69 +17,69 @@
 </template>
 
 <script>
-import icons from './icons'
+  import icons from './icons'
 
-export default {
-  name: 'IconSelect',
-  props: {
-    prefixCls: {
-      type: String,
-      default: 'ant-pro-icon-selector'
+  export default {
+    name: 'IconSelect',
+    props: {
+      prefixCls: {
+        type: String,
+        default: 'ant-pro-icon-selector'
+      },
+      // eslint-disable-next-line
+      value: {
+        type: String
+      }
     },
-    // eslint-disable-next-line
-    value: {
-      type: String
-    }
-  },
-  data () {
-    return {
-      selectedIcon: this.value || '',
-      currentTab: 'directional',
-      icons
-    }
-  },
-  watch: {
-    value (val) {
-      this.selectedIcon = val
-      this.autoSwitchTab()
-    }
-  },
-  created () {
-    if (this.value) {
-      this.autoSwitchTab()
-    }
-  },
-  methods: {
-    handleSelectedIcon (icon) {
-      this.selectedIcon = icon
-      this.$emit('change', icon)
+    data () {
+      return {
+        selectedIcon: this.value || '',
+        currentTab: 'directional',
+        icons
+      }
     },
-    handleTabChange (activeKey) {
-      this.currentTab = activeKey
+    watch: {
+      value (val) {
+        this.selectedIcon = val
+        this.autoSwitchTab()
+      }
     },
-    autoSwitchTab () {
-      icons.some(item => item.icons.some(icon => icon === this.value) && (this.currentTab = item.key))
+    created () {
+      if (this.value) {
+        this.autoSwitchTab()
+      }
+    },
+    methods: {
+      handleSelectedIcon (icon) {
+        this.selectedIcon = icon
+        this.$emit('change', icon)
+      },
+      handleTabChange (activeKey) {
+        this.currentTab = activeKey
+      },
+      autoSwitchTab () {
+        icons.some(item => item.icons.some(icon => icon === this.value) && (this.currentTab = item.key))
+      }
     }
   }
-}
 </script>
 
 <style lang="less" scoped>
   @import "../index.less";
 
-  ul{
+  ul {
     list-style: none;
     padding: 0;
     overflow-y: scroll;
     height: 250px;
 
-    li{
+    li {
       display: inline-block;
       padding: @padding-sm;
       margin: 3px 0;
       border-radius: @border-radius-base;
 
-      &:hover, &.active{
+      &:hover, &.active {
         // box-shadow: 0px 0px 5px 2px @primary-color;
         cursor: pointer;
         color: @white;

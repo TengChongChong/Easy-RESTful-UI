@@ -6,6 +6,7 @@
     :isMobile="isMobile"
     :handleMediaQuery="handleMediaQuery"
     :handleCollapse="handleCollapse"
+    :menuRender="menuRender"
     :i18nRender="i18nRender"
     v-bind="settings"
   >
@@ -26,7 +27,7 @@
     <template v-slot:footerRender>
       <global-footer />
     </template>
-    <multi-tab v-if="multiTab"></multi-tab>
+    <multi-tab />
     <router-view />
   </pro-layout>
 </template>
@@ -42,8 +43,7 @@ import RightContent from '@/components/GlobalHeader/RightContent'
 import GlobalFooter from '@/components/GlobalFooter'
 import Ads from '@/components/Other/CarbonAds'
 import LogoSvg from '../assets/logo.svg?inline'
-import MultiTab from '@/components/MultiTab'
-
+import BaseMenu from '@/components/RouteMenu'
 export default {
   name: 'BasicLayout',
   components: {
@@ -52,7 +52,7 @@ export default {
     GlobalFooter,
     LogoSvg,
     Ads,
-    MultiTab
+    BaseMenu
   },
   data () {
     return {
@@ -91,12 +91,12 @@ export default {
   computed: {
     ...mapState({
       // 动态主路由
-      mainMenu: state => state.permission.addRouters,
+      mainMenu: state => state.menu,
       multiTab: (state) => state.app.multiTab
     })
   },
   created () {
-    const routes = this.mainMenu.find(item => item.path === '/')
+    const routes = this.mainMenu.menus.find(item => item.path === '/')
     this.menus = (routes && routes.children) || []
     // 处理侧栏收起状态
     this.$watch('collapsed', () => {
@@ -124,6 +124,11 @@ export default {
     }
   },
   methods: {
+    menuRender (h, { collapsed, menus, mode, theme, i18nRender }) {
+      return (
+        <BaseMenu collapsed={collapsed} menus={menus} mode={mode} theme={theme} i18nRender={i18nRender} />
+      )
+    },
     i18nRender,
     handleMediaQuery (val) {
       this.query = val

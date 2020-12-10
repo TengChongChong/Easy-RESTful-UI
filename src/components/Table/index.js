@@ -142,6 +142,7 @@ export default {
      * @param {Object} sorter 排序条件
      */
     loadData (pagination, filters, sorter) {
+      this.clearSelected()
       this.localLoading = true
       const parameter = Object.assign({
         current: (pagination && pagination.current) ||
@@ -150,7 +151,7 @@ export default {
           this.showPagination && this.localPagination.pageSize || this.pageSize
       },
       (sorter && sorter.field && {
-        sortField: sorter.field
+        sortField: sorter.column.sortField || sorter.field
       }) || {},
       (sorter && sorter.order && {
         sortOrder: sorter.order

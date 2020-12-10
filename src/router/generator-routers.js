@@ -2,6 +2,8 @@
 import * as loginService from '@/api/login'
 // eslint-disable-next-line
 import { BasicLayout, BlankLayout, PageView, RouteView } from '@/layouts'
+import { deepClone } from '@/utils/util'
+import store from '@/store'
 
 // 前端路由表
 const constantRouterComponents = {
@@ -81,12 +83,66 @@ export const generatorDynamicRouter = (menus) => {
     const childrenNav = []
     // 后端数据, 根级树数组,  根级 PID
     listToTree(menus, childrenNav, '0')
+    // childrenNav.push(findHideRouters(menus))
     rootRouter.children = childrenNav
     menuNav.push(rootRouter)
     const routers = generator(menuNav)
+    store.dispatch('setMenus', deepClone(routers, ['component']))
+    getFlatRoutes(routers)
+    routers[0].children = [{
+      // 如果路由设置了 path，则作为默认 path，否则 路由地址 动态拼接生成如 /dashboard/workplace
+      path: '/base',
+      // 路由名称，建议唯一
+      name: 'base',
+      // 该路由对应页面
+      component: RouteView,
+      // meta: 页面标题, 菜单图标, 页面权限(供指令权限用，可去掉)
+      meta: {
+        title: 'base'
+      },
+      children: routers[0].children
+    }]
+
     routers.push(notFoundRouter)
     resolve(routers)
   })
+}
+
+// 几个用到的方法
+// 二级以上的菜单降级成二级菜单
+const formatRouter = (routes, list = []) => {
+  routes.map(item => {
+    if (item.children && item.children.length > 0) {
+      const arr = formatRouter(item.children, list)
+      delete item.children
+      list.concat(arr)
+    }
+    list.push(item)
+  })
+  return list
+}
+
+// 菜单降级
+export const getFlatRoutes = (routes) => {
+  return routes.map((child) => {
+    if (child.children && child.children.length > 0) {
+      child.children = formatRouter(child.children, [])
+    }
+    return child
+  })
+}
+
+function generatorName (menu) {
+  if (menu.component) {
+    const paths = menu.component.split('/')
+    let name = ''
+    paths.map(item => {
+      name += item.replace(/^\S/, function (s) { return s.toUpperCase() })
+    })
+    return name
+  } else {
+      return `${menu.name}-${menu.id}`
+  }
 }
 
 /**
@@ -98,26 +154,34 @@ export const generatorDynamicRouter = (menus) => {
  */
 export const generator = (routerMap, parent) => {
   return routerMap.map(item => {
-    const { name, show, hideChildren, hiddenHeaderContent, target, icon } = item || {}
+    const { name, hide, hidden, hideChildren, hiddenHeaderContent, target, icon } = item || {}
+    let parentPaths
+    if (parent) {
+      parentPaths = parent.meta.paths.concat([parent.path])
+    } else {
+      parentPaths = []
+    }
     const currentRouter = {
       // 如果路由设置了 path，则作为默认 path，否则 路由地址 动态拼接生成如 /dashboard/workplace
       path: item.path || `${parent && parent.path || ''}/${item.id}`,
       // 路由名称，建议唯一
-      name: `${item.name}-${item.id}`,
+      name: generatorName(item),
       // 该路由对应页面
       component: item.component ? (constantRouterComponents[item.component]) || (() => import(`@/views${item.component}`)) : RouteView,
-
       // meta: 页面标题, 菜单图标, 页面权限(供指令权限用，可去掉)
       meta: {
         title: name,
         icon: icon || undefined,
         hiddenHeaderContent: hiddenHeaderContent,
         target: target,
-        permission: item.code
-      }
+        permission: item.code,
+        paths: parentPaths,
+        hidden: hide === '1'
+      },
+      hidden
     }
     // 是否设置了隐藏菜单
-    if (show === false) {
+    if (hide === '1') {
       currentRouter.hidden = true
     }
     // 是否设置了隐藏子菜单

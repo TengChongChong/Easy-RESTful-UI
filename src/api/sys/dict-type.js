@@ -1,37 +1,37 @@
 import request from '@/utils/request'
-import HttpMethod from '@/constant/http-method'
+import { HTTP_METHOD } from '@/utils/const/http/method'
 
 const baseUrl = '/auth/sys/dict/type/'
 const api = {
   selectAll: baseUrl + 'all'
 }
 
-export function select (parameter) {
+export function select (params) {
   return request({
     url: baseUrl,
-    method: HttpMethod.GET,
-    params: parameter
+    method: HTTP_METHOD.GET,
+    params
   })
 }
 
 export function selectAll () {
   return request({
     url: api.selectAll,
-    method: HttpMethod.GET
+    method: HTTP_METHOD.GET
   })
 }
 
 export function remove (ids) {
   return request({
     url: baseUrl + ids,
-    method: HttpMethod.DELETE
+    method: HTTP_METHOD.DELETE
   })
 }
 
-export function save (parameter) {
+export function save (params) {
   return request({
     url: baseUrl,
-    method: HttpMethod.POST,
-    data: parameter
+    method: HTTP_METHOD.POST,
+    data: params
   })
 }

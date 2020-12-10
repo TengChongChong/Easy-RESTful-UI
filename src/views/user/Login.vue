@@ -86,7 +86,7 @@
           class="login-button"
           :loading="state.loginBtn"
           :disabled="state.loginBtn"
-        >确定</a-button>
+        >登录</a-button>
       </a-form-item>
 
       <div class="user-login-other">
