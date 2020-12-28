@@ -1,16 +1,14 @@
 <template>
-  <a-button type="primary" :icon="icon" @click="onClick">{{ name }}</a-button>
+  <a-button type="primary" :icon="icon" @click="onClick">
+    <slot>新增</slot>
+  </a-button>
 </template>
 <script>
   import { openView } from '@/utils/util'
 
   export default {
-    name: 'BtnAdd',
+    name: 'EBtnAdd',
     props: {
-      name: {
-        type: String,
-        default: '新增'
-      },
       tabName: {
         type: String,
         default: '新增'

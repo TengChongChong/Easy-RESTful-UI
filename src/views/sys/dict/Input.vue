@@ -2,14 +2,14 @@
   <a-card title="字典详情" :bordered="false">
     <a-form-model
       ref="form"
-      :model="object"
+      :model="model"
       :rules="rules"
       :label-col="formLayout.labelCol"
       :wrapper-col="formLayout.wrapperCol">
       <a-row class="form-row" :gutter="16">
         <a-col :lg="12" :sm="24">
-          <a-form-model-item label="字典类型">
-            <a-select show-search option-filter-prop="children" v-model="object.dictType" @change="onDictTypeChange">
+          <a-form-model-item label="字典类型" prop="dictType">
+            <a-select show-search option-filter-prop="children" v-model="model.dictType" @change="onDictTypeChange">
               <a-select-option v-for="item in dictTypes" :key="item.type">
                 {{ item.name }}（{{ item.type }}）
               </a-select-option>
@@ -18,7 +18,7 @@
         </a-col>
         <a-col :lg="12" :sm="24">
           <a-form-model-item label="上级字典">
-            <a-select show-search option-filter-prop="children" v-model="object.pCode">
+            <a-select show-search option-filter-prop="children" v-model="model.pCode">
               <a-select-option v-for="item in upDictDataArray" :key="item.value">
                 {{ item.text }}（{{ item.value }}）
               </a-select-option>
@@ -27,28 +27,30 @@
         </a-col>
         <a-col :lg="12" :sm="24">
           <a-form-model-item label="字典编码" prop="code">
-            <a-input v-model="object.code"/>
+            <a-input v-model="model.code"/>
           </a-form-model-item>
         </a-col>
         <a-col :lg="12" :sm="24">
           <a-form-model-item label="字典名称" prop="name">
-            <a-input v-model="object.name"/>
+            <a-input v-model="model.name"/>
           </a-form-model-item>
         </a-col>
         <a-col :lg="12" :sm="24">
           <a-form-model-item label="状态" prop="status">
-            <dict-radio name="status" v-model="object.status" type="commonStatus"/>
+            <e-dict-radio name="status" v-model="model.status" type="commonStatus"/>
           </a-form-model-item>
         </a-col>
         <a-col :lg="12" :sm="24">
           <a-form-model-item label="排序值" prop="orderNo">
-            <a-input-number v-model="object.orderNo"/>
+            <a-tooltip placement="top" title="数字越小排名越靠前">
+              <a-input-number v-model="model.orderNo"/>
+            </a-tooltip>
           </a-form-model-item>
         </a-col>
         <a-col :lg="12" :sm="24">
           <a-form-model-item label="颜色" prop="css">
             <a-select
-              v-model="object.css"
+              v-model="model.css"
               option-label-prop="label"
             >
               <a-select-option :key="item" v-for="item in cssItems" :value="item" :label="item">
@@ -61,24 +63,22 @@
         </a-col>
         <a-col :lg="12" :sm="24">
           <a-form-model-item label="图标" prop="icon">
-            <a-input v-model="object.icon" @click="handleIconInputClick">
-              <a-icon slot="addonAfter" v-if="object.icon != null && object.icon !== ''" :type="object.icon"/>
+            <a-input v-model="model.icon" @click="handleIconInputClick">
+              <a-icon slot="addonAfter" v-if="model.icon != null && model.icon !== ''" :type="model.icon"/>
             </a-input>
           </a-form-model-item>
         </a-col>
 
         <a-col :sm="24">
           <a-form-model-item label="备注" :labelCol="{ span: 3 }" :wrapperCol="{ span: 19 }" prop="tips">
-            <a-textarea v-model="object.tips"/>
+            <a-textarea v-model="model.tips"/>
           </a-form-model-item>
         </a-col>
         <a-col :sm="24">
           <div class="input-btn-group">
-            <a-button type="primary" icon="save" @click="save">
-              保存
-            </a-button>
+            <e-btn-save :click-callback="save"/>
 
-            <a-button type="default" icon="plus" @click="add(object.id)" v-if="object.id != null && object.id !== ''">
+            <a-button type="default" icon="plus" @click="add(model.id)" v-if="model.id != null && model.id !== ''">
               新增下级
             </a-button>
           </div>
@@ -94,18 +94,18 @@
 <script>
   import { FORM_LAYOUT } from '@/utils/const/form'
   import IconSelector from '@/components/IconSelector'
-  import DictRadio from '@/components/Easy/data-entry/DictRadio'
+  import EDictRadio from '@/components/Easy/data-entry/DictRadio'
   import { selectAll } from '@/api/sys/dict-type'
   import { add, get, save, selectByDictType } from '@/api/sys/dict'
   import { saveSuccessTip } from '@/utils/tips'
-  import DictSelect from '@/components/Easy/data-entry/DictSelect'
   import { isNotBlank } from '@/utils/util'
+  import EBtnSave from '@/components/Easy/general/BtnSave'
 
   export default {
     name: 'SysDictInput',
     components: {
-      DictSelect,
-      DictRadio,
+      EBtnSave,
+      EDictRadio,
       IconSelector
     },
     data () {
@@ -124,7 +124,7 @@
         formLayout: FORM_LAYOUT,
         dictTypes: [],
         upDictDataArray: [],
-        object: {},
+        model: {},
         rules: {
           dictType: [
             { required: true, message: '请选择字典类型', trigger: 'blur' }
@@ -173,12 +173,12 @@
        */
       onDictTypeChange () {
         // 重置上级字典
-        this.object.pId = ''
+        this.model.pId = ''
         this.loadUpDictDataArray()
       },
       loadUpDictDataArray () {
-        if (isNotBlank(this.object.dictType)) {
-          selectByDictType(this.object.dictType).then(res => {
+        if (isNotBlank(this.model.dictType)) {
+          selectByDictType(this.model.dictType).then(res => {
             this.upDictDataArray = res.data
           })
         } else {
@@ -186,11 +186,11 @@
         }
       },
       handleIconInputClick () {
-        this.currentSelectedIcon = this.object.icon
+        this.currentSelectedIcon = this.model.icon
         this.iconModalVisible = true
       },
       handleOk () {
-        this.object.icon = this.currentSelectedIcon
+        this.model.icon = this.currentSelectedIcon
         this.iconModalVisible = false
       },
       handleIconChange (icon) {
@@ -198,20 +198,20 @@
       },
       add (pId, dictType) {
         add(pId, dictType).then((res) => {
-          this.object = res.data
+          this.model = res.data
           this.loadUpDictDataArray()
         })
       },
       edit (id) {
         get(id).then((res) => {
-          this.object = res.data
+          this.model = res.data
           this.loadUpDictDataArray()
         })
       },
       save () {
         this.$refs.form.validate(valid => {
           if (valid) {
-            save(this.object).then((res) => {
+            save(this.model).then((res) => {
               saveSuccessTip()
             })
           }

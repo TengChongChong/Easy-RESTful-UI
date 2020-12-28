@@ -1,7 +1,6 @@
 <script>
 export default {
   name: 'MultiTab',
-  inject: ['reload'],
   data () {
     return {
       activeKey: ''
@@ -95,7 +94,11 @@ export default {
      */
     refreshThat (targetKey) {
       this.$store.dispatch('tagsView/delCachedView', this.findView(targetKey)).then(() => {
-        this.reload()
+        this.$nextTick(() => {
+          this.$router.replace({
+            path: '/redirect' + targetKey
+          })
+        })
       })
     },
     closeMenuClick (key, route) {

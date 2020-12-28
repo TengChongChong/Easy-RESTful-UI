@@ -2,37 +2,35 @@
   <a-card title="系统参数" :bordered="false">
     <a-form-model
       ref="form"
-      :model="object"
+      :model="model"
       :rules="rules"
       :label-col="formLayout.labelCol"
       :wrapper-col="formLayout.wrapperCol">
       <a-row class="form-row" :gutter="16">
         <a-col :lg="12" :sm="24">
           <a-form-model-item label="key" prop="sysKey">
-            <a-input v-model="object.sysKey"/>
+            <a-input v-model="model.sysKey"/>
           </a-form-model-item>
         </a-col>
         <a-col :lg="12" :sm="24">
           <a-form-model-item label="value" prop="value">
-            <a-input v-model="object.value"/>
+            <a-input v-model="model.value"/>
           </a-form-model-item>
         </a-col>
         <a-col :lg="12" :sm="24">
           <a-form-model-item label="类型" prop="type">
-            <dict-select name="type" v-model="object.type" type="dataType"/>
+            <e-dict-select name="type" v-model="model.type" type="dataType"/>
           </a-form-model-item>
         </a-col>
 
         <a-col :sm="24">
           <a-form-model-item label="备注" :labelCol="{ span: 3 }" :wrapperCol="{ span: 19 }" prop="tips">
-            <a-textarea v-model="object.tips"/>
+            <a-textarea v-model="model.tips"/>
           </a-form-model-item>
         </a-col>
         <a-col :sm="24">
           <div class="input-btn-group">
-            <a-button type="primary" icon="save" @click="save">
-              保存
-            </a-button>
+            <e-btn-save :click-callback="save"/>
           </div>
         </a-col>
       </a-row>
@@ -44,23 +42,23 @@
   import { FORM_LAYOUT } from '@/utils/const/form'
   import { get, save } from '@/api/sys/config'
   import { saveSuccessTip } from '@/utils/tips'
-  import DictSelect from '@/components/Easy/data-entry/DictSelect'
+  import EDictSelect from '@/components/Easy/data-entry/DictSelect'
   import { isNotBlank } from '@/utils/util'
+  import EBtnSave from '@/components/Easy/general/BtnSave'
 
   export default {
     name: 'SysDictInput',
     components: {
-      DictSelect
+      EBtnSave,
+      EDictSelect
     },
     data () {
       return {
         id: this.$route.query.id,
-        pId: this.$route.query.pId,
-        dictType: this.$route.query.dictType,
 
         // 表单
         formLayout: FORM_LAYOUT,
-        object: {},
+        model: {},
         rules: {
           sysKey: [
             { required: true, message: '请输入key', trigger: 'blur' },
@@ -87,14 +85,13 @@
     methods: {
       edit (id) {
         get(id).then((res) => {
-          this.object = res.data
-          this.loadUpDictDataArray()
+          this.model = res.data
         })
       },
       save () {
         this.$refs.form.validate(valid => {
           if (valid) {
-            save(this.object).then((res) => {
+            save(this.model).then((res) => {
               saveSuccessTip()
             })
           }

@@ -9,7 +9,7 @@
   import { getSysDictArrayByDictType, isBlank } from '@/utils/util'
 
   export default {
-    name: 'DictRadio',
+    name: 'EDictRadio',
     props: {
       name: {
         type: String,

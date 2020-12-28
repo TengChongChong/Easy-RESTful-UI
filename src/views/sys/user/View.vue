@@ -1,0 +1,360 @@
+<template>
+  <a-row :gutter="20">
+    <a-col :xl="6" :md="8">
+      <a-card title="部门" :bordered="false" id="tree-card">
+        <a-tooltip placement="top" :visible="searchTooltipVisible">
+          <template slot="title">
+            <span>请输入部门名称后查询</span>
+          </template>
+          <a-input-search v-model="query" placeholder="输入部门名称搜索" @search="onSearch"/>
+        </a-tooltip>
+
+        <div class="tree-wrapper">
+          <a-alert v-if="noResults" :style="{marginTop: '5px', marginBottom: '5px'}" message="未查询到数据" banner/>
+          <tree
+            :load-data="onLoadData"
+            :tree-data="treeData"
+            :expanded-keys="expandedKeys"
+            :selected-keys="selectedKeys"
+            show-icon
+            draggable
+            show-line
+            @select="onSelect"
+            @expand="onExpand"
+          >
+            <a-icon v-for="item in iconArrays" :key="item" :slot="item" :type="item"/>
+          </tree>
+          <a-button size="small" v-if="search" @click="firstLoadData">
+            返回
+          </a-button>
+        </div>
+      </a-card>
+    </a-col>
+    <a-col :xl="18" :md="16">
+      <e-pro-table title="用户" :advanced.sync="advanced">
+        <template slot="query">
+          <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
+            <a-form-model-item label="用户名">
+              <a-input v-model="queryParam.username"/>
+            </a-form-model-item>
+          </a-col>
+          <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
+            <a-form-model-item label="手机号">
+              <a-input v-model="queryParam.phone"/>
+            </a-form-model-item>
+          </a-col>
+          <template v-if="advanced">
+            <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
+              <a-form-model-item label="状态">
+                <e-dict-select type="commonStatus" v-model="queryParam.status" @change="$refs.table.refresh(true)"/>
+              </a-form-model-item>
+            </a-col>
+          </template>
+        </template>
+
+        <template slot="button">
+          <e-btn-add to="/sys/user/add" :params="{deptId: queryParam.deptId}"/>
+          <e-btn-remove-batch :loading.sync="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+        </template>
+
+        <template slot="table">
+          <s-table
+            ref="table"
+            :columns="columns"
+            :data="loadTableData"
+            :alert="true"
+            :rowSelection="rowSelection"
+            showPagination="auto"
+          >
+            <span slot="name" slot-scope="text, record">
+              <template v-if="record.css != null && record.css !== ''">
+                <a-tag :color="record.css">{{ record.name }}</a-tag>
+              </template>
+              <template v-if="record.css == null || record.css === ''">
+                {{ record.name }}
+              </template>
+            </span>
+            <span slot="status" slot-scope="text, record, index">
+              <a-switch
+                size="small"
+                :data-id="record.id"
+                :data-index="index"
+                :loading="switchLoading[index]"
+                :default-checked="text === USER_STATUS_CONST.ENABLE"
+                @change="statusChange"/>
+            </span>
+            <span slot="sex" slot-scope="text">
+              <e-dict-tag type="sex" :code="text"/>
+            </span>
+            <span slot="avatar" slot-scope="text, record">
+              <a-avatar v-if="text != null && text !== ''" :src="VUE_APP_API_BASE_URL + text"/>
+              <a-avatar v-else>
+                {{ record.nickname.substr(0, 1) }}
+              </a-avatar>
+            </span>
+            <span slot="action" slot-scope="text, record">
+              <template>
+                <e-btn-edit :to="`/sys/user/input`" :tab-name="record.nickname" :id="record.id"/>
+                <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
+              </template>
+            </span>
+          </s-table>
+        </template>
+      </e-pro-table>
+    </a-col>
+  </a-row>
+</template>
+<script>
+import { Tree } from 'ant-design-vue'
+import { STable, Ellipsis } from '@/components'
+import EDictTag from '@/components/Easy/data-entry/DictTag'
+import EDictSelect from '@/components/Easy/data-entry/DictSelect'
+import EBtnAdd from '@/components/Easy/general/BtnAdd'
+import EBtnEdit from '@/components/Easy/general/BtnEdit'
+import EBtnRemove from '@/components/Easy/general/BtnRemove'
+import EBtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
+import {
+  selectByPId,
+  selectByTitle
+} from '@/api/sys/dept'
+import { convertTree, isNotBlank } from '@/utils/util'
+import {
+  convertTreeData,
+  generatorNodeIcon, updateNodeLeaf
+} from '@/utils/ant-design/data-display/tree'
+import { select, remove, disableUser, enableUser } from '@/api/sys/user'
+import EProTable from '@/components/Easy/data-display/ProTable'
+import { USER_STATUS_CONST } from '@/utils/const/sys/UserStatusConst'
+
+const baseId = '0'
+const columns = [
+  {
+    title: '用户名',
+    dataIndex: 'username',
+    sorter: true,
+    width: 120
+  },
+  {
+    title: '昵称',
+    dataIndex: 'nickname',
+    sorter: true,
+    width: 120
+  },
+  {
+    title: '头像',
+    dataIndex: 'avatar',
+    width: 80,
+    scopedSlots: { customRender: 'avatar' }
+  },
+  {
+    title: '手机号',
+    dataIndex: 'phone',
+    sorter: true,
+    width: 140
+  },
+  {
+    title: '性别',
+    dataIndex: 'sex',
+    sorter: true,
+    width: 80,
+    scopedSlots: { customRender: 'sex' }
+  },
+  {
+    title: '状态',
+    dataIndex: 'status',
+    sorter: true,
+    width: 100,
+    scopedSlots: { customRender: 'status' }
+  },
+  {
+    title: '最后登录时间',
+    dataIndex: 'lastLogin',
+    sorter: true,
+    width: 170,
+    sortField: 'last_login'
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'createDate',
+    sorter: true,
+    width: 170
+  },
+  {
+    title: '操作',
+    dataIndex: 'action',
+    width: '100px',
+    fixed: 'right',
+    scopedSlots: { customRender: 'action' }
+  }
+]
+export default {
+  name: 'SysUserView',
+  components: {
+    EProTable,
+    Tree,
+    EBtnRemoveBatch,
+    EBtnRemove,
+    EBtnEdit,
+    EBtnAdd,
+    EDictSelect,
+    EDictTag,
+    STable,
+    Ellipsis
+  },
+  data () {
+    this.columns = columns
+    return {
+      USER_STATUS_CONST: USER_STATUS_CONST,
+
+      query: '',
+      search: false,
+      noResults: false,
+      searchTooltipVisible: false,
+
+      // 树相关
+      treeData: [],
+      expandedKeys: [],
+      selectedKeys: [],
+      iconArrays: [],
+
+      // 列表
+      // 高级搜索 展开/关闭
+      advanced: false,
+      tableLoading: false,
+      removeBathLoading: false,
+      // 查询参数
+      queryParam: {},
+      selectedRowKeys: [],
+      selectedRows: [],
+      switchLoading: [],
+      VUE_APP_API_BASE_URL: process.env.VUE_APP_API_BASE_URL
+    }
+  },
+  created () {
+    this.firstLoadData()
+    this.selectedKeys = [this.$store.getters.user.deptId]
+    this.queryParam.deptId = this.$store.getters.user.deptId
+  },
+  activated () {
+    this.$refs.table.refresh(true)
+  },
+  computed: {
+    rowSelection () {
+      return {
+        selectedRowKeys: this.selectedRowKeys,
+        onChange: this.onSelectChange
+      }
+    }
+  },
+  methods: {
+    firstLoadData () {
+      this.query = ''
+      this.search = false
+      this.noResults = false
+      this.searchTooltipVisible = false
+      selectByPId(baseId).then(res => {
+        this.treeData = convertTreeData(convertTree(res.data))
+        if (this.treeData[0].id === baseId) {
+          this.treeData[0].selectable = false
+        }
+        // 默认展开根节点
+        this.expandedKeys.push(baseId)
+        this.iconArrays = generatorNodeIcon(this.treeData, this.iconArrays)
+      })
+    },
+    onExpand (expandedKeys) {
+      this.expandedKeys = expandedKeys
+    },
+    /**
+     * 异步加载节点数据
+     *
+     * @param treeNode
+     * @return {Promise<unknown>}
+     */
+    onLoadData (treeNode) {
+      return new Promise(resolve => {
+        if (treeNode.dataRef.children) {
+          resolve()
+          return
+        }
+
+        this.loadData(treeNode.dataRef, () => {
+          resolve()
+        })
+      })
+    },
+    loadData (treeNode, callback) {
+      selectByPId(treeNode.id).then(res => {
+        treeNode.children = convertTreeData(res.data)
+        updateNodeLeaf(treeNode)
+        this.treeData = [...this.treeData]
+        if (callback) {
+          callback()
+        }
+        this.iconArrays = generatorNodeIcon(this.treeData, this.iconArrays)
+      })
+    },
+    onSearch () {
+      if (isNotBlank(this.query)) {
+        this.searchTooltipVisible = false
+        this.search = true
+        selectByTitle(this.query).then(res => {
+          this.noResults = res.data.length === 0
+          this.treeData = convertTreeData(res.data)
+          this.iconArrays = generatorNodeIcon(this.treeData, this.iconArrays)
+        })
+      } else {
+        this.searchTooltipVisible = true
+      }
+    },
+    /**
+     * 节点点击回调
+     *
+     * @param selectedKeys
+     * @param e
+     */
+    onSelect (selectedKeys, e) {
+      this.selectedKeys = selectedKeys
+      if (e.node.dataRef.id !== baseId) {
+        this.queryParam.deptId = e.node.dataRef.id
+        this.$refs.table.refresh(true)
+      }
+    },
+    // 加载数据方法 必须为 Promise 对象
+    loadTableData (parameter) {
+      const requestParameters = Object.assign({}, parameter, this.queryParam)
+      return select(requestParameters)
+        .then(res => {
+          let dataLength = res.data.data.length
+          while (dataLength--) {
+            this.switchLoading[dataLength] = false
+          }
+          return res.data
+        })
+    },
+    onSelectChange (selectedRowKeys, selectedRows) {
+      this.selectedRowKeys = selectedRowKeys
+      this.selectedRows = selectedRows
+    },
+    remove (id) {
+      remove(id).then(res => {
+        this.$refs.table.refresh(true)
+        this.removeBathLoading = false
+      })
+    },
+    statusChange (checked, event) {
+      const index = Number(event.target.dataset.index)
+      this.switchLoading.splice(index, 1, true)
+      if (checked) {
+        enableUser(event.target.dataset.id).then(res => {
+          this.switchLoading.splice(index, 1, false)
+        })
+      } else {
+        disableUser(event.target.dataset.id).then(res => {
+          this.switchLoading.splice(index, 1, false)
+        })
+      }
+    }
+  }
+}
+</script>

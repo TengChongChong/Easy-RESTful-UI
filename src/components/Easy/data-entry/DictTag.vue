@@ -8,7 +8,7 @@
   import { getSysDictObjectByQuery, isBlank } from '@/utils/util'
 
   export default {
-    name: 'DictTag',
+    name: 'EDictTag',
     props: {
       type: {
         type: String,

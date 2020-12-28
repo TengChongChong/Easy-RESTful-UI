@@ -1,5 +1,5 @@
 <template>
-  <pro-table title="系统参数" :advanced.sync="advanced">
+  <e-pro-table title="系统参数" :advanced.sync="advanced">
     <template slot="query">
       <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
         <a-form-model-item label="key">
@@ -14,16 +14,16 @@
       <template v-if="advanced">
         <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
           <a-form-model-item label="类型">
-            <dict-select type="dataType" v-model="queryParam.type" @change="$refs.table.refresh(true)"></dict-select>
+            <e-dict-select type="dataType" v-model="queryParam.type" @change="$refs.table.refresh(true)"/>
           </a-form-model-item>
         </a-col>
       </template>
     </template>
 
     <template slot="button">
-      <btn-add to="/sys/config/add"></btn-add>
+      <e-btn-add to="/sys/config/add"/>
       <a-button type="primary" icon="sync" @click="refreshCache">更新缓存数据</a-button>
-      <btn-remove-batch :ids="selectedRowKeys" :on-click="remove"/>
+      <e-btn-remove-batch :ids="selectedRowKeys" :click-callback="remove"/>
     </template>
 
     <template slot="table">
@@ -36,48 +36,51 @@
         showPagination="auto"
       >
         <span slot="type" slot-scope="text, record">
-          <dict-tag type="dataType" :code="record.type"></dict-tag>
+          <e-dict-tag type="dataType" :code="record.type"/>
         </span>
 
         <span slot="action" slot-scope="text, record">
           <template>
-            <btn-edit :to="`/sys/config/input`" :tab-name="record.name" :id="record.id"></btn-edit>
-            <btn-remove :id="record.id" :divider="false" :on-click="remove"></btn-remove>
+            <e-btn-edit :to="`/sys/config/input`" :tab-name="record.key" :id="record.id"/>
+            <e-btn-remove :id="record.id" :divider="false" :on-click="remove"/>
           </template>
         </span>
       </s-table>
     </template>
-  </pro-table>
+  </e-pro-table>
 </template>
 
 <script>
 import { STable, Ellipsis } from '@/components'
 import { select, remove, refreshCache } from '@/api/sys/config'
-import DictTag from '@/components/Easy/data-entry/DictTag'
-import DictSelect from '@/components/Easy/data-entry/DictSelect'
-import ProTable from '@/components/ProTable/Index'
-import BtnAddSub from '@/components/Easy/general/BtnAddSub'
-import BtnAdd from '@/components/Easy/general/BtnAdd'
-import BtnEdit from '@/components/Easy/general/BtnEdit'
-import BtnRemove from '@/components/Easy/general/BtnRemove'
+import EDictTag from '@/components/Easy/data-entry/DictTag'
+import EDictSelect from '@/components/Easy/data-entry/DictSelect'
+import EBtnAddSub from '@/components/Easy/general/BtnAddSub'
+import EBtnAdd from '@/components/Easy/general/BtnAdd'
+import EBtnEdit from '@/components/Easy/general/BtnEdit'
+import EBtnRemove from '@/components/Easy/general/BtnRemove'
 import { successTip } from '@/utils/tips'
-import BtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
+import EBtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
+import EProTable from '@/components/Easy/data-display/ProTable'
 
 const columns = [
   {
     title: 'sysKey',
     dataIndex: 'sysKey',
+    width: 300,
     sorter: true
   },
   {
     title: 'value',
     dataIndex: 'value',
+    width: 300,
     sorter: true
   },
   {
     title: '类型',
     dataIndex: 'type',
     sorter: true,
+    width: 200,
     scopedSlots: { customRender: 'type' }
   },
   {
@@ -88,7 +91,7 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'action',
-    width: '150px',
+    width: 150,
     scopedSlots: { customRender: 'action' }
   }
 ]
@@ -96,14 +99,14 @@ const columns = [
 export default {
   name: 'SysDictList',
   components: {
-    BtnRemoveBatch,
-    BtnRemove,
-    BtnEdit,
-    BtnAdd,
-    BtnAddSub,
-    ProTable,
-    DictSelect,
-    DictTag,
+    EProTable,
+    EBtnRemoveBatch,
+    EBtnRemove,
+    EBtnEdit,
+    EBtnAdd,
+    EBtnAddSub,
+    EDictSelect,
+    EDictTag,
     STable,
     Ellipsis
   },
@@ -114,13 +117,9 @@ export default {
       advanced: false,
       // 查询参数
       queryParam: {},
-      allowClear: true,
       selectedRowKeys: [],
       selectedRows: []
     }
-  },
-  created () {
-    this.loadDictTypes()
   },
   activated () {
     this.$refs.table.refresh(true)

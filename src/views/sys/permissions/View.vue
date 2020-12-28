@@ -83,7 +83,7 @@
       <a-card title="菜单详情" :bordered="false">
         <a-form-model
           ref="form"
-          :model="object"
+          :model="model"
           :rules="rules"
           v-if="hasData"
           :label-col="formLayout.labelCol"
@@ -91,17 +91,17 @@
           <a-row class="form-row" :gutter="16">
             <a-col :lg="12" :sm="24">
               <a-form-model-item label="上级菜单">
-                <a-input v-model="object.pName" :disabled="true"/>
+                <a-input v-model="model.pName" :disabled="true"/>
               </a-form-model-item>
             </a-col>
             <a-col :lg="12" :sm="24">
               <a-form-model-item label="菜单类型" prop="type">
-                <dict-radio name="type" v-model="object.type" type="permissionsType"/>
+                <e-dict-radio name="type" v-model="model.type" type="permissionsType"/>
               </a-form-model-item>
             </a-col>
             <a-col :lg="12" :sm="24">
               <a-form-model-item label="菜单名称" prop="name">
-                <a-input v-model="object.name"/>
+                <a-input v-model="model.name"/>
               </a-form-model-item>
             </a-col>
             <a-col :lg="12" :sm="24">
@@ -112,56 +112,54 @@
                     <a-icon type="question-circle-o" />
                   </a-tooltip>
                 </span>
-                <a-input v-model="object.code"/>
+                <a-input v-model="model.code"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24">
+            <a-col :lg="12" :sm="24" v-if="model.type === PERMISSIONS_TYPE_CONST.MENU">
               <a-form-model-item label="链接(Path)" prop="path">
-                <a-input v-model="object.path"/>
+                <a-input v-model="model.path"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24">
+            <a-col :lg="12" :sm="24" v-if="model.type === PERMISSIONS_TYPE_CONST.MENU">
               <a-form-model-item label="页面地址" class="component-input" prop="component">
-                <a-input v-model="object.component" prefix="@/views"/>
+                <a-input v-model="model.component" prefix="@/views"/>
               </a-form-model-item>
             </a-col>
             <a-col :lg="12" :sm="24">
               <a-form-model-item label="状态" prop="status">
-                <dict-radio name="status" v-model="object.status" type="commonStatus"/>
+                <e-dict-radio name="status" v-model="model.status" type="commonStatus"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24" v-if="object.type === '1'">
+            <a-col :lg="12" :sm="24" v-if="model.type === PERMISSIONS_TYPE_CONST.MENU">
               <a-form-model-item label="是否显示" prop="hide">
-                <dict-radio name="hide" v-model="object.hide" type="hideMenu"/>
+                <e-dict-radio name="hide" v-model="model.hide" type="hideMenu"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24">
+            <a-col :lg="12" :sm="24" v-if="model.type === PERMISSIONS_TYPE_CONST.MENU">
               <a-form-model-item label="图标" prop="icon">
-                <a-input v-model="object.icon" @click="handleIconInputClick">
-                  <a-icon slot="addonAfter" v-if="object.icon != null && object.icon !== ''" :type="object.icon"/>
+                <a-input v-model="model.icon" @click="handleIconInputClick">
+                  <a-icon slot="addonAfter" v-if="model.icon != null && model.icon !== ''" :type="model.icon"/>
                 </a-input>
               </a-form-model-item>
             </a-col>
             <a-col :sm="24">
               <a-form-model-item label="备注" :labelCol="{ span: 3 }" :wrapperCol="{ span: 19 }" prop="tips">
-                <a-textarea v-model="object.tips"/>
+                <a-textarea v-model="model.tips"/>
               </a-form-model-item>
             </a-col>
             <a-col :sm="24">
               <div class="input-btn-group">
-                <a-button type="primary" icon="save" @click="save">
-                  保存
-                </a-button>
+                <e-btn-save :click-callback="save"/>
                 <a-popconfirm
                   title="确定要删除吗?"
-                  @confirm="() => remove(object.id)"
+                  @confirm="() => remove(model.id)"
                 >
-                  <a-button type="danger" icon="delete" v-if="object.id != null && object.id !== ''">
+                  <a-button type="danger" icon="delete" v-if="model.id != null && model.id !== ''">
                     删除
                   </a-button>
                 </a-popconfirm>
 
-                <a-button type="default" icon="plus" @click="add(object.id)" v-if="object.id != null && object.id !== ''">
+                <a-button type="default" icon="plus" @click="add(model.id)" v-if="model.id != null && model.id !== ''">
                   新增下级
                 </a-button>
               </div>
@@ -180,9 +178,7 @@
   import { Tree } from 'ant-design-vue'
   import { selectByPId, get, save, add, remove, move, setStatus, copyNodes, selectByTitle } from '@/api/sys/permissions'
   import { convertTree, getElementOffset, isNotBlank } from '@/utils/util'
-  import DictRadio from '@/components/Easy/data-entry/DictRadio'
-  import DictCheckbox from '@/components/Easy/data-entry/DictCheckbox'
-  import { removeSuccessTip, saveSuccessTip, successTip } from '@/utils/tips'
+  import EDictRadio from '@/components/Easy/data-entry/DictRadio'
   import {
     convertTreeData, dropNode,
     generatorNodeIcon,
@@ -191,18 +187,23 @@
     updateTreeNode
   } from '@/utils/ant-design/data-display/tree'
   import { FORM_LAYOUT } from '@/utils/const/form'
+  import { removeSuccessTip, saveSuccessTip, successTip } from '@/utils/tips'
+  import EBtnSave from '@/components/Easy/general/BtnSave'
+  import { PERMISSIONS_TYPE_CONST } from '@/utils/const/sys/PermissionsTypeConst'
   const baseId = '0'
 
   export default {
     name: 'SysPermissionsView',
     components: {
-      DictCheckbox,
-      DictRadio,
+      EBtnSave,
+      EDictRadio,
       Tree,
       IconSelector
     },
     data () {
       return {
+        PERMISSIONS_TYPE_CONST: PERMISSIONS_TYPE_CONST,
+
         query: '',
         search: false,
         noResults: false,
@@ -238,7 +239,7 @@
         // 表单
         hasData: false,
         formLayout: FORM_LAYOUT,
-        object: {},
+        model: {},
         rules: {
           type: [
             { required: true, message: '请选择菜单类型', trigger: 'blur' }
@@ -426,47 +427,47 @@
         document.removeEventListener('click', this.closeRightMenu)
       },
       handleIconInputClick () {
-        this.currentSelectedIcon = this.object.icon
+        this.currentSelectedIcon = this.model.icon
         this.iconModalVisible = true
       },
       handleOk () {
-        this.object.icon = this.currentSelectedIcon
+        this.model.icon = this.currentSelectedIcon
         this.iconModalVisible = false
       },
       add (id) {
         add(id).then((res) => {
           this.hasData = true
           this.selectedKeys = []
-          this.object = res.data
+          this.model = res.data
         })
       },
       edit (id) {
         get(id).then((res) => {
           this.hasData = true
-          this.object = res.data
+          this.model = res.data
         })
       },
       save () {
         this.$refs.form.validate(valid => {
           if (valid) {
-            save(this.object).then((res) => {
+            save(this.model).then((res) => {
               saveSuccessTip()
-              if (this.object.id != null) {
-                this.object = res.data
+              if (this.model.id != null) {
+                this.model = res.data
                 updateTreeNode(this.treeData, {
-                  key: this.object.id,
-                  title: this.object.name,
-                  slots: { icon: this.object.icon ? this.object.icon : null }
+                  key: this.model.id,
+                  title: this.model.name,
+                  slots: { icon: this.model.icon ? this.model.icon : null }
                 })
               } else {
-                this.object = res.data
+                this.model = res.data
                 const treeNode = getTreeNode(this.treeData, res.data.pId)
                 if (treeNode.children) {
                   treeNode.children.push({
-                    id: this.object.id,
-                    key: this.object.id,
-                    title: this.object.name,
-                    slots: { icon: this.object.icon ? this.object.icon : null },
+                    id: this.model.id,
+                    key: this.model.id,
+                    title: this.model.name,
+                    slots: { icon: this.model.icon ? this.model.icon : null },
                     isLeaf: true
                   })
                 } else {
@@ -485,14 +486,14 @@
           this.hasData = false
           removeSuccessTip()
           removeTreeNode(this.treeData, [id])
-          this.object = null
+          this.model = null
         })
       },
       setStatus (id, status) {
         setStatus(id, status).then((res) => {
           successTip()
-          if (this.role.id === id) {
-            this.object.status = status
+          if (this.model.id === id) {
+            this.model.status = status
           }
         })
       },

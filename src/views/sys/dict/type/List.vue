@@ -1,6 +1,6 @@
 <template>
   <div>
-    <pro-table title="字典类型" :advanced.sync="advanced">
+    <e-pro-table title="字典类型" :advanced.sync="advanced">
       <template slot="query">
         <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
           <a-form-model-item label="类型">
@@ -15,7 +15,7 @@
         <template v-if="advanced">
           <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
             <a-form-model-item label="状态">
-              <dict-select type="commonStatus" v-model="queryParam.status" @change="$refs.table.refresh(true)"></dict-select>
+              <e-dict-select type="commonStatus" v-model="queryParam.status" @change="$refs.table.refresh(true)"/>
             </a-form-model-item>
           </a-col>
         </template>
@@ -23,7 +23,7 @@
 
       <template slot="button">
         <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
-        <btn-remove-batch :ids="selectedRowKeys" :on-click="remove"/>
+        <e-btn-remove-batch :ids="selectedRowKeys" :on-click="remove"/>
       </template>
 
       <template slot="table">
@@ -53,15 +53,15 @@
           </template>
 
           <span slot="status" slot-scope="text, record">
-            <dict-select v-if="record.editable" type="commonStatus" v-model="record.status" @change="e => handleChange(e.target.value, record.key, 'status')"></dict-select>
+            <e-dict-select v-if="record.editable" type="commonStatus" v-model="record.status" @change="e => handleChange(e.target.value, record.key, 'status')"/>
             <template v-else>
-              <dict-tag type="commonStatus" :code="record.status"></dict-tag>
+              <e-dict-tag type="commonStatus" :code="record.status"/>
             </template>
           </span>
 
           <span slot="action" slot-scope="text, record">
             <template>
-              <btn-remove :id="record.id" :divider="false" :on-click="remove"></btn-remove>
+              <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
               <a-divider type="vertical" />
               <span v-if="record.editable">
                 <a-tooltip placement="top">
@@ -91,28 +91,28 @@
           </span>
         </s-table>
       </template>
-    </pro-table>
+    </e-pro-table>
     <a-modal v-model="addModalVisible" title="新增字典类型" @ok="saveData" okText="保存并关闭">
       <a-form-model
         ref="form"
-        :model="object"
+        :model="model"
         :rules="rules"
         :label-col="formLayout.labelCol"
         :wrapper-col="formLayout.wrapperCol">
         <a-row class="form-row" :gutter="16">
           <a-col>
             <a-form-model-item label="类型" prop="type">
-              <a-input v-model="object.type"/>
+              <a-input v-model="model.type"/>
             </a-form-model-item>
           </a-col>
           <a-col>
             <a-form-model-item label="类型名称" prop="name">
-              <a-input v-model="object.name"/>
+              <a-input v-model="model.name"/>
             </a-form-model-item>
           </a-col>
           <a-col>
             <a-form-model-item label="状态" prop="status">
-              <dict-radio name="status" v-model="object.status" type="commonStatus"/>
+              <e-dict-radio name="status" v-model="model.status" type="commonStatus"/>
             </a-form-model-item>
           </a-col></a-row>
       </a-form-model>
@@ -123,40 +123,44 @@
 <script>
 import { STable, Ellipsis } from '@/components'
 import { select, remove, save } from '@/api/sys/dict-type'
-import DictTag from '@/components/Easy/data-entry/DictTag'
-import DictSelect from '@/components/Easy/data-entry/DictSelect'
-import ProTable from '@/components/ProTable/Index'
-import BtnAdd from '@/components/Easy/general/BtnAdd'
-import BtnEdit from '@/components/Easy/general/BtnEdit'
-import BtnRemove from '@/components/Easy/general/BtnRemove'
-import BtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
+import EDictTag from '@/components/Easy/data-entry/DictTag'
+import EDictSelect from '@/components/Easy/data-entry/DictSelect'
+import EBtnAdd from '@/components/Easy/general/BtnAdd'
+import EBtnEdit from '@/components/Easy/general/BtnEdit'
+import EBtnRemove from '@/components/Easy/general/BtnRemove'
+import EBtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
 import { FORM_LAYOUT } from '@/utils/const/form'
 import { saveSuccessTip } from '@/utils/tips'
-import DictRadio from '@/components/Easy/data-entry/DictRadio'
+import EDictRadio from '@/components/Easy/data-entry/DictRadio'
+import EProTable from '@/components/Easy/data-display/ProTable'
+import { COMMON_STATUS_CONST } from '@/utils/const/sys/CommonStatusConst'
 
 const columns = [
   {
     title: '类型',
     dataIndex: 'type',
     sorter: true,
+    width: 300,
     scopedSlots: { customRender: 'type' }
   },
   {
     title: '类型名称',
     dataIndex: 'name',
     sorter: true,
+    width: 300,
     scopedSlots: { customRender: 'name' }
   },
   {
     title: '状态',
     dataIndex: 'status',
     sorter: true,
+    width: 200,
     scopedSlots: { customRender: 'status' }
   },
   {
     title: '操作',
     dataIndex: 'action',
-    width: '150px',
+    width: 150,
     scopedSlots: { customRender: 'action' }
   }
 ]
@@ -164,25 +168,26 @@ const columns = [
 export default {
   name: 'SysDictList',
   components: {
-    DictRadio,
-    BtnRemoveBatch,
-    BtnRemove,
-    BtnEdit,
-    BtnAdd,
-    ProTable,
-    DictSelect,
-    DictTag,
+    EProTable,
+    EDictRadio,
+    EBtnRemoveBatch,
+    EBtnRemove,
+    EBtnEdit,
+    EBtnAdd,
+    EDictSelect,
+    EDictTag,
     STable,
     Ellipsis
   },
   data () {
     this.columns = columns
     return {
+      COMMON_STATUS_CONST: COMMON_STATUS_CONST,
+
       // 高级搜索 展开/关闭
       advanced: false,
       // 查询参数
       queryParam: {},
-      allowClear: true,
       dictTypes: [],
       selectedRowKeys: [],
       selectedRows: [],
@@ -192,7 +197,7 @@ export default {
       // 新增窗口
       addModalVisible: false,
       formLayout: FORM_LAYOUT,
-      object: {},
+      model: {},
       rules: {
         type: [
           { required: true, message: '请输入字典类型', trigger: 'blur' },
@@ -238,8 +243,8 @@ export default {
     },
     handleAdd () {
       this.addModalVisible = true
-      this.object = {
-        status: '1'
+      this.model = {
+        status: COMMON_STATUS_CONST.ENABLE
       }
     },
     edit (key) {
@@ -254,7 +259,7 @@ export default {
     saveData () {
       this.$refs.form.validate(valid => {
         if (valid) {
-          save(this.object).then((res) => {
+          save(this.model).then((res) => {
             this.$refs.table.refresh(true)
             saveSuccessTip()
             this.addModalVisible = false
@@ -269,6 +274,7 @@ export default {
       const targetCache = newCacheData.filter(item => key === item.key)[0]
       if (target && targetCache) {
         save(target).then(res => {
+          saveSuccessTip()
           delete target.editable
           this.$refs.table.localDataSource = newData
           Object.assign(targetCache, target, res.data)

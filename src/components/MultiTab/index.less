@@ -13,9 +13,9 @@
 .@{multi-tab-prefix-cls} {
   position: fixed;
   top: @layout-header-height;
-  z-index: 1;
+  z-index: 3;
   width: calc(100% - 256px);
-  margin: 0 -20px 60px -20px;
+  margin: 0 -20px;
   background: #fff;
 
   .ant-tabs-bar {
@@ -65,9 +65,15 @@
   }
 }
 
-.topmenu .@{multi-tab-wrapper-prefix-cls} {
-  max-width: 1200px;
-  margin: 0 auto;
+.topmenu {
+  .@{multi-tab-prefix-cls} {
+    width: 1200px;
+    margin: 0;
+  }
+  .@{multi-tab-wrapper-prefix-cls} {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 }
 
 .topmenu.content-width-Fluid .@{multi-tab-wrapper-prefix-cls} {

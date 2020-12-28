@@ -5,27 +5,19 @@ import { ACCESS_TOKEN } from '@/store/mutation-types'
 const user = {
   state: {
     token: '',
-    nickname: '',
-    avatar: '',
     roles: [],
-    info: {}
+    user: {}
   },
 
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
     },
-    SET_NAME: (state, { nickname }) => {
-      state.nickname = nickname
-    },
-    SET_AVATAR: (state, avatar) => {
-      state.avatar = avatar
-    },
     SET_ROLES: (state, roles) => {
       state.roles = roles
     },
-    SET_INFO: (state, info) => {
-      state.info = info
+    SET_USER: (state, user) => {
+      state.user = user
     }
   },
 
@@ -49,8 +41,8 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           const result = response.data
-          if (result.roleList.length > 0 && result.permissionList.length > 0) {
-            const roles = result.roleList
+          if (result.roles.length > 0 && result.permissionList.length > 0) {
+            const roles = result.roles
             // const permissions = result.permissionList
 
             // permissions.map(per => {
@@ -61,14 +53,10 @@ const user = {
             // })
             // role.permissionList = role.permissions.map(permission => { return permission.permissionId })
             commit('SET_ROLES', roles)
-            commit('SET_INFO', result)
+            commit('SET_USER', result)
           } else {
             reject(new Error('getInfo: roles must be a non-null array !'))
           }
-
-          commit('SET_NAME', { nickname: result.nickname })
-          commit('SET_AVATAR', result.avatar)
-
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -89,6 +77,21 @@ const user = {
           storage.remove(ACCESS_TOKEN)
         })
       })
+    },
+    /**
+     * 更新用户信息
+     *
+     * @param commit
+     */
+    updateUser ({ commit }) {
+      if (storage.get(ACCESS_TOKEN)) {
+        getInfo().then(res => {
+          commit('SET_USER', res.data)
+        })
+      }
+    },
+    setUser ({ commit }, user) {
+      commit('SET_USER', user)
     }
 
   }

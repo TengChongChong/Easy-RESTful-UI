@@ -13,7 +13,7 @@
   import { openView } from '@/utils/util'
 
   export default {
-    name: 'BtnEdit',
+    name: 'EBtnEdit',
     props: {
       name: {
         type: String,

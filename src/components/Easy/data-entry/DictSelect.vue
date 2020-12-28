@@ -19,7 +19,7 @@
   import { getSysDictArrayByDictType, isBlank } from '@/utils/util'
 
   export default {
-    name: 'DictSelect',
+    name: 'EDictSelect',
     props: {
       mode: {
         type: String,

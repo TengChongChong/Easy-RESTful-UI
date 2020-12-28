@@ -53,8 +53,6 @@ const constantRouterComponents = {
   'CustomSettings': () => import('@/views/account/settings/Custom'),
   'BindingSettings': () => import('@/views/account/settings/Binding'),
   'NotificationSettings': () => import('@/views/account/settings/Notification')
-
-  // 'TestWork': () => import(/* webpackChunkName: "TestWork" */ '@/views/dashboard/TestWork')
 }
 
 // 前端未找到页面路由（固定不用改）
@@ -68,7 +66,7 @@ const rootRouter = {
   name: '首页',
   path: '/',
   component: 'BasicLayout',
-  redirect: '/sample/work/flow',
+  redirect: '/sys/personal/center',
   children: []
 }
 
@@ -83,7 +81,6 @@ export const generatorDynamicRouter = (menus) => {
     const childrenNav = []
     // 后端数据, 根级树数组,  根级 PID
     listToTree(menus, childrenNav, '0')
-    // childrenNav.push(findHideRouters(menus))
     rootRouter.children = childrenNav
     menuNav.push(rootRouter)
     const routers = generator(menuNav)

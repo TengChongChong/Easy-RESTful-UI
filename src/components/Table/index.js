@@ -135,6 +135,14 @@ export default {
     setSize (size) {
       this.currentSize = size
     },
+    getColumn (dataIndex) {
+      let columnLength = this.columns.length
+      while (columnLength--) {
+        if (dataIndex === this.columns[columnLength].dataIndex) {
+          return this.columns[columnLength]
+        }
+      }
+    },
     /**
      * 加载数据方法
      * @param {Object} pagination 分页选项器
@@ -151,7 +159,7 @@ export default {
           this.showPagination && this.localPagination.pageSize || this.pageSize
       },
       (sorter && sorter.field && {
-        sortField: sorter.column.sortField || sorter.field
+        sortField: this.getColumn(sorter.field).sortField || sorter.field
       }) || {},
       (sorter && sorter.order && {
         sortOrder: sorter.order
@@ -195,6 +203,9 @@ export default {
     initTotalList (columns) {
       const totalList = []
       columns && columns instanceof Array && columns.forEach(column => {
+        if (typeof column.ellipsis === 'undefined') {
+          column.ellipsis = true
+        }
         if (column.needTotal) {
           totalList.push({
             ...column,

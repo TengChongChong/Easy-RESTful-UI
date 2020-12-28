@@ -1,9 +1,9 @@
 <template>
-  <pro-table title="字典管理" :advanced.sync="advanced">
+  <e-pro-table title="字典管理" :advanced.sync="advanced">
     <template slot="query">
       <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
         <a-form-model-item label="字典类型">
-          <a-select show-search option-filter-prop="children" :allowClear="allowClear" v-model="queryParam.dictType" @change="$refs.table.refresh(true)">
+          <a-select show-search option-filter-prop="children" :allowClear="true" v-model="queryParam.dictType" @change="$refs.table.refresh(true)">
             <a-select-option v-for="item in dictTypes" :key="item.type">
               {{ item.name }}（{{ item.type }}）
             </a-select-option>
@@ -23,19 +23,25 @@
       <template v-if="advanced">
         <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
           <a-form-model-item label="状态">
-            <dict-select type="commonStatus" v-model="queryParam.status" @change="$refs.table.refresh(true)"></dict-select>
+            <e-dict-select type="commonStatus" v-model="queryParam.status" @change="$refs.table.refresh(true)"/>
           </a-form-model-item>
         </a-col>
       </template>
     </template>
 
     <template slot="button">
-      <btn-add to="/sys/dict/add" :params="{dictType: queryParam.dictType}"></btn-add>
+      <e-btn-add to="/sys/dict/add" :params="{dictType: queryParam.dictType}"/>
       <router-link to="/sys/dict/type/list">
         <a-button icon="bars">字典类型管理</a-button>
       </router-link>
-      <a-button icon="sync" @click="generateDictData">更新字典资源</a-button>
-      <btn-remove-batch :ids="selectedRowKeys" :on-click="remove"/>
+      <a-tooltip placement="top">
+        <template slot="title">
+          <span>重新生成字典js文件</span>
+        </template>
+        <a-button icon="sync" @click="generateDictData">更新字典资源</a-button>
+      </a-tooltip>
+
+      <e-btn-remove-batch :ids="selectedRowKeys" :click-callback="remove"/>
     </template>
 
     <template slot="table">
@@ -56,7 +62,7 @@
           </template>
         </span>
         <span slot="status" slot-scope="text, record">
-          <dict-tag type="commonStatus" :code="record.status"></dict-tag>
+          <e-dict-tag type="commonStatus" :code="record.status"/>
         </span>
 
         <span slot="dictType" slot-scope="text, record">
@@ -64,65 +70,71 @@
         </span>
         <span slot="action" slot-scope="text, record">
           <template>
-            <btn-add-sub :to="`/sys/dict/add`" :tab-name="`新增下级 - ${record.name}`" :params="{ pId: record.id, dictType: record.dictType }"></btn-add-sub>
+            <e-btn-add-sub :to="`/sys/dict/add`" :tab-name="`新增下级 - ${record.name}`" :params="{ pId: record.id, dictType: record.dictType }"/>
 
-            <btn-edit :to="`/sys/dict/input`" :tab-name="record.name" :id="record.id"></btn-edit>
+            <e-btn-edit :to="`/sys/dict/input`" :tab-name="record.name" :id="record.id"/>
 
-            <btn-remove :id="record.id" :divider="false" :on-click="remove"></btn-remove>
+            <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
           </template>
         </span>
       </s-table>
     </template>
-  </pro-table>
+  </e-pro-table>
 </template>
 
 <script>
 import { STable, Ellipsis } from '@/components'
 import { select, remove, generateDictData } from '@/api/sys/dict'
 import { selectAll } from '@/api/sys/dict-type'
-import DictTag from '@/components/Easy/data-entry/DictTag'
-import DictSelect from '@/components/Easy/data-entry/DictSelect'
-import ProTable from '@/components/ProTable/Index'
-import BtnAddSub from '@/components/Easy/general/BtnAddSub'
-import BtnAdd from '@/components/Easy/general/BtnAdd'
-import BtnEdit from '@/components/Easy/general/BtnEdit'
-import BtnRemove from '@/components/Easy/general/BtnRemove'
+import EDictTag from '@/components/Easy/data-entry/DictTag'
+import EDictSelect from '@/components/Easy/data-entry/DictSelect'
+import EBtnAddSub from '@/components/Easy/general/BtnAddSub'
+import EBtnAdd from '@/components/Easy/general/BtnAdd'
+import EBtnEdit from '@/components/Easy/general/BtnEdit'
+import EBtnRemove from '@/components/Easy/general/BtnRemove'
 import { successTip } from '@/utils/tips'
-import BtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
+import EBtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
+import EProTable from '@/components/Easy/data-display/ProTable'
 
 const columns = [
   {
     title: '字典编码',
     dataIndex: 'code',
-    sorter: true
+    sorter: true,
+    width: 200
   },
   {
     title: '字典名称',
     dataIndex: 'name',
     sorter: true,
+    width: 200,
     scopedSlots: { customRender: 'name' }
   },
   {
     title: '字典类型',
     dataIndex: 'dictType',
     sorter: true,
+    width: 200,
     scopedSlots: { customRender: 'dictType' }
   },
   {
     title: '排序值',
     dataIndex: 'orderNo',
+    width: 100,
     sorter: true
   },
   {
     title: '状态',
     dataIndex: 'status',
     sorter: true,
+    width: 100,
     scopedSlots: { customRender: 'status' }
   },
   {
     title: '操作',
     dataIndex: 'action',
-    width: '150px',
+    width: 150,
+    fixed: 'right',
     scopedSlots: { customRender: 'action' }
   }
 ]
@@ -130,14 +142,14 @@ const columns = [
 export default {
   name: 'SysDictList',
   components: {
-    BtnRemoveBatch,
-    BtnRemove,
-    BtnEdit,
-    BtnAdd,
-    BtnAddSub,
-    ProTable,
-    DictSelect,
-    DictTag,
+    EProTable,
+    EBtnRemoveBatch,
+    EBtnRemove,
+    EBtnEdit,
+    EBtnAdd,
+    EBtnAddSub,
+    EDictSelect,
+    EDictTag,
     STable,
     Ellipsis
   },
@@ -148,7 +160,6 @@ export default {
       advanced: false,
       // 查询参数
       queryParam: {},
-      allowClear: true,
       dictTypes: [],
       selectedRowKeys: [],
       selectedRows: []

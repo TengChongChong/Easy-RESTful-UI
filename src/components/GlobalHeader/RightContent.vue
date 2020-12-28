@@ -1,6 +1,6 @@
 <template>
   <div :class="wrpCls">
-    <avatar-dropdown :menu="showMenu" :current-user="currentUser" :class="prefixCls" />
+    <avatar-dropdown :menu="showMenu" :current-user="user" :class="prefixCls" />
     <select-lang :class="prefixCls" />
   </div>
 </template>
@@ -8,6 +8,7 @@
 <script>
 import AvatarDropdown from './AvatarDropdown'
 import SelectLang from '@/components/SelectLang'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'RightContent',
@@ -35,14 +36,11 @@ export default {
   },
   data () {
     return {
-      showMenu: true,
-      currentUser: {
-        nickname: this.$store.getters.nickname,
-        avatar: this.$store.getters.avatar
-      }
+      showMenu: true
     }
   },
   computed: {
+    ...mapGetters(['user']),
     wrpCls () {
       return {
         'ant-pro-global-header-index-right': true,

@@ -9,7 +9,7 @@
   import { getSysDictArrayByDictType, isBlank } from '@/utils/util'
 
   export default {
-    name: 'DictCheckbox',
+    name: 'EDictCheckbox',
     props: {
       name: {
         type: String,

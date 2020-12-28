@@ -84,15 +84,15 @@
       <a-card title="部门详情" :bordered="false">
         <a-form-model
           ref="form"
-          :model="object"
+          :model="model"
           :rules="rules"
           v-if="hasData"
-          :label-col="labelCol"
-          :wrapper-col="wrapperCol">
+          :label-col="formLayout.labelCol"
+          :wrapper-col="formLayout.wrapperCol">
           <a-row class="form-row" :gutter="16">
             <a-col :lg="12" :sm="24">
               <a-form-model-item label="部门类型" prop="typeCode">
-                <a-select show-search option-filter-prop="children" v-model="object.typeCode">
+                <a-select show-search option-filter-prop="children" v-model="model.typeCode">
                   <a-select-option v-for="item in departTypes" :key="item.value">
                     {{ item.text }}
                   </a-select-option>
@@ -101,7 +101,7 @@
             </a-col>
             <a-col :lg="12" :sm="24">
               <a-form-model-item label="上级部门" prop="pId">
-                <a-select show-search option-filter-prop="children" v-model="object.pId">
+                <a-select show-search option-filter-prop="children" v-model="model.pId">
                   <a-select-option v-if="parentDeparts.length > 0" v-for="item in parentDeparts" :key="item.value">
                     {{ item.text }}
                   </a-select-option>
@@ -111,49 +111,49 @@
             </a-col>
             <a-col :lg="12" :sm="24">
               <a-form-model-item label="部门名称" prop="name">
-                <a-input v-model="object.name"/>
+                <a-input v-model="model.name"/>
               </a-form-model-item>
             </a-col>
             <a-col :lg="12" :sm="24">
               <a-form-model-item label="部门编码" prop="code">
-                <a-input v-model="object.code"/>
+                <a-input v-model="model.code"/>
               </a-form-model-item>
             </a-col>
             <a-col :lg="12" :sm="24">
               <a-form-model-item label="部门简称" prop="simpleName">
-                <a-input v-model="object.simpleName"/>
+                <a-input v-model="model.simpleName"/>
               </a-form-model-item>
             </a-col>
             <a-col :lg="12" :sm="24">
               <a-form-model-item label="状态" prop="status">
-                <dict-radio name="status" v-model="object.status" type="commonStatus"/>
+                <e-dict-radio name="status" v-model="model.status" type="commonStatus"/>
               </a-form-model-item>
             </a-col>
             <a-col :lg="12" :sm="24">
               <a-form-model-item label="排序值" prop="orderNo">
-                <a-input-number v-model="object.orderNo"/>
+                <a-tooltip placement="top" title="数字越小排名越靠前">
+                  <a-input-number v-model="model.orderNo"/>
+                </a-tooltip>
               </a-form-model-item>
             </a-col>
             <a-col :sm="24">
               <a-form-model-item label="备注" :labelCol="{ span: 3 }" :wrapperCol="{ span: 19 }">
-                <a-textarea v-model="object.tips"/>
+                <a-textarea v-model="model.tips"/>
               </a-form-model-item>
             </a-col>
             <a-col :sm="24">
               <div class="input-btn-group">
-                <a-button type="primary" icon="save" @click="save">
-                  保存
-                </a-button>
+                <e-btn-save :click-callback="save"/>
                 <a-popconfirm
                   title="确定要删除吗?"
-                  @confirm="() => remove(object.id)"
+                  @confirm="() => remove(model.id)"
                 >
-                  <a-button type="danger" icon="delete" v-if="object.id != null && object.id !== ''">
+                  <a-button type="danger" icon="delete" v-if="model.id != null && model.id !== ''">
                     删除
                   </a-button>
                 </a-popconfirm>
 
-                <a-button type="default" icon="plus" @click="add(object.id)" v-if="object.id != null && object.id !== '' && canAdd">
+                <a-button type="default" icon="plus" @click="add(model.id)" v-if="model.id != null && model.id !== '' && canAdd">
                   新增下级
                 </a-button>
               </div>
@@ -178,8 +178,7 @@
     selectUpDeptOption
   } from '@/api/sys/dept'
   import { convertTree, getElementOffset, isBlank, isNotBlank } from '@/utils/util'
-  import DictRadio from '@/components/Easy/data-entry/DictRadio'
-  import DictCheckbox from '@/components/Easy/data-entry/DictCheckbox'
+  import EDictRadio from '@/components/Easy/data-entry/DictRadio'
   import { removeSuccessTip, saveSuccessTip, successTip } from '@/utils/tips'
   import {
     convertTreeData,
@@ -189,14 +188,16 @@
     generatorNodeIcon
   } from '@/utils/ant-design/data-display/tree'
   import { checkHasChild } from '@/api/sys/dept-type'
+  import { FORM_LAYOUT } from '@/utils/const/form'
+  import EBtnSave from '@/components/Easy/general/BtnSave'
 
   const baseId = '0'
 
   export default {
     name: 'SysDeptView',
     components: {
-      DictCheckbox,
-      DictRadio,
+      EBtnSave,
+      EDictRadio,
       Tree
     },
     data () {
@@ -232,9 +233,8 @@
 
         // 表单
         hasData: false,
-        labelCol: { span: 6 },
-        wrapperCol: { span: 14 },
-        object: {},
+        formLayout: FORM_LAYOUT,
+        model: {},
         canAdd: false,
         departTypes: [],
         parentDeparts: [],
@@ -292,9 +292,6 @@
       },
       onExpand (expandedKeys) {
         this.expandedKeys = expandedKeys
-      },
-      handleIconChange (icon) {
-        this.currentSelectedIcon = icon
       },
       /**
        * 异步加载节点数据
@@ -404,26 +401,18 @@
         this.rightMenuVisible = false
         document.removeEventListener('click', this.closeRightMenu)
       },
-      handleIconInputClick () {
-        this.currentSelectedIcon = this.object.icon
-        this.iconModalVisible = true
-      },
-      handleOk () {
-        this.object.icon = this.currentSelectedIcon
-        this.iconModalVisible = false
-      },
       add (id) {
         add(id).then((res) => {
           this.hasData = true
           this.selectedKeys = []
-          this.object = res.data
-          selectDeptTypeOption(this.object.pId, this.object.typeCode).then(res => {
+          this.model = res.data
+          selectDeptTypeOption(this.model.pId, this.model.typeCode).then(res => {
             this.departTypes = res.data
-            if (isBlank(this.object.typeCode) && this.departTypes.length > 0) {
+            if (isBlank(this.model.typeCode) && this.departTypes.length > 0) {
               // 默认第一个类型
-              this.object.typeCode = this.departTypes[0].value
+              this.model.typeCode = this.departTypes[0].value
             }
-            selectUpDeptOption(this.object.pId, this.object.typeCode).then(res => {
+            selectUpDeptOption(this.model.pId, this.model.typeCode).then(res => {
               this.parentDeparts = res.data
             })
           })
@@ -432,15 +421,15 @@
       edit (id) {
         get(id).then((res) => {
           this.hasData = true
-          this.object = res.data
-          selectDeptTypeOption(this.object.pId, this.object.typeCode).then(res => {
+          this.model = res.data
+          selectDeptTypeOption(this.model.pId, this.model.typeCode).then(res => {
             this.departTypes = res.data
           })
-          selectUpDeptOption(this.object.pId, this.object.typeCode).then(res => {
+          selectUpDeptOption(this.model.pId, this.model.typeCode).then(res => {
             this.parentDeparts = res.data
           })
 
-          checkHasChild(this.object.typeCode).then(res => {
+          checkHasChild(this.model.typeCode).then(res => {
             this.canAdd = res.data
           })
         })
@@ -448,24 +437,22 @@
       save () {
         this.$refs.form.validate(valid => {
           if (valid) {
-            save(this.object).then((res) => {
+            save(this.model).then((res) => {
               saveSuccessTip()
-              if (this.object.id != null) {
-                this.object = res.data
+              if (this.model.id != null) {
+                this.model = res.data
                 updateTreeNode(this.treeData, {
-                  key: this.object.id,
-                  title: this.object.name,
-                  slots: { icon: this.object.icon ? this.object.icon : null }
+                  key: this.model.id,
+                  title: this.model.name
                 })
               } else {
-                this.object = res.data
+                this.model = res.data
                 const treeNode = getTreeNode(this.treeData, res.data.pId)
                 if (treeNode.children) {
                   treeNode.children.push({
-                    id: this.object.id,
-                    key: this.object.id,
-                    title: this.object.name,
-                    slots: { icon: this.object.icon ? this.object.icon : null },
+                    id: this.model.id,
+                    key: this.model.id,
+                    title: this.model.name,
                     isLeaf: true
                   })
                 } else {
@@ -484,14 +471,14 @@
           this.hasData = false
           removeSuccessTip()
           removeTreeNode(this.treeData, [id])
-          this.object = null
+          this.model = null
         })
       },
       setStatus (id, status) {
         setStatus(id, status).then((res) => {
           successTip()
-          if (this.object.id === id) {
-            this.object.status = status
+          if (this.model.id === id) {
+            this.model.status = status
           }
         })
       }

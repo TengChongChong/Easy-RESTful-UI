@@ -176,6 +176,7 @@ import config from '@/config/defaultSettings'
 import { updateTheme, updateColorWeak, colorList } from './settingConfig'
 
 export default {
+  name: 'SettingDrawer',
   components: {
     SettingItem
   },

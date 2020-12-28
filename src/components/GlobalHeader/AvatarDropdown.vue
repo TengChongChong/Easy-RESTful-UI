@@ -14,6 +14,10 @@
           <a-icon type="setting" />
           个人设置
         </a-menu-item>
+        <a-menu-item v-if="menu" key="message" @click="handleToMessages">
+          <a-icon type="mail" />
+          我的消息
+        </a-menu-item>
         <a-menu-divider v-if="menu" />
         <a-menu-item key="logout" @click="handleLogout">
           <a-icon type="logout" />
@@ -44,10 +48,13 @@ export default {
   },
   methods: {
     handleToCenter () {
-      this.$router.push({ path: '/account/center' })
+      this.$router.push({ path: '/sys/personal/center' })
     },
     handleToSettings () {
-      this.$router.push({ path: '/account/settings' })
+      this.$router.push({ path: '/sys/personal/settings' })
+    },
+    handleToMessages () {
+      this.$router.push({ path: '/sys/message' })
     },
     handleLogout (e) {
       Modal.confirm({

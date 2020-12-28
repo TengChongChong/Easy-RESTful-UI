@@ -137,6 +137,22 @@ export function checkHasChild (code) {
 }
 
 /**
+ * 根据部门id获取部门角色
+ *
+ * @param deptId 部门id
+ * @return 角色
+ */
+export function selectRoleByDept (deptId) {
+  return request({
+    url: '/auth/sys/dept/type/role',
+    method: HTTP_METHOD.GET,
+    params: {
+      deptId
+    }
+  })
+}
+
+/**
  * 拖动改变目录或顺序
  *
  * @param id          拖动的菜单/权限id

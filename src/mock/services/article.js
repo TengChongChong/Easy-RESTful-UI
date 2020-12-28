@@ -4,7 +4,7 @@ import { builder, getQueryParameters } from '../util'
 const titles = [
   'Alipay',
   'Angular',
-  'Ant Design',
+  'Easy-RESTful',
   'Easy-RESTful-UI',
   'Bootstrap',
   'React',

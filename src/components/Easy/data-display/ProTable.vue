@@ -5,7 +5,7 @@
         :label-col="formLayout.labelCol"
         :wrapper-col="formLayout.wrapperCol">
         <a-card :bordered="false">
-          <a-row :gutter="48">
+          <a-row :gutter="24">
             <slot name="query"></slot>
             <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
               <span
@@ -78,114 +78,130 @@
   </div>
 </template>
 <script>
-  import { FORM_LAYOUT } from '@/utils/const/form'
-  export default {
-    name: 'ProTable',
-    props: {
-      title: {
-        type: String,
-        default: ''
-      },
-      advanced: {
-        type: Boolean,
-        default: false
-      }
+import { FORM_LAYOUT } from '@/utils/const/form'
+
+export default {
+  name: 'EProTable',
+  props: {
+    title: {
+      type: String,
+      default: ''
     },
-    data () {
-      return {
-        formLayout: FORM_LAYOUT,
-        currentAdvanced: this.advanced,
-        currentSize: null
+    advanced: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data () {
+    return {
+      formLayout: FORM_LAYOUT,
+      currentAdvanced: this.advanced,
+      currentSize: null
+    }
+  },
+  mounted () {
+    this.currentSize = this.getTableNode().currentSize
+  },
+  methods: {
+    /**
+     * 在父节点中查找table
+     */
+    getTableNode () {
+      let $parent = this.$parent
+      while (!$parent.$refs.table && $parent.$parent) {
+        $parent = $parent.$parent
       }
-    },
-    mounted () {
-      this.currentSize = this.$parent.$refs.table.currentSize
-    },
-    methods: {
-      /**
-       * 查询
-       */
-      refresh () {
-        this.$parent.$refs.table.refresh(true)
-      },
-      /**
-       * 重置
-       */
-      reset () {
-        this.$parent.queryParam = {}
-        this.refresh()
-      },
-      /**
-       * 切换高级查询
-       */
-      toggleAdvanced () {
-        this.currentAdvanced = !this.currentAdvanced
-        this.$emit('update:advanced', this.currentAdvanced)
-      },
-      /**
-       * 切换密度
-       *
-       * @param select 密度
-       */
-      handleSizeClick (select) {
-        this.currentSize = select.key
-        this.$parent.$refs.table.setSize(this.currentSize)
+      if (!$parent) {
+        console.error('获取table失败')
       }
+      return $parent.$refs.table
+    },
+    /**
+     * 查询
+     */
+    refresh () {
+      this.getTableNode().refresh(true)
+    },
+    /**
+     * 重置
+     */
+    reset () {
+      this.$parent.queryParam = {}
+      this.refresh()
+    },
+    /**
+     * 切换高级查询
+     */
+    toggleAdvanced () {
+      this.currentAdvanced = !this.currentAdvanced
+      this.$emit('update:advanced', this.currentAdvanced)
+    },
+    /**
+     * 切换密度
+     *
+     * @param select 密度
+     */
+    handleSizeClick (select) {
+      this.currentSize = select.key
+      this.getTableNode().setSize(this.currentSize)
     }
   }
+}
 </script>
 <style lang="less">
-  .card-table {
-    .card-table-header {
-      .table-list-toolbar {
-        overflow-x: auto;
-        overflow-y: hidden;
+.card-table {
+  .card-table-header {
+    .table-list-toolbar {
+      overflow-x: auto;
+      overflow-y: hidden;
 
-        .table-list-toolbar-container {
+      .table-list-toolbar-container {
+        display: flex;
+        justify-content: space-between;
+        height: 64px;
+        padding: 0 24px;
+        line-height: 64px;
+
+        .table-list-toolbar-left {
           display: flex;
-          justify-content: space-between;
-          height: 64px;
-          padding: 0 24px;
-          line-height: 64px;
+          justify-content: flex-start;
 
-          .table-list-toolbar-left {
-            display: flex;
-            justify-content: flex-start;
+          .table-list-toolbar-title {
+            color: rgba(0, 0, 0, .85);
+            font-size: 16px;
+            font-weight: 500;
+          }
+        }
 
-            .table-list-toolbar-title {
-              color: rgba(0, 0, 0, .85);
-              font-size: 16px;
-              font-weight: 500;
-            }
+        .table-list-toolbar-right {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+
+          .ant-btn {
+            margin-right: 5px;
           }
 
-          .table-list-toolbar-right {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-
-            .ant-btn {
-              margin-right: 5px;
-            }
-            .toolbar-item {
-              border: 0;
-              box-shadow: none;
-              margin: 0;
-            }
+          .toolbar-item {
+            border: 0;
+            box-shadow: none;
+            margin: 0;
           }
         }
       }
     }
-    .card-table-content {
-      padding: 0 20px 20px 20px;
-    }
-
-    .ant-card-body {
-      padding: 0;
-    }
-
-    .table-alert {
-      margin-bottom: 16px;
-    }
   }
+
+  .card-table-content {
+    padding: 0 20px 20px 20px;
+  }
+
+  .ant-card-body {
+    padding: 0;
+  }
+
+  .table-alert {
+    margin-bottom: 16px;
+  }
+}
 </style>

@@ -8,7 +8,7 @@
         <template slot="title">
           <span>{{ name }}</span>
         </template>
-        <a-button type="danger" size="small" :icon="icon"/>
+        <a-button type="danger" size="small" :loading="loading" :icon="icon"/>
       </a-tooltip>
     </a-popconfirm>
     <a-divider v-if="divider" type="vertical" />
@@ -16,7 +16,7 @@
 </template>
 <script>
   export default {
-    name: 'BtnRemove',
+    name: 'EBtnRemove',
     props: {
       name: {
         type: String,
@@ -38,7 +38,7 @@
         type: Boolean,
         default: true
       },
-      onClick: {
+      clickCallback: {
         type: Function,
         require: true,
         default: () => {}
@@ -47,6 +47,7 @@
     },
     data () {
       return {
+        loading: false,
         query: this.params
       }
     },
@@ -57,7 +58,8 @@
     },
     methods: {
       remove () {
-        this.onClick(this.id, this.params)
+        this.loading = true
+        this.clickCallback(this.id, this.params)
       }
     }
   }

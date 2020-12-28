@@ -71,7 +71,7 @@
       <a-card title="角色详情" :bordered="false">
         <a-form-model
           ref="form"
-          :model="object"
+          :model="model"
           :rules="rules"
           v-if="hasData"
           :label-col="formLayout.labelCol"
@@ -79,13 +79,13 @@
           <a-row class="form-row" :gutter="16">
             <a-col :lg="12" :sm="24">
               <a-form-model-item label="上级角色">
-                <a-input v-model="object.pName" :disabled="true"/>
+                <a-input v-model="model.pName" :disabled="true"/>
               </a-form-model-item>
               <a-form-model-item label="角色名称" prop="name">
-                <a-input v-model="object.name"/>
+                <a-input v-model="model.name"/>
               </a-form-model-item>
               <a-form-model-item label="状态" prop="status">
-                <dict-radio name="status" v-model="object.status" type="commonStatus"/>
+                <e-dict-radio name="status" v-model="model.status" type="commonStatus"/>
               </a-form-model-item>
               <a-form-model-item prop="code">
                 <span slot="label">
@@ -94,10 +94,10 @@
                     <a-icon type="question-circle-o" />
                   </a-tooltip>
                 </span>
-                <a-input v-model="object.code"/>
+                <a-input v-model="model.code"/>
               </a-form-model-item>
               <a-form-model-item label="备注" prop="tips">
-                <a-textarea v-model="object.tips"/>
+                <a-textarea v-model="model.tips"/>
               </a-form-model-item>
             </a-col>
             <a-col :lg="12" :sm="24">
@@ -119,19 +119,17 @@
             </a-col>
             <a-col :sm="24">
               <div class="input-btn-group">
-                <a-button type="primary" icon="save" @click="save">
-                  保存
-                </a-button>
+                <e-btn-save :click-callback="save"/>
                 <a-popconfirm
                   title="确定要删除吗?"
-                  @confirm="() => remove(object.id)"
+                  @confirm="() => remove(model.id)"
                 >
-                  <a-button type="danger" icon="delete" v-if="object.id != null && object.id !== ''">
+                  <a-button type="danger" icon="delete" v-if="model.id != null && model.id !== ''">
                     删除
                   </a-button>
                 </a-popconfirm>
 
-                <a-button type="default" icon="plus" @click="add(object.id)" v-if="object.id != null && object.id !== ''">
+                <a-button type="default" icon="plus" @click="add(model.id)" v-if="model.id != null && model.id !== ''">
                   新增下级
                 </a-button>
 
@@ -160,8 +158,7 @@
   import { Tree } from 'ant-design-vue'
   import { selectByPId, get, save, add, remove, move, setStatus, selectByTitle } from '@/api/sys/role'
   import { convertTree, getElementOffset, isNotBlank } from '@/utils/util'
-  import DictRadio from '@/components/Easy/data-entry/DictRadio'
-  import DictCheckbox from '@/components/Easy/data-entry/DictCheckbox'
+  import EDictRadio from '@/components/Easy/data-entry/DictRadio'
   import { removeSuccessTip, saveSuccessTip, successTip } from '@/utils/tips'
   import {
     convertTreeData, dropNode,
@@ -172,14 +169,15 @@
   } from '@/utils/ant-design/data-display/tree'
   import { selectAll } from '@/api/sys/permissions'
   import { FORM_LAYOUT } from '@/utils/const/form'
+  import EBtnSave from '@/components/Easy/general/BtnSave'
 
   const baseId = '0'
 
   export default {
     name: 'RoleView',
     components: {
-      DictCheckbox,
-      DictRadio,
+      EBtnSave,
+      EDictRadio,
       Tree
     },
     data () {
@@ -224,7 +222,7 @@
         // 表单
         hasData: false,
         formLayout: FORM_LAYOUT,
-        object: {},
+        model: {},
         rules: {
           name: [
             { required: true, message: '请输入角色名称', trigger: 'blur' },
@@ -437,14 +435,14 @@
         add(id).then((res) => {
           this.hasData = true
           this.selectedKeys = []
-          this.object = res.data
+          this.model = res.data
           this.menuCheckedKeys = res.data.permissions
         })
       },
       edit (id) {
         get(id).then((res) => {
           this.hasData = true
-          this.object = res.data
+          this.model = res.data
           this.menuCheckedKeys = res.data.permissions
         })
       },
@@ -452,28 +450,28 @@
         this.$refs.form.validate(valid => {
           if (valid) {
             if (this.menuCheckedKeys && this.menuCheckedKeys.checked) {
-              this.object.permissions = this.menuCheckedKeys.checked
+              this.model.permissions = this.menuCheckedKeys.checked
             } else {
-              this.object.permissions = this.menuCheckedKeys
+              this.model.permissions = this.menuCheckedKeys
             }
-            save(this.object).then((res) => {
+            save(this.model).then((res) => {
               saveSuccessTip()
-              if (this.object.id != null) {
-                this.object = res.data
+              if (this.model.id != null) {
+                this.model = res.data
                 updateTreeNode(this.treeData, {
-                  key: this.object.id,
-                  title: this.object.name,
-                  slots: { icon: this.object.icon ? this.object.icon : null }
+                  key: this.model.id,
+                  title: this.model.name,
+                  slots: { icon: this.model.icon ? this.model.icon : null }
                 })
               } else {
-                this.object = res.data
+                this.model = res.data
                 const treeNode = getTreeNode(this.treeData, res.data.pId)
                 if (treeNode.children) {
                   treeNode.children.push({
-                    id: this.object.id,
-                    key: this.object.id,
-                    title: this.object.name,
-                    slots: { icon: this.object.icon ? this.object.icon : null },
+                    id: this.model.id,
+                    key: this.model.id,
+                    title: this.model.name,
+                    slots: { icon: this.model.icon ? this.model.icon : null },
                     isLeaf: true
                   })
                 } else {
@@ -492,14 +490,14 @@
           this.hasData = false
           removeSuccessTip()
           removeTreeNode(this.treeData, [id])
-          this.object = null
+          this.model = null
         })
       },
       setStatus (id, status) {
         setStatus(id, status).then((res) => {
           successTip()
-          if (this.object.id === id) {
-            this.object.status = status
+          if (this.model.id === id) {
+            this.model.status = status
           }
         })
       }

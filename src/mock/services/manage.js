@@ -57,7 +57,7 @@ const projects = () => {
     {
       id: 3,
       cover: 'https://gw.alipayobjects.com/zos/rmsportal/dURIMkkrRFpPgTuzkwnB.png',
-      title: 'Ant Design',
+      title: 'Easy-RESTful',
       description: '城镇中有那么多的酒馆，她却偏偏走进了我的酒馆',
       status: 1,
       updatedAt: '2018-07-26 00:00:00'

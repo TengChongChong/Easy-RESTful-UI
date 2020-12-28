@@ -2,7 +2,7 @@
   <div>
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
-        <a-row :gutter="48">
+        <a-row :gutter="24">
           <a-col :md="8" :sm="24">
             <a-form-item label="规则编号">
               <a-input v-model="queryParam.id" placeholder=""/>

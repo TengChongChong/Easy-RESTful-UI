@@ -1,8 +1,8 @@
 [English](./README.md) | 简体中文
 
-<h1 align="center">Ant Design Vue Pro</h1>
+<h1 align="center">Easy-RESTful Vue Pro</h1>
 <div align="center">
-An out-of-box UI solution for enterprise applications as a Vue boilerplate. based on  <a href="https://vuecomponent.github.io/ant-design-vue/docs/vue/introduce-cn/" target="_blank">Ant Design of Vue</a>
+An out-of-box UI solution for enterprise applications as a Vue boilerplate. based on  <a href="https://vuecomponent.github.io/ant-design-vue/docs/vue/introduce-cn/" target="_blank">Easy-RESTful of Vue</a>
 </div>
 
 <div align="center">
@@ -23,7 +23,7 @@ An out-of-box UI solution for enterprise applications as a Vue boilerplate. base
 Overview
 ----
 
-基于 [Ant Design of Vue](https://vuecomponent.github.io/ant-design-vue/docs/vue/introduce-cn/) 实现的 [Ant Design Pro](https://pro.ant.design/) 
+基于 [Easy-RESTful of Vue](https://vuecomponent.github.io/ant-design-vue/docs/vue/introduce-cn/) 实现的 [Easy-RESTful Pro](https://pro.ant.design/) 
 
 ![dashboard](https://static-2.loacg.com/open/static/github/SP1.png)
 
@@ -35,7 +35,7 @@ Overview
 - webpack
 - eslint
 - @vue/cli ~3
-- [ant-design-vue](https://github.com/vueComponent/ant-design-vue) - Ant Design Of Vue 实现
+- [ant-design-vue](https://github.com/vueComponent/ant-design-vue) - Easy-RESTful Of Vue 实现
 - [vue-cropper](https://github.com/xyxiao001/vue-cropper) - 头像裁剪组件
 - [@antv/g2](https://antv.alipay.com/zh-cn/index.html) - Alipay AntV 数据可视化图表
 - [Viser-vue](https://viserjs.github.io/docs.html#/viser/guide/installation)  - antv/g2 封装实现
@@ -86,7 +86,7 @@ yarn run lint
 
 - 组件按需加载 `/src/main.js` L14 相关代码 `import './core/lazy_use'` / `import './core/use'` 
 
-- [修改 Ant Design 配色 (@kokoroli)](https://github.com/kokoroli/antd-awesome/blob/master/docs/Ant_Design_%E6%A0%B7%E5%BC%8F%E8%A6%86%E7%9B%96.md)
+- [修改 Easy-RESTful 配色 (@kokoroli)](https://github.com/kokoroli/antd-awesome/blob/master/docs/Ant_Design_%E6%A0%B7%E5%BC%8F%E8%A6%86%E7%9B%96.md)
 
 - I18n: [多语言支持 (@musnow)](./src/locales/index.js)
 

@@ -35,6 +35,17 @@ export function get (id) {
     method: HTTP_METHOD.GET
   })
 }
+/**
+ * 根据key获取配置
+ *
+ * @param key key
+ */
+export function getByKey (key) {
+  return request({
+    url: baseUrl + 'key/' + key,
+    method: HTTP_METHOD.GET
+  })
+}
 export function refreshCache (id) {
   return request({
     url: api.refreshCache,
