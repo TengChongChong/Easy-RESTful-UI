@@ -14,10 +14,10 @@
           <a-input v-model="model.title"/>
         </a-form-model-item>
         <a-form-model-item label="重要" prop="important">
-          <a-switch v-model="model.important" />
+          <a-switch v-model="model.important"/>
         </a-form-model-item>
         <a-form-model-item label="内容" prop="content">
-          <a-textarea v-model="model.content"/>
+          <div id="content"></div>
         </a-form-model-item>
       </a-col>
       <a-col :sm="24">
@@ -33,12 +33,14 @@
 import EDatePicker from '@/components/Easy/data-entry/DatePicker'
 import EDictRadio from '@/components/Easy/data-entry/DictRadio'
 import EBtnSave from '@/components/Easy/general/BtnSave'
+import WangEditor from 'wangeditor'
 
 export default {
   components: {
     EBtnSave,
     EDictRadio,
-    EDatePicker
+    EDatePicker,
+    WangEditor
   },
   data () {
     return {
@@ -46,11 +48,23 @@ export default {
         labelCol: { span: 4 },
         wrapperCol: { span: 16 }
       },
-      model: {},
-      rules: {
-
-      }
+      model: {
+        content: null
+      },
+      rules: {},
+      editor: null
     }
+  },
+  mounted () {
+    const editor = new WangEditor(`#content`)
+    // 配置 onchange 回调函数，将数据同步到 vue 中
+    editor.config.onchange = (newHtml) => {
+      console.log('newHtml', newHtml)
+      this.model.content = newHtml
+    }
+    // 创建编辑器
+    editor.create()
+    this.editor = editor
   },
   methods: {
     save () {
@@ -60,10 +74,11 @@ export default {
         }
       })
     }
+  },
+  beforeDestroy () {
+    // 调用销毁 API 对当前编辑器实例进行销毁
+    this.editor.destroy()
+    this.editor = null
   }
 }
 </script>
-
-<style lang="less" scoped>
-
-</style>
