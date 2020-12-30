@@ -56,6 +56,7 @@ import BtnRemove from '@/components/Easy/general/BtnRemove'
 import EBtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
 import EProTable from '@/components/Easy/data-display/ProTable'
 import EBtnInfo from '@/components/Easy/general/BtnInfo'
+import { formatDate } from '@/utils/util'
 
 const columns = [
   {
@@ -86,7 +87,8 @@ const columns = [
     title: '触发时间',
     dataIndex: 'triggerTime',
     sorter: true,
-    width: 170
+    width: 170,
+    customRender: (text) => formatDate(text)
   },
   {
     title: '触发用户',

@@ -5,7 +5,7 @@ const baseUrl = '/auth/sys/role/'
 const api = {
   add: baseUrl + 'add/',
   batchRemove: baseUrl + 'batch/',
-  selectByPId: baseUrl + 'pId',
+  selectByPId: baseUrl + 'pId/',
   selectAll: baseUrl + 'all',
   selectByTitle: baseUrl + 'title',
   move: baseUrl + 'move'
@@ -51,7 +51,7 @@ export function batchRemove (ids) {
  */
 export function setStatus (ids, status) {
   return request({
-    url: baseUrl + 'set/' + ids + '/status/' + status,
+    url: baseUrl + ids + '/status/' + status,
     method: HTTP_METHOD.POST
   })
 }
@@ -86,11 +86,8 @@ export function get (id) {
  */
 export function selectByPId (pId) {
   return request({
-    url: api.selectByPId,
-    method: HTTP_METHOD.GET,
-    params: {
-      pId
-    }
+    url: api.selectByPId + pId,
+    method: HTTP_METHOD.GET
   })
 }
 /**

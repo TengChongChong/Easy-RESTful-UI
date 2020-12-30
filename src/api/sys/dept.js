@@ -5,7 +5,7 @@ const baseUrl = '/auth/sys/dept/'
 const api = {
   add: baseUrl + 'add/',
   batchRemove: baseUrl + 'batch/',
-  selectByPId: baseUrl + 'pId',
+  selectByPId: baseUrl + 'pId/',
   selectAll: baseUrl + 'all',
   selectByTitle: baseUrl + 'title',
   move: baseUrl + 'move'
@@ -115,11 +115,8 @@ export function selectUpDeptOption (pId, deptType) {
  */
 export function selectByPId (pId) {
   return request({
-    url: api.selectByPId,
-    method: HTTP_METHOD.GET,
-    params: {
-      pId
-    }
+    url: api.selectByPId + pId,
+    method: HTTP_METHOD.GET
   })
 }
 

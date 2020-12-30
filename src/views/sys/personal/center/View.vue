@@ -36,16 +36,15 @@
           </div>
         </a-card>
       </a-col>
-      <a-col :md="24" :lg="18">
-        <a-card title="我的消息" :bordered="false" style="max-height: 300px;margin-bottom: 24px">
-          <p>Card content</p>
-          <p>Card content</p>
-          <p>Card content</p>
+      <a-col :md="24" :lg="18" class="right-wrapper">
+        <a-card title="我的消息" :bordered="false" style="max-height: 300px;margin-bottom: 24px" :body-style="{padding: '0px 20px'}">
+          <router-link slot="extra" to="/sys/message">
+            更多
+          </router-link>
+          <message-list/>
         </a-card>
-        <a-card title="待办任务" :bordered="false" style="max-height: 300px">
-          <p>Card content</p>
-          <p>Card content</p>
-          <p>Card content</p>
+        <a-card title="待办任务" :bordered="false" style="max-height: 300px;" :body-style="{padding: '0px 20px'}">
+          <p>...</p>
         </a-card>
       </a-col>
     </a-row>
@@ -56,10 +55,11 @@
 import { mapGetters } from 'vuex'
 import EDictTag from '@/components/Easy/data-entry/DictTag'
 import { SEX_CONST } from '@/utils/const/sys/SexConst'
+import MessageList from '@/views/sys/personal/center/MessageList'
 
 export default {
   name: 'SysPersonalCenterView',
-  components: { EDictTag },
+  components: { EDictTag, MessageList },
   data () {
     return {
       SEX_CONST: SEX_CONST
@@ -68,8 +68,7 @@ export default {
   computed: {
     ...mapGetters(['user'])
   },
-  methods: {
-  }
+  methods: {}
 }
 </script>
 

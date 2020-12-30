@@ -3,7 +3,7 @@ import { HTTP_METHOD } from '@/utils/const/http/method'
 
 const baseUrl = '/auth/sys/dict/'
 const api = {
-  selectByDictType: baseUrl + 'dict-type',
+  selectByDictType: baseUrl + 'dict-type/',
   add: baseUrl + 'add/',
   generateDictData: baseUrl + 'generate/dict/data'
 }
@@ -18,11 +18,8 @@ export function select (params) {
 
 export function selectByDictType (dictType) {
   return request({
-    url: api.selectByDictType,
-    method: HTTP_METHOD.GET,
-    params: {
-      dictType
-    }
+    url: api.selectByDictType + dictType,
+    method: HTTP_METHOD.GET
   })
 }
 

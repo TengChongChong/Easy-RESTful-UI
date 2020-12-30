@@ -1,3 +1,6 @@
+import * as moment from 'moment'
+import { DATE_PATTERN } from '@/utils/const/datePattern'
+
 export function timeFix () {
   const time = new Date()
   const hour = time.getHours()
@@ -183,6 +186,35 @@ export function deepClone (source, ignore) {
   })
   return targetObj
 }
+
+/**
+ * 格式化时间
+ *
+ * @param date {date} 时间
+ * @param datePattern {string} 格式
+ */
+export function formatDate (date, datePattern = DATE_PATTERN.NORM_DATETIME_MINUTE_PATTERN) {
+  return date ? moment(date).format(datePattern) : '-'
+}
+/**
+ * 格式化时间
+ *
+ * @param date {date} 时间
+ * @param datePattern {string} 格式
+ */
+export function fromNow (date) {
+  if (date) {
+    // 如果超过1年，使用YYYY-MM-DD方式显示
+    if (date < moment().subtract(1, 'years')) {
+      return moment(date).format(DATE_PATTERN.NORM_DATE_PATTERN)
+    } else {
+      return moment(date).fromNow()
+    }
+  } else {
+    return '-'
+  }
+}
+
 /** ****************** 字典 ********************/
 /**
  * 根据字典类型获取字典数组

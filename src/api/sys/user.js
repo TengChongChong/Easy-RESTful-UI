@@ -3,6 +3,12 @@ import { HTTP_METHOD } from '@/utils/const/http/method'
 
 const baseUrl = '/auth/sys/user/'
 
+/**
+ * 列表
+ *
+ * @param params 查询条件
+ * @return Page<SysUser>
+ */
 export function select (params) {
   return request({
     url: baseUrl,
@@ -15,10 +21,11 @@ export function select (params) {
  * 搜索
  *
  * @param keyword 关键字
+ * @return Page<SysUser>
  */
 export function selectByKeyword (keyword) {
   return request({
-    url: baseUrl + 'search',
+    url: baseUrl + 'keyword',
     method: HTTP_METHOD.GET,
     params: {
       keyword
@@ -27,9 +34,23 @@ export function selectByKeyword (keyword) {
 }
 
 /**
+ * 获取指定用户信息
+ *
+ * @param ids ids
+ * @return List<SysUser>
+ */
+export function selectUsersByIds (ids) {
+  return request({
+    url: baseUrl + 'users/' + ids,
+    method: HTTP_METHOD.GET
+  })
+}
+
+/**
  * 新增
  *
  * @param deptId 部门id
+ * @return SysUser
  */
 export function add (deptId) {
   return request({
@@ -42,6 +63,7 @@ export function add (deptId) {
  * 删除
  *
  * @param id 权限id
+ * @return true/false
  */
 export function remove (id) {
   return request({
@@ -54,6 +76,7 @@ export function remove (id) {
  * 禁用用户
  *
  * @param ids    用户ids
+ * @return true/false
  */
 export function disableUser (ids) {
   return request({
@@ -61,10 +84,12 @@ export function disableUser (ids) {
     method: HTTP_METHOD.POST
   })
 }
+
 /**
  * 启用用户
  *
  * @param ids    用户ids
+ * @return true/false
  */
 export function enableUser (ids) {
   return request({
@@ -77,6 +102,7 @@ export function enableUser (ids) {
  * 重置密码
  *
  * @param ids 用户ids
+ * @return true/false
  */
 export function resetPassword (ids) {
   return request({
@@ -89,6 +115,7 @@ export function resetPassword (ids) {
  * 保存
  *
  * @param params 表单内容
+ * @return SysUser
  */
 export function save (params) {
   return request({
@@ -102,6 +129,7 @@ export function save (params) {
  * 详情
  *
  * @param id 菜单/权限 id
+ * @return SysUser
  */
 export function get (id) {
   return request({
@@ -112,6 +140,7 @@ export function get (id) {
 
 /**
  * 获取当前登录用户
+ * @return SysUser
  */
 export function current () {
   return request({
@@ -124,6 +153,7 @@ export function current () {
  * 查询用户列表 Activiti
  *
  * @param params 查询条件
+ * Page<SysUser>
  */
 export function selectUser (params) {
   return request({

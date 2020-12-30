@@ -7,7 +7,7 @@
             :mode="isMobile ? 'horizontal' : 'inline'"
             :style="{ border: '0', width: isMobile ? '560px' : 'auto'}"
             type="inner"
-            :default-selected-keys="[currentMenu]"
+            :selected-keys="selectedKeys"
             @click="handleClick"
           >
             <a-menu-item key="input">
@@ -37,9 +37,13 @@
           </a-menu>
         </div>
         <div class="view-info-right">
-          <receive v-if="'receive' === currentMenu"/>
-          <m-input v-if="'input' === currentMenu"/>
-
+          <receive :set-id="setId" :set-message-id="setMessageId" :set-current-menu="setCurrentMenu" v-if="'receive' === currentMenu"/>
+          <m-input :id="id" v-if="'input' === currentMenu"/>
+          <m-info :id="id" :message-id="messageId" v-if="'info' === currentMenu"/>
+          <draft :set-id="setId" :set-current-menu="setCurrentMenu" v-if="'draft' === currentMenu"/>
+          <sent :set-message-id="setMessageId" :set-current-menu="setCurrentMenu" v-if="'sent' === currentMenu"/>
+          <receive :star="MESSAGE_CONST.STAR_YES" :set-id="setId" :set-message-id="setMessageId" :set-current-menu="setCurrentMenu" v-if="'star' === currentMenu"/>
+          <receive :status="MESSAGE_CONST.RECEIVE_STATUS_DELETED" :set-id="setId" :set-message-id="setMessageId" :set-current-menu="setCurrentMenu" v-if="'recycle-bin' === currentMenu"/>
         </div>
       </div>
     </a-card>
@@ -50,22 +54,59 @@
 import { baseMixin } from '@/store/app-mixin'
 import Receive from '@/views/sys/message/Receive'
 import MInput from '@/views/sys/message/Input'
+import MInfo from '@/views/sys/message/Info'
+import Draft from '@/views/sys/message/Draft'
+import Sent from '@/views/sys/message/Sent'
+import { MESSAGE_CONST } from '@/utils/const/sys/MessageConst'
 
 export default {
   name: 'SysMessageView',
   components: {
     MInput,
-    Receive
+    MInfo,
+    Receive,
+    Draft,
+    Sent
   },
   mixins: [baseMixin],
   data () {
     return {
-      currentMenu: 'receive'
+      MESSAGE_CONST: MESSAGE_CONST,
+      currentMenu: 'receive',
+      selectedKeys: [],
+
+      // 修改&查看
+      id: null,
+      messageId: null
     }
+  },
+  mounted () {
+    this.setSelectedKeys(this.currentMenu)
   },
   methods: {
     handleClick (e) {
       this.currentMenu = e.key
+      this.setSelectedKeys(this.currentMenu)
+    },
+    setCurrentMenu (currentMenu) {
+      this.currentMenu = currentMenu
+      this.setSelectedKeys(currentMenu)
+    },
+    setId (id) {
+      this.id = id
+    },
+    setMessageId (messageId) {
+      this.messageId = messageId
+    },
+    /**
+     * 设置选中菜单
+     *
+     * @param selectedKey key
+     */
+    setSelectedKeys (selectedKey) {
+      this.selectedKeys = [selectedKey]
+      this.id = null
+      this.messageId = null
     }
   }
 }

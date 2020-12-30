@@ -1,4 +1,19 @@
-.w-e-toolbar .w-e-menu {
-  width: 35px;
-  height: 35px;
+@import '~ant-design-vue/es/style/themes/default.less';
+
+body {
+  .w-e-toolbar .w-e-menu {
+    width: 35px;
+    height: 35px;
+  }
+
+  .has-error {
+    .w-e-toolbar,
+    .w-e-text-container {
+      border-color: @btn-danger-border !important;
+    }
+
+    .w-e-toolbar {
+      border-bottom-color: #eee !important;
+    }
+  }
 }

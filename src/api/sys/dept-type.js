@@ -51,7 +51,7 @@ export function batchRemove (ids) {
  */
 export function setStatus (ids, status) {
   return request({
-    url: baseUrl + 'set/' + ids + '/status/' + status,
+    url: baseUrl + ids + '/status/' + status,
     method: HTTP_METHOD.POST
   })
 }

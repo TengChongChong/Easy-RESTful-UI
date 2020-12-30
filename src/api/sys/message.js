@@ -37,8 +37,11 @@ export function get (id) {
  */
 export function info (id, messageId) {
   return request({
-    url: baseUrl + 'info/' + id + '/' + messageId,
-    method: HTTP_METHOD.GET
+    url: baseUrl + 'info',
+    method: HTTP_METHOD.GET,
+    params: {
+      id, messageId
+    }
   })
 }
 
@@ -73,7 +76,9 @@ export function send (ids) {
   return request({
     url: baseUrl + 'send',
     method: HTTP_METHOD.POST,
-    data: ids
+    data: {
+      ids
+    }
   })
 }
 /**

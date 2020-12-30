@@ -56,6 +56,7 @@ import { STable, Ellipsis } from '@/components'
 import { select } from '@/api/sys/log'
 import EProTable from '@/components/Easy/data-display/ProTable'
 import EBtnInfo from '@/components/Easy/general/BtnInfo'
+import { formatDate } from '@/utils/util'
 
 const columns = [
   {
@@ -99,7 +100,8 @@ const columns = [
     title: '操作时间',
     dataIndex: 'operationDate',
     sorter: true,
-    width: 170
+    width: 170,
+    customRender: (text) => formatDate(text)
   },
   {
     title: '操作',

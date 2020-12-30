@@ -93,10 +93,8 @@
               </a-avatar>
             </span>
             <span slot="action" slot-scope="text, record">
-              <template>
-                <e-btn-edit :to="`/sys/user/input`" :tab-name="record.nickname" :id="record.id"/>
-                <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
-              </template>
+              <e-btn-edit :to="`/sys/user/input`" :tab-name="record.nickname" :id="record.id"/>
+              <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
             </span>
           </s-table>
         </template>
@@ -117,7 +115,7 @@ import {
   selectByPId,
   selectByTitle
 } from '@/api/sys/dept'
-import { convertTree, isNotBlank } from '@/utils/util'
+import { convertTree, formatDate, isNotBlank } from '@/utils/util'
 import {
   convertTreeData,
   generatorNodeIcon, updateNodeLeaf
@@ -171,13 +169,15 @@ const columns = [
     dataIndex: 'lastLogin',
     sorter: true,
     width: 170,
-    sortField: 'last_login'
+    sortField: 'last_login',
+    customRender: (text) => formatDate(text)
   },
   {
     title: '创建时间',
     dataIndex: 'createDate',
     sorter: true,
-    width: 170
+    width: 170,
+    customRender: (text) => formatDate(text)
   },
   {
     title: '操作',
