@@ -55,7 +55,7 @@
 import { mapGetters } from 'vuex'
 import EDictTag from '@/components/Easy/data-entry/DictTag'
 import { SEX_CONST } from '@/utils/const/sys/SexConst'
-import MessageList from '@/views/sys/personal/center/MessageList'
+import MessageList from '@/views/sys/message/MessageList'
 
 export default {
   name: 'SysPersonalCenterView',
@@ -67,8 +67,7 @@ export default {
   },
   computed: {
     ...mapGetters(['user'])
-  },
-  methods: {}
+  }
 }
 </script>
 

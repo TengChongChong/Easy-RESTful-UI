@@ -93,7 +93,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setUser']),
+    ...mapActions(['SetUser']),
     currentUser () {
       currentUser().then(res => {
         this.model = res.data
@@ -115,7 +115,7 @@ export default {
             avatar: this.newAvatar
           }).then((res) => {
             saveSuccessTip()
-            this.setUser(res.data)
+            this.SetUser(res.data)
           })
         }
       })

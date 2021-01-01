@@ -1,14 +1,13 @@
-// eslint-disable-next-line
-import * as loginService from '@/api/login'
-// eslint-disable-next-line
-import { BasicLayout, BlankLayout, PageView, RouteView } from '@/layouts'
+// import { BasicLayout, BlankLayout, PageView, RouteView } from '@/layouts'
+import { BlankLayout, PageView, RouteView } from '@/layouts'
 import { deepClone } from '@/utils/util'
 import store from '@/store'
 
 // 前端路由表
 const constantRouterComponents = {
   // 基础页面 layout 必须引入
-  BasicLayout: BasicLayout,
+  // BasicLayout: BasicLayout,
+  BasicLayout: () => import('@/layouts/BasicLayout'),
   BlankLayout: BlankLayout,
   RouteView: RouteView,
   PageView: PageView,

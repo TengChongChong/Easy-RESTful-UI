@@ -31,7 +31,7 @@ export default {
     this.verifies()
   },
   methods: {
-    ...mapActions(['updateUser']),
+    ...mapActions(['UpdateUser']),
     verifies () {
       verifies(this.code).then(res => {
         this.status = 'success'

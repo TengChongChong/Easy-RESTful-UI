@@ -66,18 +66,31 @@
 }
 
 .topmenu {
+  .wide{
+    .@{multi-tab-prefix-cls} {
+      width: 1200px;
+      margin: 0;
+    }
+    .@{multi-tab-wrapper-prefix-cls} {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+  }
   .@{multi-tab-prefix-cls} {
-    width: 1200px;
-    margin: 0;
+    width: 100%;
+    margin: 0 -20px;
   }
   .@{multi-tab-wrapper-prefix-cls} {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
   }
 }
 
-.topmenu.content-width-Fluid .@{multi-tab-wrapper-prefix-cls} {
-  max-width: 100%;
-  margin: 0 auto;
-}
-
+//.topmenu.content-width-Fluid .@{multi-tab-wrapper-prefix-cls} {
+//  max-width: 100%;
+//  margin: 0 auto;
+//}
+//
+//.ant-layout-sider-collapsed .@{multi-tab-wrapper-prefix-cls} {
+//  width: calc(100% - 80px);
+//}

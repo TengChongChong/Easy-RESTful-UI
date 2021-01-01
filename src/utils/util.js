@@ -200,9 +200,9 @@ export function formatDate (date, datePattern = DATE_PATTERN.NORM_DATETIME_MINUT
  * 格式化时间
  *
  * @param date {date} 时间
- * @param datePattern {string} 格式
  */
 export function fromNow (date) {
+  moment.locale('zh-cn')
   if (date) {
     // 如果超过1年，使用YYYY-MM-DD方式显示
     if (date < moment().subtract(1, 'years')) {

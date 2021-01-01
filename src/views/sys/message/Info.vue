@@ -18,6 +18,7 @@
 <script>
 import { info } from '@/api/sys/message'
 import { formatDate, isNotBlank } from '@/utils/util'
+import { mapActions } from 'vuex'
 
 export default {
   props: {
@@ -40,6 +41,7 @@ export default {
     if (isNotBlank(this.messageId)) {
       info(this.id, this.messageId).then(res => {
         this.model = res.data
+        this.SelectUnreadCount()
       })
     }
   },
@@ -47,6 +49,9 @@ export default {
     sendDate () {
       return formatDate(this.model.sendDate)
     }
+  },
+  methods: {
+    ...mapActions(['SelectUnreadCount'])
   }
 }
 </script>

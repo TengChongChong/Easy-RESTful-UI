@@ -78,7 +78,7 @@ export function applicationBindingEmail (email) {
 /**
  * 绑定密保手机
  *
- * @param params {{ phone: number|string, captcha: number |string }}
+ * @param params {{ phone: number|string, captcha: number|string }}
  */
 export function bindingPhone (params) {
   return request({

@@ -6,6 +6,7 @@ const getters = {
   token: state => state.user.token,
   roles: state => state.user.roles,
   user: state => state.user.user,
+  unreadCount: state => state.user.unreadCount,
   addRouters: state => state.permission.addRouters,
   multiTab: state => state.app.multiTab,
   visitedViews: state => state.tagsView.visitedViews,

@@ -1,12 +1,14 @@
 import storage from 'store'
 import { login, getInfo, logout } from '@/api/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { selectUnreadCount } from '@/api/sys/message'
 
 const user = {
   state: {
     token: '',
     roles: [],
-    user: {}
+    user: {},
+    unreadCount: 0
   },
 
   mutations: {
@@ -18,6 +20,9 @@ const user = {
     },
     SET_USER: (state, user) => {
       state.user = user
+    },
+    SET_UNREAD_COUNT: (state, unreadCount) => {
+      state.unreadCount = unreadCount
     }
   },
 
@@ -64,7 +69,7 @@ const user = {
       })
     },
 
-    // 登出
+    // 提出
     Logout ({ commit, state }) {
       return new Promise((resolve) => {
         logout(state.token).then(() => {
@@ -83,17 +88,23 @@ const user = {
      *
      * @param commit
      */
-    updateUser ({ commit }) {
+    UpdateUser ({ commit }) {
       if (storage.get(ACCESS_TOKEN)) {
         getInfo().then(res => {
           commit('SET_USER', res.data)
         })
       }
     },
-    setUser ({ commit }, user) {
+    SetUser ({ commit }, user) {
       commit('SET_USER', user)
+    },
+    SelectUnreadCount ({ commit }) {
+      if (storage.get(ACCESS_TOKEN)) {
+        selectUnreadCount().then(res => {
+          commit('SET_UNREAD_COUNT', res.data)
+        })
+      }
     }
-
   }
 }
 

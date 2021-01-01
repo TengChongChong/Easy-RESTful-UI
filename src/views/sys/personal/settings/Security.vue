@@ -152,8 +152,8 @@ export default {
       bindingPhoneModalVisible: false,
       bindingPhoneModalOkBtnState: false,
       bindingPhoneModel: {
-        phone: null,
-        captcha: null
+        phone: '',
+        captcha: ''
       },
       bindingPhoneRules: {
         phone: [
@@ -235,7 +235,7 @@ export default {
     ...mapGetters(['user'])
   },
   methods: {
-    ...mapActions(['updateUser']),
+    ...mapActions(['UpdateUser']),
     /**
      * 密码强度
      *
@@ -315,7 +315,7 @@ export default {
             this.bindingPhoneModalVisible = false
             this.data[1].value = this.bindingPhoneModel.phone
             successTip()
-            this.updateUser()
+            this.UpdateUser()
             // 清除表单数据
             this.bindingPhoneModel = { phone: null, captcha: null }
 

@@ -16,8 +16,13 @@
       </a-list-item>
     </a-list>
 
-    <a-modal v-model="messageModalVisible" title="消息详情" @ok="() => {this.messageModalVisible = false}">
+    <a-modal v-model="messageModalVisible" title="消息详情">
       <info :id="id" :message-id="messageId"/>
+      <template slot="footer">
+        <a-button key="back" @click="close">
+          关闭
+        </a-button>
+      </template>
     </a-modal>
   </div>
 </template>
@@ -29,6 +34,12 @@ import { fromNow } from '@/utils/util'
 import Info from '@/views/sys/message/Info'
 
 export default {
+  props: {
+    status: {
+      type: String,
+      default: null
+    }
+  },
   components: {
     Info
   },
@@ -49,8 +60,10 @@ export default {
   },
   methods: {
     // 加载数据方法 必须为 Promise 对象
-    loadData (parameter) {
-      return selectReceive()
+    loadData () {
+      return selectReceive({
+        detailsStatus: this.status
+      })
         .then(res => {
           this.data = res.data.data
         })
@@ -62,6 +75,13 @@ export default {
       this.id = id
       this.messageId = messageId
       this.messageModalVisible = true
+    },
+    close () {
+      this.refresh()
+      this.messageModalVisible = false
+    },
+    refresh () {
+      this.loadData()
     }
   }
 }

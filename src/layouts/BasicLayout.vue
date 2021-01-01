@@ -20,9 +20,9 @@
       </div>
     </template>
 
-    <setting-drawer :settings="settings" @change="handleSettingChange" />
+    <setting-drawer ref="settingDrawer" :settings="settings" @change="handleSettingChange" />
     <template v-slot:rightContentRender>
-      <right-content :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
+      <right-content :set-setting-drawer-show="setSettingDrawerShow" :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
     </template>
     <template v-slot:footerRender>
       <global-footer />
@@ -108,6 +108,7 @@ export default {
     })
   },
   mounted () {
+    // this.$refs.settingDrawer.setShow(true)
     const userAgent = navigator.userAgent
     if (userAgent.indexOf('Edge') > -1) {
       this.$nextTick(() => {
@@ -163,6 +164,9 @@ export default {
           }
           break
       }
+    },
+    setSettingDrawerShow (show) {
+      this.$refs.settingDrawer.setShow(show)
     }
   }
 }

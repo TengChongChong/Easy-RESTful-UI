@@ -47,12 +47,12 @@ export function reductionByIds (ids) {
 /**
  * 设置消息已读
  *
- * @param ids 消息ids
+ * @param ids {string | null} 消息ids
  * @return true/false
  */
 export function setRead (ids) {
   return request({
-    url: `${baseUrl}read/${ids}`,
+    url: `${baseUrl}read/${ids || ''}`,
     method: HTTP_METHOD.POST
   })
 }

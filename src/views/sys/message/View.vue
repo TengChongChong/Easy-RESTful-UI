@@ -15,8 +15,10 @@
               写消息
             </a-menu-item>
             <a-menu-item key="receive">
-              <a-icon type="mail" />
-              收信箱
+              <a-badge :count="unreadCount" :offset="[20, 8]">
+                <a-icon type="mail" />
+                收信箱
+              </a-badge>
             </a-menu-item>
             <a-menu-item key="draft">
               <a-icon type="container" />
@@ -58,6 +60,7 @@ import MInfo from '@/views/sys/message/Info'
 import Draft from '@/views/sys/message/Draft'
 import Sent from '@/views/sys/message/Sent'
 import { MESSAGE_CONST } from '@/utils/const/sys/MessageConst'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'SysMessageView',
@@ -79,6 +82,9 @@ export default {
       id: null,
       messageId: null
     }
+  },
+  computed: {
+    ...mapGetters(['unreadCount'])
   },
   mounted () {
     this.setSelectedKeys(this.currentMenu)

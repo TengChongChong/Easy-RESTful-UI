@@ -224,8 +224,3 @@ export default {
   }
 }
 </script>
-<style>
-.unread {
-  font-weight: bold;
-}
-</style>
