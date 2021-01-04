@@ -27,10 +27,7 @@
         <e-dict-tag type="messageType" :code="text"/>
       </span>
       <span slot="createUser" slot-scope="text, record">
-        <a-avatar v-if="record.avatar != null && record.avatar !== ''" :src="VUE_APP_API_BASE_URL + record.avatar"/>
-        <a-avatar v-else>
-          {{ record.nickname.substr(0, 1) }}
-        </a-avatar>
+        <e-avatar :avatar="record.avatar" :nickname="record.nickname"/>
         {{ record.nickname }}
       </span>
       <span slot="action" slot-scope="text, record">
@@ -69,6 +66,7 @@ import { formatDate } from '@/utils/util'
 import { MESSAGE_CONST } from '@/utils/const/sys/MessageConst'
 import EDictTag from '@/components/Easy/data-entry/DictTag'
 import { reductionByIds, removeByIds, setStar } from '@/api/sys/message-details'
+import EAvatar from '@/components/Easy/data-display/Avatar'
 
 const columns = [
   {
@@ -141,6 +139,7 @@ export default {
     }
   },
   components: {
+    EAvatar,
     EDictTag,
     EBtnRemoveBatch,
     EBtnRemove,

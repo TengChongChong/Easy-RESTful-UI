@@ -87,10 +87,7 @@
               <e-dict-tag type="sex" :code="text"/>
             </span>
             <span slot="avatar" slot-scope="text, record">
-              <a-avatar v-if="text != null && text !== ''" :src="VUE_APP_API_BASE_URL + text"/>
-              <a-avatar v-else>
-                {{ record.nickname.substr(0, 1) }}
-              </a-avatar>
+              <e-avatar :avatar="text" :nickname="record.nickname" />
             </span>
             <span slot="action" slot-scope="text, record">
               <e-btn-edit :to="`/sys/user/input`" :tab-name="record.nickname" :id="record.id"/>
@@ -123,6 +120,7 @@ import {
 import { select, remove, disableUser, enableUser } from '@/api/sys/user'
 import EProTable from '@/components/Easy/data-display/ProTable'
 import { USER_STATUS_CONST } from '@/utils/const/sys/UserStatusConst'
+import EAvatar from '@/components/Easy/data-display/Avatar'
 
 const baseId = '0'
 const columns = [
@@ -190,6 +188,7 @@ const columns = [
 export default {
   name: 'SysUserView',
   components: {
+    EAvatar,
     EProTable,
     Tree,
     EBtnRemoveBatch,
@@ -226,8 +225,7 @@ export default {
       queryParam: {},
       selectedRowKeys: [],
       selectedRows: [],
-      switchLoading: [],
-      VUE_APP_API_BASE_URL: process.env.VUE_APP_API_BASE_URL
+      switchLoading: []
     }
   },
   created () {

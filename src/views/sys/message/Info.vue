@@ -2,10 +2,7 @@
   <div>
     <h2 class="title">{{ model.title }}</h2>
     <p>
-      <a-avatar v-if="model.avatar != null && model.avatar !== ''" :src="VUE_APP_API_BASE_URL + model.avatar"/>
-      <a-avatar v-else>
-        {{ model.nickname && model.nickname.substr(0, 1) }}
-      </a-avatar>
+      <e-avatar :avatar="model.avatar" :nickname="model.nickname"/>
       {{ model.nickname }}
       <a-divider type="vertical" />
       {{ sendDate }}
@@ -19,8 +16,10 @@
 import { info } from '@/api/sys/message'
 import { formatDate, isNotBlank } from '@/utils/util'
 import { mapActions } from 'vuex'
+import EAvatar from '@/components/Easy/data-display/Avatar'
 
 export default {
+  components: { EAvatar },
   props: {
     id: {
       type: String,

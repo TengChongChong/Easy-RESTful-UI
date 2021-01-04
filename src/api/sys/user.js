@@ -62,7 +62,7 @@ export function add (deptId) {
 /**
  * 删除
  *
- * @param id 权限id
+ * @param id id
  * @return true/false
  */
 export function remove (id) {
@@ -128,7 +128,7 @@ export function save (params) {
 /**
  * 详情
  *
- * @param id 菜单/权限 id
+ * @param id id
  * @return SysUser
  */
 export function get (id) {

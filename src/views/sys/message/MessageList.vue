@@ -7,10 +7,7 @@
         >
           <a slot="title" :class="item.readDate == null ? 'unread' : ''" type="link" @click="info(item.id, item.messageId)">{{ item.title }}</a>
           <template slot="avatar">
-            <a-avatar v-if="item.avatar != null && item.avatar !== ''" :src="VUE_APP_API_BASE_URL + item.avatar"/>
-            <a-avatar v-else>
-              {{ item.nickname.substr(0, 1) }}
-            </a-avatar>
+            <e-avatar :avatar="item.avatar" :nickname="item.nickname" />
           </template>
         </a-list-item-meta>
       </a-list-item>
@@ -32,6 +29,7 @@ import { selectReceive } from '@/api/sys/message'
 import { MESSAGE_CONST } from '@/utils/const/sys/MessageConst'
 import { fromNow } from '@/utils/util'
 import Info from '@/views/sys/message/Info'
+import EAvatar from '@/components/Easy/data-display/Avatar'
 
 export default {
   props: {
@@ -41,12 +39,12 @@ export default {
     }
   },
   components: {
+    EAvatar,
     Info
   },
   data () {
     return {
       MESSAGE_CONST: MESSAGE_CONST,
-      VUE_APP_API_BASE_URL: process.env.VUE_APP_API_BASE_URL,
 
       data: [],
 

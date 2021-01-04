@@ -15,10 +15,7 @@
     <a-spin v-if="fetching" slot="notFoundContent" size="small"/>
     <a-select-option :key="item.id" v-for="item in selectOptions">
       <span role="img" aria-label="China">
-        <a-avatar v-if="item.avatar != null && item.avatar !== ''" :src="VUE_APP_API_BASE_URL + item.avatar"/>
-        <a-avatar v-else>
-          {{ item.nickname.substr(0, 1) }}
-        </a-avatar>
+        <e-avatar :avatar="item.avatar" :nickname="item.nickname"/>
       </span>
       <a-tag color="blue" style="margin-left: 10px">{{ item.deptName }}</a-tag>
       {{ item.nickname }}
@@ -28,9 +25,11 @@
 <script>
 import { selectByKeyword, selectUsersByIds } from '@/api/sys/user'
 import { isNotBlank } from '@/utils/util'
+import EAvatar from '@/components/Easy/data-display/Avatar'
 
 export default {
   name: 'EUserSearchSelect',
+  components: { EAvatar },
   props: {
     mode: {
       type: String,

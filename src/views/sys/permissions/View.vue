@@ -142,6 +142,11 @@
                 </a-input>
               </a-form-model-item>
             </a-col>
+            <a-col :lg="12" :sm="24" v-if="model.type === PERMISSIONS_TYPE_CONST.MENU">
+              <a-form-model-item label="打开方式">
+                <e-dict-radio name="target" v-model="model.target" type="target"/>
+              </a-form-model-item>
+            </a-col>
             <a-col :sm="24">
               <a-form-model-item label="备注" :labelCol="{ span: 3 }" :wrapperCol="{ span: 19 }" prop="tips">
                 <a-textarea v-model="model.tips"/>

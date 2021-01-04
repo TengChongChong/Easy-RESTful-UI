@@ -1,7 +1,7 @@
 <template>
   <a-dropdown v-if="currentUser && currentUser.nickname" placement="bottomRight">
     <span class="ant-pro-account-avatar">
-      <a-avatar size="small" :src="currentUser.avatar" class="antd-pro-global-header-index-avatar" />
+      <e-avatar :relative-path="false" size="small" :avatar="currentUser.avatar" :nickname="currentUser.nickname" class="antd-pro-global-header-index-avatar"/>
       <span>{{ currentUser.nickname }}</span>
     </span>
     <template v-slot:overlay>
@@ -33,9 +33,11 @@
 
 <script>
 import { Modal } from 'ant-design-vue'
+import EAvatar from '@/components/Easy/data-display/Avatar'
 
 export default {
   name: 'AvatarDropdown',
+  components: { EAvatar },
   props: {
     currentUser: {
       type: Object,

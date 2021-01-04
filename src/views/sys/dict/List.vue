@@ -170,6 +170,7 @@ export default {
   },
   activated () {
     this.$refs.table.refresh(true)
+    this.loadDictTypes()
   },
   computed: {
     rowSelection () {

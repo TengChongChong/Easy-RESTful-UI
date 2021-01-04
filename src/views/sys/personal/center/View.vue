@@ -1,11 +1,11 @@
 <template>
-  <div class="page-header-index-wide page-header-wrapper-grid-content-main">
+  <div class="page-header-index-wide page-header-wrapper-grid-content-main user-personal-center">
     <a-row :gutter="24">
       <a-col :md="24" :lg="6">
         <a-card :bordered="false">
           <div class="account-center-avatarHolder">
             <div class="avatar">
-              <img :src="user.avatar">
+              <e-avatar :relative-path="false" :avatar="user.avatar" :nickname="user.nickname"/>
             </div>
             <a-tag v-if="SEX_CONST.BOY === user.sex" color="blue">
               <a-icon type="man"/>
@@ -56,10 +56,11 @@ import { mapGetters } from 'vuex'
 import EDictTag from '@/components/Easy/data-entry/DictTag'
 import { SEX_CONST } from '@/utils/const/sys/SexConst'
 import MessageList from '@/views/sys/message/MessageList'
+import EAvatar from '@/components/Easy/data-display/Avatar'
 
 export default {
   name: 'SysPersonalCenterView',
-  components: { EDictTag, MessageList },
+  components: { EAvatar, EDictTag, MessageList },
   data () {
     return {
       SEX_CONST: SEX_CONST
@@ -71,8 +72,8 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-.page-header-wrapper-grid-content-main {
+<style lang="less">
+.page-header-wrapper-grid-content-main&.user-personal-center {
   width: 100%;
   height: 100%;
   min-height: 100%;
@@ -82,10 +83,12 @@ export default {
     text-align: center;
     margin-bottom: 24px;
 
-    & > .avatar {
+    .ant-avatar {
       margin: 0 auto 20px auto;
       width: 104px;
       height: 104px;
+      line-height: 104px;
+      font-size: 24px;
       border-radius: 50%;
       overflow: hidden;
 

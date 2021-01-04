@@ -190,7 +190,7 @@ export function deepClone (source, ignore) {
 /**
  * 格式化时间
  *
- * @param date {date} 时间
+ * @param date {Date} 时间
  * @param datePattern {string} 格式
  */
 export function formatDate (date, datePattern = DATE_PATTERN.NORM_DATETIME_MINUTE_PATTERN) {

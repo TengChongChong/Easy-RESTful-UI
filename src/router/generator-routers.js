@@ -1,6 +1,7 @@
 // import { BasicLayout, BlankLayout, PageView, RouteView } from '@/layouts'
 import { BlankLayout, PageView, RouteView } from '@/layouts'
 import { deepClone } from '@/utils/util'
+import { OPEN_MODE_CONST } from '@/utils/const/sys/OpenModeConst'
 import store from '@/store'
 
 // 前端路由表
@@ -162,19 +163,21 @@ export const generator = (routerMap, parent) => {
       path: item.path || `${parent && parent.path || ''}/${item.id}`,
       // 路由名称，建议唯一
       name: generatorName(item),
-      // 该路由对应页面
-      component: item.component ? (constantRouterComponents[item.component]) || (() => import(`@/views${item.component}`)) : RouteView,
       // meta: 页面标题, 菜单图标, 页面权限(供指令权限用，可去掉)
       meta: {
         title: name,
         icon: icon || undefined,
         hiddenHeaderContent: hiddenHeaderContent,
-        target: target,
+        target: OPEN_MODE_CONST.NEW_WINDOW === target ? '_blank' : null,
         permission: item.code,
         paths: parentPaths,
         hidden: hide === '1'
       },
       hidden
+    }
+    if (target == null || OPEN_MODE_CONST.DEFAULT === target) {
+      // 该路由对应页面
+      currentRouter.component = item.component ? (constantRouterComponents[item.component]) || (() => import(`@/views${item.component}`)) : RouteView
     }
     // 是否设置了隐藏菜单
     if (hide === '1') {

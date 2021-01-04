@@ -13,7 +13,7 @@ const api = {
 /**
  * 新增
  *
- * @param pId 上级菜单/权限 id
+ * @param pId 上级 id
  */
 export function add (pId) {
   return request({
@@ -24,7 +24,7 @@ export function add (pId) {
 /**
  * 删除
  *
- * @param id 权限id
+ * @param id id
  */
 export function remove (id) {
   return request({
@@ -35,7 +35,7 @@ export function remove (id) {
 /**
  * 批量删除
  *
- * @param ids 权限ids
+ * @param ids ids
  */
 export function batchRemove (ids) {
   return request({
@@ -46,7 +46,7 @@ export function batchRemove (ids) {
 /**
  * 设置状态
  *
- * @param ids    权限ids
+ * @param ids    ids
  * @param status 状态
  */
 export function setStatus (ids, status) {
@@ -70,7 +70,7 @@ export function save (params) {
 /**
  * 详情
  *
- * @param id 菜单/权限 id
+ * @param id id
  */
 export function get (id) {
   return request({
@@ -81,7 +81,7 @@ export function get (id) {
 /**
  * 根据pId获取数据
  *
- * @param pId 父权限id
+ * @param pId 父id
  * @return List<JsTree>
  */
 export function selectByPId (pId) {
@@ -155,7 +155,7 @@ export function selectRoleByDept (deptId) {
 /**
  * 拖动改变目录或顺序
  *
- * @param id          拖动的菜单/权限id
+ * @param id          拖动的id
  * @param parent      拖动后的父id
  * @param oldParent   拖动前的id
  * @param position    拖动前的下标
