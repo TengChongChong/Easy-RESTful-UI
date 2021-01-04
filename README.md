@@ -13,7 +13,7 @@
 - Ant Design Pro: https://pro.antdv.com/
 - Ant Design of Vue: https://www.antdv.com/docs/vue/introduce-cn/
   
-- 预览: http://rest.easy-frame.top
+- 预览: http://rest.easy-frame.top (admin/admin123)
 - 文档: https://rest-doc.easy-frame.top
 - 更新日志: https://gitee.com/tcc/easy-restful-ui/blob/master/CHANGELOG.md
 - 常见问题: https://rest-doc.easy-frame.top/faq
