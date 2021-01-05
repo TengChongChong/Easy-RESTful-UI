@@ -29,7 +29,7 @@
         <div class="table-list-toolbar">
           <div class="table-list-toolbar-container">
             <div class="table-list-toolbar-left">
-              <div class="table-list-toolbar-title">{{ title }}</div>
+              <div class="table-list-toolbar-title" v-if="!isMobile">{{ title }}</div>
             </div>
             <div class="table-list-toolbar-right">
               <slot name="button"></slot>
@@ -55,13 +55,13 @@
                   </a-button>
                 </a-dropdown>
               </a-tooltip>
-              <a-tooltip placement="top">
+              <a-tooltip placement="top" v-if="!isMobile">
                 <template slot="title">
                   <span>列设置（未实现）</span>
                 </template>
                 <a-button class="toolbar-item" icon="setting"/>
               </a-tooltip>
-              <a-tooltip placement="top">
+              <a-tooltip placement="top" v-if="!isMobile">
                 <template slot="title">
                   <span>全屏（未实现）</span>
                 </template>
@@ -79,7 +79,7 @@
 </template>
 <script>
 import { FORM_LAYOUT } from '@/utils/const/form'
-
+import { baseMixin } from '@/store/app-mixin'
 export default {
   name: 'EProTable',
   props: {
@@ -92,6 +92,7 @@ export default {
       default: false
     }
   },
+  mixins: [baseMixin],
   data () {
     return {
       formLayout: FORM_LAYOUT,
