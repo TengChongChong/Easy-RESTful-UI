@@ -1,5 +1,5 @@
 import storage from 'store'
-import { login, getInfo, logout } from '@/api/login'
+import { login, getInfo, logout } from '@/api/sys/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { selectUnreadCount } from '@/api/sys/message'
 
