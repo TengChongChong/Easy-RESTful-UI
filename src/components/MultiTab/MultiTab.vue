@@ -1,6 +1,12 @@
 <script>
 export default {
   name: 'MultiTab',
+  props: {
+    sidebarCollapsed: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     return {
       activeKey: ''
@@ -154,7 +160,7 @@ export default {
     })
 
     return (
-      <div class="ant-pro-multi-tab">
+      <div class={['ant-pro-multi-tab', this.sidebarCollapsed ? 'sidebar-collapsed' : '']}>
         <div class="ant-pro-multi-tab-wrapper">
           <a-tabs
             hideAdd

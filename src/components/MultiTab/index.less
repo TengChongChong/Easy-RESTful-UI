@@ -19,6 +19,10 @@
   margin: 0 -20px;
   background: #fff;
 
+  &.sidebar-collapsed {
+    width: calc(100% - 80px);
+  }
+
   .ant-tabs-bar {
     border-bottom: 0;
   }
@@ -66,21 +70,25 @@
   }
 }
 
-.topmenu {
-  .wide{
+.topmenu,
+.screen-xs {
+  .wide {
     .@{multi-tab-prefix-cls} {
       width: 1200px;
       margin: 0;
     }
+
     .@{multi-tab-wrapper-prefix-cls} {
       max-width: 1200px;
       margin: 0 auto;
     }
   }
+
   .@{multi-tab-prefix-cls} {
     width: 100%;
     margin: 0 -20px;
   }
+
   .@{multi-tab-wrapper-prefix-cls} {
     max-width: 100%;
     margin: 0 auto;
