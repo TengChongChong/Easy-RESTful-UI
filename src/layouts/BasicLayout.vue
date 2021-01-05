@@ -27,7 +27,7 @@
     <template v-slot:footerRender>
       <global-footer />
     </template>
-    <multi-tab />
+    <multi-tab :sidebar-collapsed="collapsed"/>
     <router-view />
   </pro-layout>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-row :gutter="24" style="margin-bottom: 15px">
+    <a-row :gutter="16" style="margin-bottom: 15px">
       <a-col :lg="12" :sm="24">
       </a-col>
       <a-col :lg="12" :sm="24" style="text-align: right">

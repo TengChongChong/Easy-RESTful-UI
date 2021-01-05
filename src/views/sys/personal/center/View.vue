@@ -1,7 +1,7 @@
 <template>
   <div class="page-header-index-wide page-header-wrapper-grid-content-main user-personal-center">
-    <a-row :gutter="24">
-      <a-col :md="24" :lg="6">
+    <a-row :gutter="16">
+      <a-col :md="20" :lg="6">
         <a-card :bordered="false">
           <div class="account-center-avatarHolder">
             <div class="avatar">
@@ -36,14 +36,14 @@
           </div>
         </a-card>
       </a-col>
-      <a-col :md="24" :lg="18" class="right-wrapper">
-        <a-card title="我的消息" :bordered="false" style="max-height: 300px;margin-bottom: 24px" :body-style="{padding: '0px 20px'}">
+      <a-col :md="16" :lg="18" class="right-wrapper">
+        <a-card title="我的消息" :bordered="false" :body-style="{padding: '0px 20px'}">
           <router-link slot="extra" to="/sys/message">
             更多
           </router-link>
           <message-list/>
         </a-card>
-        <a-card title="待办任务" :bordered="false" style="max-height: 300px;" :body-style="{padding: '0px 20px'}">
+        <a-card title="待办任务" :bordered="false" :body-style="{padding: '0px 20px'}">
           <p>...</p>
         </a-card>
       </a-col>

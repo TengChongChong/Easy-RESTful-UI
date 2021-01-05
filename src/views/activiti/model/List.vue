@@ -1,31 +1,27 @@
 <template>
-  <e-pro-table title="异常日志" :advanced.sync="advanced">
+  <e-pro-table title="系统参数" :advanced.sync="advanced">
     <template slot="query">
       <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
-        <a-form-model-item label="错误代码">
-          <a-input v-model="queryParam.code"/>
+        <a-form-model-item label="key">
+          <a-input v-model="queryParam.sysKey"/>
         </a-form-model-item>
       </a-col>
       <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
-        <a-form-model-item label="错误类型">
-          <a-input v-model="queryParam.type"/>
-        </a-form-model-item>
-      </a-col>
-      <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
-        <a-form-model-item label="访问地址">
-          <a-input v-model="queryParam.url"/>
+        <a-form-model-item label="value">
+          <a-input v-model="queryParam.value"/>
         </a-form-model-item>
       </a-col>
       <template v-if="advanced">
         <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
-          <a-form-model-item label="触发用户">
-            <a-input v-model="queryParam.nickname"/>
+          <a-form-model-item label="类型">
+            <e-dict-select type="dataType" v-model="queryParam.type" @change="$refs.table.refresh(true)"/>
           </a-form-model-item>
         </a-col>
       </template>
     </template>
 
     <template slot="button">
+      <e-btn-add to="/sys/config/add"/>
       <e-btn-remove-batch :ids="selectedRowKeys" :click-callback="remove"/>
     </template>
 
@@ -38,10 +34,14 @@
         :rowSelection="rowSelection"
         showPagination="auto"
       >
+        <span slot="type" slot-scope="text, record">
+          <e-dict-tag type="dataType" :code="record.type"/>
+        </span>
+
         <span slot="action" slot-scope="text, record">
           <template>
-            <e-btn-info :to="`/sys/exception/input`" :tab-name="record.message" :id="record.id"/>
-            <btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
+            <e-btn-edit :to="`/sys/config/input`" :tab-name="record.key" :id="record.id"/>
+            <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
           </template>
         </span>
       </s-table>
@@ -51,67 +51,69 @@
 
 <script>
 import { STable, Ellipsis } from '@/components'
-import { select, remove } from '@/api/sys/exception'
-import BtnRemove from '@/components/Easy/general/BtnRemove'
+import { select, remove } from '@/api/activiti/model'
+import EDictTag from '@/components/Easy/data-entry/DictTag'
+import EDictSelect from '@/components/Easy/data-entry/DictSelect'
+import EBtnAdd from '@/components/Easy/general/BtnAdd'
+import EBtnEdit from '@/components/Easy/general/BtnEdit'
+import EBtnRemove from '@/components/Easy/general/BtnRemove'
 import EBtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
 import EProTable from '@/components/Easy/data-display/ProTable'
-import EBtnInfo from '@/components/Easy/general/BtnInfo'
 import { formatDate } from '@/utils/util'
 
 const columns = [
   {
-    title: '错误代码',
-    dataIndex: 'code',
-    sorter: true,
-    width: 100
+    title: '名称',
+    dataIndex: 'name',
+    width: 100,
+    sorter: true
   },
   {
-    title: '异常类型',
-    dataIndex: 'type',
-    sorter: true,
-    width: 360
+    title: '标识',
+    dataIndex: 'key',
+    width: 100,
+    sorter: true
   },
   {
-    title: '错误信息',
-    dataIndex: 'message',
+    title: '版本号',
+    dataIndex: 'version',
     sorter: true,
-    width: 360
+    width: 100,
+    customRender: (text) => `v.${text}`
   },
   {
-    title: '请求地址',
-    dataIndex: 'url',
-    sorter: true,
-    width: 240
-  },
-  {
-    title: '触发时间',
-    dataIndex: 'triggerTime',
+    title: '创建时间',
+    dataIndex: 'createTime',
     sorter: true,
     width: 170,
     customRender: (text) => formatDate(text)
   },
   {
-    title: '触发用户',
-    dataIndex: 'nickname',
+    title: '最后更新时间',
+    dataIndex: 'lastUpdateTime',
     sorter: true,
-    width: 140
+    width: 170,
+    customRender: (text) => formatDate(text)
   },
   {
     title: '操作',
     dataIndex: 'action',
-    width: 90,
+    width: 160,
     fixed: 'right',
     scopedSlots: { customRender: 'action' }
   }
 ]
 
 export default {
-  name: 'SysExceptionList',
+  name: 'ActivitiModelList',
   components: {
-    EBtnInfo,
     EProTable,
     EBtnRemoveBatch,
-    BtnRemove,
+    EBtnRemove,
+    EBtnEdit,
+    EBtnAdd,
+    EDictSelect,
+    EDictTag,
     STable,
     Ellipsis
   },

@@ -1,5 +1,5 @@
 <template>
-  <a-row :gutter="20">
+  <a-row :gutter="16">
     <a-col :xl="6" :md="8">
       <a-card title="部门" :bordered="false" id="tree-card">
         <a-tooltip placement="top" :visible="searchTooltipVisible">
@@ -53,7 +53,7 @@
         </template>
 
         <template slot="button">
-          <e-btn-add to="/sys/user/add" :params="{deptId: queryParam.deptId}"/>
+          <e-btn-add to="/sys/user/input" :params="{deptId: queryParam.deptId}"/>
           <e-btn-remove-batch :loading.sync="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
         </template>
 
@@ -180,7 +180,7 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'action',
-    width: '100px',
+    width: 90,
     fixed: 'right',
     scopedSlots: { customRender: 'action' }
   }

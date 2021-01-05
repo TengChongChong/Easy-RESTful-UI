@@ -21,7 +21,7 @@
     </template>
 
     <template slot="button">
-      <e-btn-add to="/sys/config/add"/>
+      <e-btn-add to="/sys/config/input"/>
       <a-button type="primary" icon="sync" @click="refreshCache">更新缓存数据</a-button>
       <e-btn-remove-batch :ids="selectedRowKeys" :click-callback="remove"/>
     </template>
@@ -42,7 +42,7 @@
         <span slot="action" slot-scope="text, record">
           <template>
             <e-btn-edit :to="`/sys/config/input`" :tab-name="record.key" :id="record.id"/>
-            <e-btn-remove :id="record.id" :divider="false" :on-click="remove"/>
+            <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
           </template>
         </span>
       </s-table>
@@ -55,7 +55,6 @@ import { STable, Ellipsis } from '@/components'
 import { select, remove, refreshCache } from '@/api/sys/config'
 import EDictTag from '@/components/Easy/data-entry/DictTag'
 import EDictSelect from '@/components/Easy/data-entry/DictSelect'
-import EBtnAddSub from '@/components/Easy/general/BtnAddSub'
 import EBtnAdd from '@/components/Easy/general/BtnAdd'
 import EBtnEdit from '@/components/Easy/general/BtnEdit'
 import EBtnRemove from '@/components/Easy/general/BtnRemove'
@@ -86,12 +85,14 @@ const columns = [
   {
     title: '备注',
     dataIndex: 'tips',
+    width: 200,
     sorter: true
   },
   {
     title: '操作',
     dataIndex: 'action',
-    width: 150,
+    width: 90,
+    fixed: 'right',
     scopedSlots: { customRender: 'action' }
   }
 ]
@@ -104,7 +105,6 @@ export default {
     EBtnRemove,
     EBtnEdit,
     EBtnAdd,
-    EBtnAddSub,
     EDictSelect,
     EDictTag,
     STable,

@@ -41,7 +41,6 @@
             >
               <a-button type="danger" icon="delete" :loading="loading" bordered v-if="model != null">删除</a-button>
             </a-popconfirm>
-
           </div>
         </a-col>
       </a-row>

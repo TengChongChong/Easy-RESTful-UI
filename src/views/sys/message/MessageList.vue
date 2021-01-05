@@ -36,6 +36,10 @@ export default {
     status: {
       type: String,
       default: null
+    },
+    size: {
+      type: Number,
+      default: 5
     }
   },
   components: {
@@ -53,6 +57,9 @@ export default {
       messageId: null
     }
   },
+  activated () {
+    this.loadData()
+  },
   mounted () {
     this.loadData()
   },
@@ -60,7 +67,8 @@ export default {
     // 加载数据方法 必须为 Promise 对象
     loadData () {
       return selectReceive({
-        detailsStatus: this.status
+        detailsStatus: this.status,
+        size: this.size
       })
         .then(res => {
           this.data = res.data.data

@@ -118,7 +118,7 @@ import md5 from 'md5'
 import TwoStepCaptcha from '@/components/tools/TwoStepCaptcha'
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
-import { getSmsCaptcha } from '@/api/login'
+import { getSmsCaptcha } from '@/api/sys/login'
 
 export default {
   components: {

@@ -1,5 +1,5 @@
 <template>
-  <a-row :gutter="20">
+  <a-row :gutter="16">
     <a-col :xl="6" :md="8">
       <a-card title="菜单管理" :bordered="false" id="tree-card">
         <a-tooltip placement="top" :visible="searchTooltipVisible">

@@ -30,7 +30,7 @@
     </template>
 
     <template slot="button">
-      <e-btn-add to="/sys/dict/add" :params="{dictType: queryParam.dictType}"/>
+      <e-btn-add to="/sys/dict/input" :params="{dictType: queryParam.dictType}"/>
       <router-link to="/sys/dict/type/list">
         <a-button icon="bars">字典类型管理</a-button>
       </router-link>
@@ -70,7 +70,7 @@
         </span>
         <span slot="action" slot-scope="text, record">
           <template>
-            <e-btn-add-sub :to="`/sys/dict/add`" :tab-name="`新增下级 - ${record.name}`" :params="{ pId: record.id, dictType: record.dictType }"/>
+            <e-btn-add-sub :to="`/sys/dict/input`" :tab-name="`新增下级 - ${record.name}`" :params="{ pId: record.id, dictType: record.dictType }"/>
 
             <e-btn-edit :to="`/sys/dict/input`" :tab-name="record.name" :id="record.id"/>
 
@@ -133,7 +133,7 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'action',
-    width: 150,
+    width: 130,
     fixed: 'right',
     scopedSlots: { customRender: 'action' }
   }

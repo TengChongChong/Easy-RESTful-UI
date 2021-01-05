@@ -25,6 +25,9 @@
           <e-btn-save :click-callback="save"/>
           <a-button type="primary" icon="check-circle" @click="saveAndSend">保存并发送</a-button>
         </div>
+        <div class="input-btn-group" v-else>
+          <a-button type="primary" icon="check-circle" @click="newMessage">写消息</a-button>
+        </div>
       </a-col>
     </a-row>
   </a-form-model>
@@ -63,6 +66,7 @@ export default {
         labelCol: { span: 4 },
         wrapperCol: { span: 16 }
       },
+      editor: null,
       model: {
         receivers: [],
         title: null,
@@ -85,8 +89,7 @@ export default {
         content: [
           { required: true, message: '内容不能为空', trigger: 'blur' }
         ]
-      },
-      editor: null
+      }
     }
   },
   mounted () {
@@ -126,6 +129,16 @@ export default {
           })
         }
       })
+    },
+    newMessage () {
+      this.model = {
+        receivers: [],
+        title: null,
+        important: null,
+        content: null,
+        status: MESSAGE_CONST.STATUS_DRAFT
+      }
+      this.editor.txt.html('')
     }
   },
   beforeDestroy () {

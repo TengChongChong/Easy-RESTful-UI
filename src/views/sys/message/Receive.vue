@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-row :gutter="24" style="margin-bottom: 15px">
+    <a-row :gutter="16" style="margin-bottom: 15px">
       <a-col :lg="12" :sm="24">
         <e-btn-remove-batch>彻底删除</e-btn-remove-batch>
       </a-col>
@@ -107,7 +107,8 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'action',
-    width: 100,
+    width: 90,
+    fixed: 'right',
     scopedSlots: { customRender: 'action' }
   }
 ]

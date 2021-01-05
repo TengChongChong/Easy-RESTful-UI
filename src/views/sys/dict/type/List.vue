@@ -23,7 +23,7 @@
 
       <template slot="button">
         <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
-        <e-btn-remove-batch :ids="selectedRowKeys" :on-click="remove"/>
+        <e-btn-remove-batch :ids="selectedRowKeys" :click-callback="remove"/>
       </template>
 
       <template slot="table">
@@ -160,7 +160,8 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'action',
-    width: 150,
+    width: 90,
+    fixed: 'right',
     scopedSlots: { customRender: 'action' }
   }
 ]
