@@ -13,7 +13,7 @@
                 :style="currentAdvanced && { float: 'right', overflow: 'hidden' } || {} ">
                 <a-button type="primary" icon="search" @click="refresh()">查询</a-button>
                 <a-button icon="undo" style="margin-left: 8px" @click="reset()">重置</a-button>
-                <a @click="toggleAdvanced" style="margin-left: 8px">
+                <a @click="toggleAdvanced" v-if="!noAdvanced" style="margin-left: 8px">
                   {{ currentAdvanced ? '收起' : '展开' }}
                   <a-icon :type="currentAdvanced ? 'up' : 'down'"/>
                 </a>
@@ -88,6 +88,10 @@ export default {
       default: ''
     },
     advanced: {
+      type: Boolean,
+      default: false
+    },
+    noAdvanced: {
       type: Boolean,
       default: false
     }
