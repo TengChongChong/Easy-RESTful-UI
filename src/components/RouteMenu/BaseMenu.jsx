@@ -110,7 +110,7 @@ const RouteMenu = {
         this.openKeys = openKeys
         return
       }
-      const latestOpenKey = openKeys.find(key => !this.openKeys.includes(key))
+      const latestOpenKey = this.openKeys && openKeys.find(key => !this.openKeys.includes(key))
       if (!this.rootSubmenuKeys.includes(latestOpenKey)) {
         this.openKeys = openKeys
       } else {
