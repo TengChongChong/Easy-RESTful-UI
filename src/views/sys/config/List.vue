@@ -1,5 +1,5 @@
 <template>
-  <e-pro-table title="系统参数" :advanced.sync="advanced">
+  <e-pro-table title="系统参数" :no-advanced="true">
     <template slot="query">
       <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
         <a-form-model-item label="key">
@@ -113,8 +113,6 @@ export default {
   data () {
     this.columns = columns
     return {
-      // 高级搜索 展开/关闭
-      advanced: false,
       // 查询参数
       queryParam: {},
       selectedRowKeys: [],
