@@ -56,7 +56,9 @@
     },
     methods: {
       onClick () {
-        this.query = Object.assign((this.query || {}), { id: this.id })
+        if (this.id) {
+          this.query = Object.assign((this.query || {}), { id: this.id })
+        }
         openView(this.$router, this.to, this.tabName, this.query)
       }
     }
