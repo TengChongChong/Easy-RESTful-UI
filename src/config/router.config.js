@@ -45,12 +45,28 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/iframe',
+    component: BasicLayout,
+    hidden: true,
+    children: [
+      {
+        path: '/iframe',
+        name: 'Iframe',
+        meta: {
+          title: 'Iframe'
+        },
+        component: () => import('@/views/iframe/View')
+      }
+    ]
+  },
+  {
     path: '/sys/mail-verifies',
     component: UserLayout,
     hidden: true,
     children: [
       {
         path: '/sys/mail-verifies/bind-mail/:code',
+        name: 'BindMail',
         component: () => import('@/views/sys/mail-verifies/bind-mail')
       }
     ]

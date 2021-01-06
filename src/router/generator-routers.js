@@ -1,4 +1,3 @@
-// import { BasicLayout, BlankLayout, PageView, RouteView } from '@/layouts'
 import { BlankLayout, PageView, RouteView } from '@/layouts'
 import { deepClone } from '@/utils/util'
 import { OPEN_MODE_CONST } from '@/utils/const/sys/OpenModeConst'
@@ -6,8 +5,6 @@ import store from '@/store'
 
 // 前端路由表
 const constantRouterComponents = {
-  // 基础页面 layout 必须引入
-  // BasicLayout: BasicLayout,
   BasicLayout: () => import('@/layouts/BasicLayout'),
   BlankLayout: BlankLayout,
   RouteView: RouteView,
