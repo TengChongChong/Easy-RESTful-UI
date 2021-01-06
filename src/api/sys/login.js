@@ -1,8 +1,9 @@
 import request from '@/utils/request'
+import { HTTP_METHOD } from '@/utils/const/http/method'
 
 const userApi = {
   Login: '/auth/login',
-  Logout: '/auth/logout',
+  Logout: '/logout',
   ForgePassword: '/auth/forge-password',
   Register: '/auth/register',
   twoStepCode: '/auth/2step-code',
@@ -27,47 +28,28 @@ const userApi = {
 export function login (parameter) {
   return request({
     url: userApi.Login,
-    method: 'post',
+    method: HTTP_METHOD.POST,
     data: parameter
-  })
-}
-
-export function getSmsCaptcha (parameter) {
-  return request({
-    url: userApi.SendSms,
-    method: 'post',
-    data: parameter
-  })
-}
-
-export function getInfo () {
-  return request({
-    url: userApi.UserInfo,
-    method: 'get'
-  })
-}
-
-export function getCurrentUserNav () {
-  return request({
-    url: userApi.UserMenu,
-    method: 'get'
   })
 }
 
 export function logout () {
   return request({
     url: userApi.Logout,
-    method: 'post'
+    method: HTTP_METHOD.POST
   })
 }
 
-/**
- * get user 2step code open?
- * @param parameter {*}
- */
-export function get2step (parameter) {
+export function getInfo () {
   return request({
-    url: userApi.twoStepCode,
+    url: userApi.UserInfo,
+    method: HTTP_METHOD.GET
+  })
+}
+
+export function getSmsCaptcha (parameter) {
+  return request({
+    url: userApi.SendSms,
     method: 'post',
     data: parameter
   })
