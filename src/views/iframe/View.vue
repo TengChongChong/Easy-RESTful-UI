@@ -5,7 +5,7 @@
 import { getElementOffset } from '@/utils/util'
 
 export default {
-  name: 'Iframe',
+  name: 'IframeView',
   data () {
     return {
       path: this.$route.query.path,
