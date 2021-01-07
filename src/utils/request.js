@@ -40,43 +40,38 @@ const errorHandler = (error) => {
     const response = error.response
     const { data, status } = error.response
     if (data && !data.success) {
-      if (data.showType) {
-        let message, description, method
-        switch (data.showType) {
-          case SHOW_TYPE.SILENT:
-            // 静默
-            break
-          case SHOW_TYPE.NOTIFICATION_INFO:
-            method = 'info'
-            message = '信息'
-            description = data.errorMessage
-            break
-          case SHOW_TYPE.NOTIFICATION_WARNING:
-            method = 'warning'
-            message = '警告'
-            description = data.errorMessage
-            break
-          case SHOW_TYPE.NOTIFICATION_ERROR:
-            method = 'error'
-            message = '错误'
-            description = data.errorMessage
-            break
-          case SHOW_TYPE.PAGE:
-            method = 'page'
-            // todo: 跳转到错误页面
-            break
-          default:
-            break
-        }
-        if (message && method !== 'page') {
-          notification[method]({
-            message,
-            description: description || codeMessage[response.status]
-          })
-        }
-      } else {
-        const { status, url } = error.response
-        console.warn(`${url}响应状态码${status}，data.success不应为${data.success}`)
+      let message, description, method
+      switch (data.showType) {
+        case SHOW_TYPE.SILENT:
+          // 静默
+          break
+        case SHOW_TYPE.NOTIFICATION_INFO:
+          method = 'info'
+          message = '信息'
+          description = data.errorMessage
+          break
+        case SHOW_TYPE.NOTIFICATION_WARNING:
+          method = 'warning'
+          message = '警告'
+          description = data.errorMessage
+          break
+        case SHOW_TYPE.NOTIFICATION_ERROR:
+          method = 'error'
+          message = '错误'
+          description = data.errorMessage
+          break
+        case SHOW_TYPE.PAGE:
+          method = 'page'
+          // todo: 跳转到错误页面
+          break
+        default:
+          break
+      }
+      if (message && method !== 'page') {
+        notification[method]({
+          message,
+          description: description || codeMessage[response.status]
+        })
       }
     } else if (response && response.status) {
       // 用户没有权限（令牌、用户名、密码错误）
