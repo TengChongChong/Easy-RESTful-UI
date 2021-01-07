@@ -51,7 +51,7 @@ export const constantRouterMap = [
     children: [
       {
         path: '/iframe',
-        name: 'Iframe',
+        name: 'IframeView',
         meta: {
           title: 'Iframe'
         },
