@@ -174,7 +174,7 @@
   const baseId = '0'
 
   export default {
-    name: 'RoleView',
+    name: 'SysRoleView',
     components: {
       EBtnSave,
       EDictRadio,
