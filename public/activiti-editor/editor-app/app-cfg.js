@@ -21,7 +21,6 @@
 var ACTIVITI = ACTIVITI || {}
 
 ACTIVITI.CONFIG = {
-	// 'contextRoot' : '/activiti-explorer/service',
   token: 'Access-Token',
-	'contextRoot': 'http://127.0.0.1'
+  contextRoot: 'http://127.0.0.1'
 }
