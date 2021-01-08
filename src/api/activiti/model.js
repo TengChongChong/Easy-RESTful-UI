@@ -32,3 +32,27 @@ export function get (id) {
     method: HTTP_METHOD.GET
   })
 }
+/**
+ * 部署流程
+ *
+ * @param id 模型id
+ * @return true/false
+ */
+export function deploymentProcess (id) {
+  return request({
+    url: `${baseUrl}deployment/process/${id}`,
+    method: HTTP_METHOD.POST
+  })
+}
+
+/**
+ * 导出模型
+ *
+ * @param id 模型id
+ */
+export function exportModel (id) {
+  return request({
+    url: `${baseUrl}export/${id}`,
+    method: HTTP_METHOD.GET
+  })
+}

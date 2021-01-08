@@ -1,6 +1,6 @@
 <template>
   <div>
-    <e-pro-table title="系统参数" :no-advanced="true">
+    <e-pro-table title="流程模型" :no-advanced="true">
       <template slot="query">
         <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
           <a-form-model-item label="名称">
@@ -38,14 +38,14 @@
                 <template slot="title">
                   <span>部署</span>
                 </template>
-                <a-button type="primary" size="small" icon="check"/>
+                <a-button type="primary" size="small" icon="check" @click="deploymentProcess(record.id)"/>
               </a-tooltip>
               <a-divider type="vertical" />
               <a-tooltip placement="top">
                 <template slot="title">
                   <span>导出</span>
                 </template>
-                <a-button size="small" icon="download"/>
+                <a-button size="small" icon="download" @click="exportModel(record.id)"/>
               </a-tooltip>
               <a-divider type="vertical" />
               <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
@@ -80,7 +80,7 @@
 
 <script>
 import { STable, Ellipsis } from '@/components'
-import { select, remove, save } from '@/api/activiti/model'
+import { select, remove, save, deploymentProcess, exportModel } from '@/api/activiti/model'
 import EDictTag from '@/components/Easy/data-entry/DictTag'
 import EDictSelect from '@/components/Easy/data-entry/DictSelect'
 import EBtnAdd from '@/components/Easy/general/BtnAdd'
@@ -88,9 +88,9 @@ import EBtnEdit from '@/components/Easy/general/BtnEdit'
 import EBtnRemove from '@/components/Easy/general/BtnRemove'
 import EBtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
 import EProTable from '@/components/Easy/data-display/ProTable'
-import { formatDate } from '@/utils/util'
+import { downloadFileById, formatDate } from '@/utils/util'
 import { FORM_LAYOUT } from '@/utils/const/form'
-import { saveSuccessTip } from '@/utils/tips'
+import { saveSuccessTip, successTip } from '@/utils/tips'
 
 const columns = [
   {
@@ -214,6 +214,16 @@ export default {
             this.addModalVisible = false
           })
         }
+      })
+    },
+    deploymentProcess (id) {
+      deploymentProcess(id).then(res => {
+        successTip()
+      })
+    },
+    exportModel (id) {
+      exportModel(id).then(res => {
+        downloadFileById(res.data)
       })
     }
   }
