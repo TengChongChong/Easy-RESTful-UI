@@ -214,7 +214,28 @@ export function fromNow (date) {
     return '-'
   }
 }
-
+/**
+ * 下载文件
+ *
+ * @param id {string} 文件下载id
+ */
+export function downloadFileById (id) {
+  downloadFile(`${process.env.VUE_APP_API_BASE_URL}/download/${id}`)
+}
+/**
+ * 下载文件
+ *
+ * @param url {string} 下载地址（必要）
+ */
+export function downloadFile (url) {
+  const form = document.createElement('form')
+  form.setAttribute('action', url)
+  form.setAttribute('method', 'post')
+  form.setAttribute('style', 'display:none')
+  document.body.appendChild(form)
+  form.submit()
+  document.body.removeChild(form)
+}
 /** ****************** 字典 ********************/
 /**
  * 根据字典类型获取字典数组
