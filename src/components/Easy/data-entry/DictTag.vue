@@ -25,6 +25,11 @@
         error: null
       }
     },
+    watch: {
+      code () {
+        this.dict = getSysDictObjectByQuery(this.type, this.code)
+      }
+    },
     created () {
       if (isBlank(this.type)) {
         this.error = '字典类型[参数type]不能为空'
