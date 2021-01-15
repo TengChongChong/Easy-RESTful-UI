@@ -22,7 +22,7 @@
       </a-col>
       <a-col :sm="24">
         <div class="input-btn-group" v-if="showBtn">
-          <e-btn-save :click-callback="save"/>
+          <e-btn-save :loading="saveLoading" :click-callback="save"/>
           <a-button type="primary" icon="check-circle" @click="saveAndSend">保存并发送</a-button>
         </div>
         <div class="input-btn-group" v-else>
@@ -62,6 +62,7 @@ export default {
   },
   data () {
     return {
+      saveLoading: false,
       formLayout: {
         labelCol: { span: 4 },
         wrapperCol: { span: 16 }
@@ -120,12 +121,16 @@ export default {
     save () {
       this.$refs.form.validate(valid => {
         if (valid) {
+          this.saveLoading = true
           this.model.important = this.important ? MESSAGE_CONST.IMPORTANT_YES : MESSAGE_CONST.IMPORTANT_NO
           save(this.model).then(res => {
+            this.saveLoading = false
             saveSuccessTip()
             if (MESSAGE_CONST.STATUS_HAS_BEEN_SENT === res.data.status) {
               this.showBtn = false
             }
+          }).catch(({ response }) => {
+            this.saveLoading = false
           })
         }
       })

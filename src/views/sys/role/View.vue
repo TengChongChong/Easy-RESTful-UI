@@ -119,7 +119,7 @@
             </a-col>
             <a-col :sm="24">
               <div class="input-btn-group">
-                <e-btn-save :click-callback="save"/>
+                <e-btn-save :loading="saveLoading" :click-callback="save"/>
                 <a-popconfirm
                   title="确定要删除吗?"
                   @confirm="() => remove(model.id)"
@@ -220,6 +220,7 @@
         },
 
         // 表单
+        saveLoading: false,
         hasData: false,
         formLayout: FORM_LAYOUT,
         model: {},
@@ -449,12 +450,14 @@
       save () {
         this.$refs.form.validate(valid => {
           if (valid) {
+            this.saveLoading = true
             if (this.menuCheckedKeys && this.menuCheckedKeys.checked) {
               this.model.permissions = this.menuCheckedKeys.checked
             } else {
               this.model.permissions = this.menuCheckedKeys
             }
             save(this.model).then((res) => {
+              this.saveLoading = false
               saveSuccessTip()
               if (this.model.id != null) {
                 this.model = res.data
@@ -480,6 +483,8 @@
               }
 
               generatorNodeIcon(this.treeData, this.iconArrays)
+            }).catch(({ response }) => {
+              this.saveLoading = false
             })
           }
         })

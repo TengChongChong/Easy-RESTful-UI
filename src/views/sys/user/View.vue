@@ -338,6 +338,8 @@ export default {
       remove(id).then(res => {
         this.$refs.table.refresh(true)
         this.removeBathLoading = false
+      }).catch(({ response }) => {
+        this.removeBathLoading = false
       })
     },
     statusChange (checked, event) {

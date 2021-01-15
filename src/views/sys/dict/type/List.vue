@@ -23,7 +23,7 @@
 
       <template slot="button">
         <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
-        <e-btn-remove-batch :ids="selectedRowKeys" :click-callback="remove"/>
+        <e-btn-remove-batch :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
       </template>
 
       <template slot="table">
@@ -92,29 +92,22 @@
         </s-table>
       </template>
     </e-pro-table>
-    <a-modal v-model="addModalVisible" title="新增字典类型" @ok="saveData" okText="保存并关闭">
+    <a-modal v-model="addModalVisible" :confirmLoading="confirmLoading" title="新增字典类型" @ok="saveData" okText="保存并关闭">
       <a-form-model
         ref="form"
         :model="model"
         :rules="rules"
         :label-col="formLayout.labelCol"
         :wrapper-col="formLayout.wrapperCol">
-        <a-row class="form-row" :gutter="16">
-          <a-col>
-            <a-form-model-item label="类型" prop="type">
-              <a-input v-model="model.type"/>
-            </a-form-model-item>
-          </a-col>
-          <a-col>
-            <a-form-model-item label="类型名称" prop="name">
-              <a-input v-model="model.name"/>
-            </a-form-model-item>
-          </a-col>
-          <a-col>
-            <a-form-model-item label="状态" prop="status">
-              <e-dict-radio name="status" v-model="model.status" type="commonStatus"/>
-            </a-form-model-item>
-          </a-col></a-row>
+        <a-form-model-item label="类型" prop="type">
+          <a-input v-model="model.type"/>
+        </a-form-model-item>
+        <a-form-model-item label="类型名称" prop="name">
+          <a-input v-model="model.name"/>
+        </a-form-model-item>
+        <a-form-model-item label="状态" prop="status">
+          <e-dict-radio name="status" v-model="model.status" type="commonStatus"/>
+        </a-form-model-item>
       </a-form-model>
     </a-modal>
   </div>
@@ -160,7 +153,7 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'action',
-    width: 90,
+    width: 140,
     fixed: 'right',
     scopedSlots: { customRender: 'action' }
   }
@@ -194,9 +187,11 @@ export default {
       selectedRows: [],
       editingKey: '',
       cacheData: [],
+      removeBathLoading: false,
 
       // 新增窗口
       addModalVisible: false,
+      confirmLoading: false,
       formLayout: FORM_LAYOUT,
       model: {},
       rules: {
@@ -259,11 +254,15 @@ export default {
     },
     saveData () {
       this.$refs.form.validate(valid => {
+        this.confirmLoading = true
         if (valid) {
           save(this.model).then((res) => {
             this.$refs.table.refresh(true)
             saveSuccessTip()
             this.addModalVisible = false
+            this.confirmLoading = false
+          }).catch(({ response }) => {
+            this.confirmLoading = false
           })
         }
       })
@@ -301,6 +300,9 @@ export default {
     remove (id) {
       remove(id).then(res => {
         this.$refs.table.refresh(true)
+        this.removeBathLoading = false
+      }).catch(({ response }) => {
+        this.removeBathLoading = false
       })
     }
   }

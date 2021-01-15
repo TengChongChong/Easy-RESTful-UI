@@ -26,7 +26,7 @@
             </a-col>
             <a-col :sm="24">
               <div class="input-btn-group">
-                <e-btn-save :click-callback="save"/>
+                <e-btn-save :loading="saveLoading" :click-callback="save"/>
               </div>
             </a-col>
           </a-row>
@@ -69,6 +69,7 @@ export default {
   },
   data () {
     return {
+      saveLoading: false,
       formLayout: FORM_LAYOUT,
       VUE_APP_API_BASE_URL: process.env.VUE_APP_API_BASE_URL,
 
@@ -107,6 +108,7 @@ export default {
     save () {
       this.$refs.form.validate(valid => {
         if (valid) {
+          this.saveLoading = true
           saveUserInfo({
             id: this.model.id,
             nickname: this.model.nickname,
@@ -114,8 +116,11 @@ export default {
             birthday: this.model.birthday,
             avatar: this.newAvatar
           }).then((res) => {
+            this.saveLoading = false
             saveSuccessTip()
             this.SetUser(res.data)
+          }).catch(({ response }) => {
+            this.saveLoading = false
           })
         }
       })

@@ -41,7 +41,7 @@
         <a-button icon="sync" @click="generateDictData">更新字典资源</a-button>
       </a-tooltip>
 
-      <e-btn-remove-batch :ids="selectedRowKeys" :click-callback="remove"/>
+      <e-btn-remove-batch :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
     </template>
 
     <template slot="table">
@@ -162,7 +162,8 @@ export default {
       queryParam: {},
       dictTypes: [],
       selectedRowKeys: [],
-      selectedRows: []
+      selectedRows: [],
+      removeBathLoading: false
     }
   },
   created () {
@@ -201,6 +202,9 @@ export default {
     remove (id) {
       remove(id).then(res => {
         this.$refs.table.refresh(true)
+        this.removeBathLoading = false
+      }).catch(({ response }) => {
+        this.removeBathLoading = false
       })
     },
     generateDictData () {

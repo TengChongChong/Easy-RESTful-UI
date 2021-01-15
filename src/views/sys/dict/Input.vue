@@ -76,7 +76,7 @@
         </a-col>
         <a-col :sm="24">
           <div class="input-btn-group">
-            <e-btn-save :click-callback="save"/>
+            <e-btn-save :loading="saveLoading" :click-callback="save"/>
 
             <a-button type="default" icon="plus" @click="add(model.id)" v-if="model.id != null && model.id !== ''">
               新增下级
@@ -121,6 +121,7 @@
         cssItems: ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple'],
 
         // 表单
+        saveLoading: false,
         formLayout: FORM_LAYOUT,
         dictTypes: [],
         upDictDataArray: [],
@@ -211,8 +212,12 @@
       save () {
         this.$refs.form.validate(valid => {
           if (valid) {
+            this.saveLoading = true
             save(this.model).then((res) => {
+              this.saveLoading = false
               saveSuccessTip()
+            }).catch(({ response }) => {
+              this.saveLoading = false
             })
           }
         })

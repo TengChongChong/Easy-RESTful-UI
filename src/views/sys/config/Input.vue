@@ -14,12 +14,14 @@
         </a-col>
         <a-col :lg="12" :sm="24">
           <a-form-model-item label="value" prop="value">
-            <a-input v-model="model.value"/>
+            <a-input v-if="DATA_TYPE_CONST.STRING === model.type" v-model="model.value"/>
+            <a-input-number v-if="DATA_TYPE_CONST.INTEGER === model.type" v-model="model.value"/>
+            <e-dict-select v-if="DATA_TYPE_CONST.BOOLEAN === model.type" v-model="model.value" type="boolean"/>
           </a-form-model-item>
         </a-col>
         <a-col :lg="12" :sm="24">
           <a-form-model-item label="类型" prop="type">
-            <e-dict-select name="type" v-model="model.type" type="dataType"/>
+            <e-dict-select v-model="model.type" type="dataType"/>
           </a-form-model-item>
         </a-col>
 
@@ -30,7 +32,7 @@
         </a-col>
         <a-col :sm="24">
           <div class="input-btn-group">
-            <e-btn-save :click-callback="save"/>
+            <e-btn-save :loading="saveLoading" :click-callback="save"/>
           </div>
         </a-col>
       </a-row>
@@ -45,6 +47,7 @@
   import EDictSelect from '@/components/Easy/data-entry/DictSelect'
   import { isNotBlank } from '@/utils/util'
   import EBtnSave from '@/components/Easy/general/BtnSave'
+  import { DATA_TYPE_CONST } from '@/utils/const/sys/DataTypeConst'
 
   export default {
     name: 'SysDictInput',
@@ -57,16 +60,19 @@
         id: this.$route.query.id,
 
         // 表单
+        DATA_TYPE_CONST: DATA_TYPE_CONST,
+        saveLoading: false,
         formLayout: FORM_LAYOUT,
-        model: {},
+        model: {
+          type: DATA_TYPE_CONST.STRING
+        },
         rules: {
           sysKey: [
             { required: true, message: '请输入key', trigger: 'blur' },
             { max: 50, message: 'key不能超过50个字符', trigger: 'blur' }
           ],
           value: [
-            { required: true, message: '请输入value', trigger: 'blur' },
-            { max: 200, message: 'value不能超过200个字符', trigger: 'blur' }
+            { required: true, message: '请输入value', trigger: 'blur' }
           ],
           type: [
             { required: true, message: '请选择类型', trigger: 'blur' }
@@ -91,8 +97,12 @@
       save () {
         this.$refs.form.validate(valid => {
           if (valid) {
+            this.saveLoading = true
             save(this.model).then((res) => {
+              this.saveLoading = false
               saveSuccessTip()
+            }).catch(({ response }) => {
+              this.saveLoading = false
             })
           }
         })

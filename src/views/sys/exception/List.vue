@@ -26,7 +26,7 @@
     </template>
 
     <template slot="button">
-      <e-btn-remove-batch :ids="selectedRowKeys" :click-callback="remove"/>
+      <e-btn-remove-batch :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
     </template>
 
     <template slot="table">
@@ -123,7 +123,8 @@ export default {
       // 查询参数
       queryParam: {},
       selectedRowKeys: [],
-      selectedRows: []
+      selectedRows: [],
+      removeBathLoading: false
     }
   },
   activated () {
@@ -153,6 +154,9 @@ export default {
     remove (id) {
       remove(id).then(res => {
         this.$refs.table.refresh(true)
+        this.removeBathLoading = false
+      }).catch(({ response }) => {
+        this.removeBathLoading = false
       })
     }
   }

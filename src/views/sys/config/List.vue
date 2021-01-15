@@ -11,19 +11,17 @@
           <a-input v-model="queryParam.value"/>
         </a-form-model-item>
       </a-col>
-      <template v-if="advanced">
-        <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
-          <a-form-model-item label="类型">
-            <e-dict-select type="dataType" v-model="queryParam.type" @change="$refs.table.refresh(true)"/>
-          </a-form-model-item>
-        </a-col>
-      </template>
+      <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
+        <a-form-model-item label="类型">
+          <e-dict-select type="dataType" v-model="queryParam.type" @change="$refs.table.refresh(true)"/>
+        </a-form-model-item>
+      </a-col>
     </template>
 
     <template slot="button">
       <e-btn-add to="/sys/config/input"/>
       <a-button type="primary" icon="sync" @click="refreshCache">更新缓存数据</a-button>
-      <e-btn-remove-batch :ids="selectedRowKeys" :click-callback="remove"/>
+      <e-btn-remove-batch :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
     </template>
 
     <template slot="table">
@@ -116,7 +114,8 @@ export default {
       // 查询参数
       queryParam: {},
       selectedRowKeys: [],
-      selectedRows: []
+      selectedRows: [],
+      removeBathLoading: false
     }
   },
   activated () {
@@ -146,6 +145,9 @@ export default {
     remove (id) {
       remove(id).then(res => {
         this.$refs.table.refresh(true)
+        this.removeBathLoading = false
+      }).catch(({ response }) => {
+        this.removeBathLoading = false
       })
     },
     refreshCache () {

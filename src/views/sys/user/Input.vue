@@ -62,7 +62,7 @@
         </a-col>
         <a-col :sm="24">
           <div class="input-btn-group">
-            <e-btn-save :click-callback="save"/>
+            <e-btn-save :loading="saveLoading" :click-callback="save"/>
           </div>
         </a-col>
       </a-row>
@@ -93,6 +93,7 @@
         deptId: this.$route.query.deptId,
 
         // 表单
+        saveLoading: false,
         VUE_APP_API_BASE_URL: process.env.VUE_APP_API_BASE_URL,
         formLayout: FORM_LAYOUT,
         roles: [],
@@ -148,8 +149,12 @@
       save () {
         this.$refs.form.validate(valid => {
           if (valid) {
+            this.saveLoading = true
             save(this.model).then((res) => {
+              this.saveLoading = false
               saveSuccessTip()
+            }).catch(({ response }) => {
+              this.saveLoading = false
             })
           }
         })
