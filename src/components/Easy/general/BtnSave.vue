@@ -1,5 +1,5 @@
 <template>
-  <a-button type="primary" :icon="icon" @click="save">
+  <a-button type="primary" :icon="icon" :loading="btnLoading" @click="save">
     <slot>保存</slot>
   </a-button>
 </template>
@@ -15,10 +15,26 @@ export default {
       type: Function,
       require: true,
       default: () => {}
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    }
+  },
+  watch: {
+    loading (val, oldVal) {
+      this.btnLoading = val
+    }
+  },
+  data () {
+    return {
+      btnLoading: this.loading
     }
   },
   methods: {
     save () {
+      this.btnLoading = true
+      this.$emit('update:loading', this.btnLoading)
       this.clickCallback()
     }
   }
