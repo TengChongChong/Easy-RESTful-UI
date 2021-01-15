@@ -16,7 +16,7 @@
 
       <template slot="button">
         <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
-        <e-btn-remove-batch :ids="selectedRowKeys" :click-callback="remove"/>
+        <e-btn-remove-batch :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
       </template>
 
       <template slot="table">
@@ -61,18 +61,18 @@
         :rules="rules"
         :label-col="formLayout.labelCol"
         :wrapper-col="formLayout.wrapperCol">
-        <a-row class="form-row" :gutter="16">
-          <a-col>
-            <a-form-model-item label="名称" prop="name">
-              <a-input v-model="model.name"/>
-            </a-form-model-item>
-          </a-col>
-          <a-col>
-            <a-form-model-item label="标识" prop="key">
-              <a-input v-model="model.key"/>
-            </a-form-model-item>
-          </a-col>
-        </a-row>
+        <a-form-model-item label="名称" prop="name">
+          <a-input v-model="model.name"/>
+        </a-form-model-item>
+        <a-form-model-item label="标识" prop="key">
+          <a-input v-model="model.key"/>
+        </a-form-model-item>
+        <a-form-model-item label="模型文件" prop="path">
+          <e-upload v-model="fileList" accept=".xml"/>
+        </a-form-model-item>
+        <a-form-model-item label="描述" prop="description">
+          <a-textarea v-model="model.description"/>
+        </a-form-model-item>
       </a-form-model>
     </a-modal>
   </div>
@@ -91,23 +91,27 @@ import EProTable from '@/components/Easy/data-display/ProTable'
 import { downloadFileById, formatDate } from '@/utils/util'
 import { FORM_LAYOUT } from '@/utils/const/form'
 import { saveSuccessTip, successTip } from '@/utils/tips'
+import EUpload from '@/components/Easy/data-entry/Upload'
 
 const columns = [
   {
     title: '名称',
     dataIndex: 'name',
+    sortField: 'arm.name_',
     width: 100,
     sorter: true
   },
   {
     title: '标识',
     dataIndex: 'key',
+    sortField: 'arm.key_',
     width: 100,
     sorter: true
   },
   {
     title: '版本号',
     dataIndex: 'version',
+    sortField: 'arm.version_',
     sorter: true,
     width: 100,
     scopedSlots: { customRender: 'version' }
@@ -115,6 +119,7 @@ const columns = [
   {
     title: '创建时间',
     dataIndex: 'createTime',
+    sortField: 'arm.create_time_',
     sorter: true,
     width: 170,
     customRender: (text) => formatDate(text)
@@ -122,6 +127,7 @@ const columns = [
   {
     title: '最后更新时间',
     dataIndex: 'lastUpdateTime',
+    sortField: 'arm.last_update_time_',
     sorter: true,
     width: 170,
     customRender: (text) => formatDate(text)
@@ -138,6 +144,7 @@ const columns = [
 export default {
   name: 'ActivitiModelList',
   components: {
+    EUpload,
     EProTable,
     EBtnRemoveBatch,
     EBtnRemove,
@@ -155,10 +162,13 @@ export default {
       queryParam: {},
       selectedRowKeys: [],
       selectedRows: [],
+      removeBathLoading: false,
 
       // 新增窗口
       addModalVisible: false,
       formLayout: FORM_LAYOUT,
+      fileList: [
+      ],
       model: {},
       rules: {
         name: [
@@ -168,6 +178,9 @@ export default {
         key: [
           { required: true, message: '请输入标识', trigger: 'blur' },
           { max: 50, message: '标识字数不能超过50个字符', trigger: 'blur' }
+        ],
+        description: [
+          { max: 250, message: '描述字数不能超过250个字符', trigger: 'blur' }
         ]
       }
     }
@@ -199,15 +212,22 @@ export default {
     remove (id) {
       remove(id).then(res => {
         this.$refs.table.refresh(true)
+        this.removeBathLoading = false
+      }).catch(({ response }) => {
+        this.removeBathLoading = false
       })
     },
     handleAdd () {
       this.addModalVisible = true
       this.model = {}
+      this.fileList = []
     },
     saveData () {
       this.$refs.form.validate(valid => {
         if (valid) {
+          if (this.fileList && this.fileList.length) {
+            this.model.path = this.fileList[0].path
+          }
           save(this.model).then((res) => {
             this.$refs.table.refresh(true)
             saveSuccessTip()
