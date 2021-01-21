@@ -14,17 +14,12 @@
         </a-col>
       </template>
 
-      <template slot="button">
-      </template>
-
       <template slot="table">
         <s-table
           ref="eTable"
           row-key="processInstanceId"
           :columns="columns"
           :data="loadData"
-          :alert="true"
-          :rowSelection="rowSelection"
           showPagination="auto"
         >
           <span slot="taskStatus" slot-scope="text, record">
@@ -55,10 +50,6 @@ import { STable, Ellipsis } from '@/components'
 import { selectAll } from '@/api/activiti/historyTaskInstance'
 import EDictTag from '@/components/Easy/data-entry/DictTag'
 import EDictSelect from '@/components/Easy/data-entry/DictSelect'
-import EBtnAdd from '@/components/Easy/general/BtnAdd'
-import EBtnEdit from '@/components/Easy/general/BtnEdit'
-import EBtnRemove from '@/components/Easy/general/BtnRemove'
-import EBtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
 import EProTable from '@/components/Easy/data-display/ProTable'
 import { SUSPENSION_STATUS } from '@/utils/const/activiti/SuspensionStatus'
 import { formatDate } from '@/utils/util'
@@ -146,10 +137,6 @@ export default {
     EBtnWorkFlowRevoke,
     EBtnWorkFlowProgress,
     EProTable,
-    EBtnRemoveBatch,
-    EBtnRemove,
-    EBtnEdit,
-    EBtnAdd,
     EDictSelect,
     EDictTag,
     STable,
@@ -161,21 +148,11 @@ export default {
       SUSPENSION_STATUS: SUSPENSION_STATUS,
       TASK_STATUS: TASK_STATUS,
       // 查询参数
-      queryParam: {},
-      selectedRowKeys: [],
-      selectedRows: []
+      queryParam: {}
     }
   },
   activated () {
     this.$refs.eTable.refresh(true)
-  },
-  computed: {
-    rowSelection () {
-      return {
-        selectedRowKeys: this.selectedRowKeys,
-        onChange: this.onSelectChange
-      }
-    }
   },
   methods: {
     // 加载数据方法 必须为 Promise 对象
@@ -185,10 +162,6 @@ export default {
         .then(res => {
           return res.data
         })
-    },
-    onSelectChange (selectedRowKeys, selectedRows) {
-      this.selectedRowKeys = selectedRowKeys
-      this.selectedRows = selectedRows
     }
   }
 }

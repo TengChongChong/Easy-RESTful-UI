@@ -14,17 +14,12 @@
         </a-col>
       </template>
 
-      <template slot="button">
-      </template>
-
       <template slot="table">
         <s-table
           ref="eTable"
           row-key="processInstanceId"
           :columns="columns"
           :data="loadData"
-          :alert="true"
-          :rowSelection="rowSelection"
           showPagination="auto"
         >
           <span slot="taskStatus" slot-scope="text, record">
@@ -55,10 +50,6 @@ import { STable, Ellipsis } from '@/components'
 import { selectParticipate } from '@/api/activiti/historyTaskInstance'
 import EDictTag from '@/components/Easy/data-entry/DictTag'
 import EDictSelect from '@/components/Easy/data-entry/DictSelect'
-import EBtnAdd from '@/components/Easy/general/BtnAdd'
-import EBtnEdit from '@/components/Easy/general/BtnEdit'
-import EBtnRemove from '@/components/Easy/general/BtnRemove'
-import EBtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
 import EProTable from '@/components/Easy/data-display/ProTable'
 import { SUSPENSION_STATUS } from '@/utils/const/activiti/SuspensionStatus'
 import { formatDate } from '@/utils/util'
@@ -146,10 +137,6 @@ export default {
     EBtnWorkFlowRevoke,
     EBtnWorkFlowProgress,
     EProTable,
-    EBtnRemoveBatch,
-    EBtnRemove,
-    EBtnEdit,
-    EBtnAdd,
     EDictSelect,
     EDictTag,
     STable,
