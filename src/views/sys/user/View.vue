@@ -46,7 +46,7 @@
           <template v-if="advanced">
             <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
               <a-form-model-item label="状态">
-                <e-dict-select type="commonStatus" v-model="queryParam.status" @change="$refs.table.refresh(true)"/>
+                <e-dict-select type="commonStatus" v-model="queryParam.status" @change="$refs.eTable.refresh(true)"/>
               </a-form-model-item>
             </a-col>
           </template>
@@ -59,7 +59,7 @@
 
         <template slot="table">
           <s-table
-            ref="table"
+            ref="eTable"
             :columns="columns"
             :data="loadTableData"
             :alert="true"
@@ -234,7 +234,7 @@ export default {
     this.queryParam.deptId = this.$store.getters.user.deptId
   },
   activated () {
-    this.$refs.table.refresh(true)
+    this.$refs.eTable.refresh(true)
   },
   computed: {
     rowSelection () {
@@ -315,7 +315,7 @@ export default {
       this.selectedKeys = selectedKeys
       if (e.node.dataRef.id !== baseId) {
         this.queryParam.deptId = e.node.dataRef.id
-        this.$refs.table.refresh(true)
+        this.$refs.eTable.refresh(true)
       }
     },
     // 加载数据方法 必须为 Promise 对象
@@ -336,7 +336,7 @@ export default {
     },
     remove (id) {
       remove(id).then(res => {
-        this.$refs.table.refresh(true)
+        this.$refs.eTable.refresh(true)
         this.removeBathLoading = false
       }).catch(({ response }) => {
         this.removeBathLoading = false

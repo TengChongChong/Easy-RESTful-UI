@@ -196,6 +196,7 @@ export function deepClone (source, ignore) {
 export function formatDate (date, datePattern = DATE_PATTERN.NORM_DATETIME_MINUTE_PATTERN) {
   return date ? moment(date).format(datePattern) : '-'
 }
+
 /**
  * 格式化时间
  *
@@ -214,6 +215,7 @@ export function fromNow (date) {
     return '-'
   }
 }
+
 /**
  * 下载文件
  *
@@ -222,6 +224,7 @@ export function fromNow (date) {
 export function downloadFileById (id) {
   downloadFile(`${process.env.VUE_APP_API_BASE_URL}/download/${id}`)
 }
+
 /**
  * 下载文件
  *
@@ -236,6 +239,33 @@ export function downloadFile (url) {
   form.submit()
   document.body.removeChild(form)
 }
+
+/**
+ * 在父节点中查找table
+ *
+ * @param vm vm
+ * @return table {Vue | Element | Vue[] | Element[]} table
+ */
+export function getTableNode (vm) {
+  let $parent = vm.$parent
+  while (!$parent.$refs.eTable && $parent.$parent) {
+    $parent = $parent.$parent
+  }
+  if (!$parent) {
+    console.error('获取table失败')
+  }
+  return $parent.$refs.eTable
+}
+
+/**
+ * 查询
+ *
+ * @param vm vm
+ */
+export function refreshList (vm) {
+  getTableNode(vm).refresh(true)
+}
+
 /** ****************** 字典 ********************/
 /**
  * 根据字典类型获取字典数组

@@ -31,7 +31,7 @@
 
     <template slot="table">
       <s-table
-        ref="table"
+        ref="eTable"
         :columns="columns"
         :data="loadData"
         :alert="true"
@@ -128,7 +128,7 @@ export default {
     }
   },
   activated () {
-    this.$refs.table.refresh(true)
+    this.$refs.eTable.refresh(true)
   },
   computed: {
     rowSelection () {
@@ -153,7 +153,7 @@ export default {
     },
     remove (id) {
       remove(id).then(res => {
-        this.$refs.table.refresh(true)
+        this.$refs.eTable.refresh(true)
         this.removeBathLoading = false
       }).catch(({ response }) => {
         this.removeBathLoading = false

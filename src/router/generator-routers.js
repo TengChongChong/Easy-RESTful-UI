@@ -23,16 +23,6 @@ const notFoundRouter = {
   path: '*', redirect: '/404', hidden: true
 }
 
-// 根级菜单
-const rootRouter = {
-  id: '',
-  name: '首页',
-  path: '/',
-  component: 'BasicLayout',
-  redirect: '/sys/personal/center',
-  children: []
-}
-
 /**
  * 动态生成菜单
  * @param menus
@@ -40,29 +30,32 @@ const rootRouter = {
  */
 export const generatorDynamicRouter = (menus) => {
   return new Promise((resolve, reject) => {
-    const menuNav = []
+    // 树结构菜单
     const childrenNav = []
-    // 后端数据, 根级树数组,  根级 PID
+    // 将后端数据转为树结构菜单
     listToTree(menus, childrenNav, '0')
-    rootRouter.children = childrenNav
-    menuNav.push(rootRouter)
+    const menuNav = [{
+      id: '',
+      name: '首页',
+      path: '/',
+      component: 'BasicLayout',
+      redirect: '/sys/personal/center',
+      children: childrenNav
+    }]
     const routers = generator(menuNav)
+    // 设置菜单
     store.dispatch('setMenus', deepClone(routers, ['component']))
+    // 由于3级及以上菜单缓存问题，此处菜单降级为2级
     getFlatRoutes(routers)
+    // 路由全部设置为2级
     routers[0].children = [{
-      // 如果路由设置了 path，则作为默认 path，否则 路由地址 动态拼接生成如 /dashboard/workplace
       path: '/base',
-      // 路由名称，建议唯一
       name: 'base',
-      // 该路由对应页面
       component: RouteView,
-      // meta: 页面标题, 菜单图标, 页面权限(供指令权限用，可去掉)
-      meta: {
-        title: 'base'
-      },
+      meta: { title: 'base' },
       children: routers[0].children
     }]
-
+    // 404
     routers.push(notFoundRouter)
     resolve(routers)
   })
@@ -94,7 +87,7 @@ export const getFlatRoutes = (routes) => {
 
 function generatorName (menu) {
   if (menu.component) {
-    const paths = menu.component.split('/')
+    const paths = menu.component.split(/\/|-/)
     let name = ''
     paths.map(item => {
       name += item.replace(/^\S/, function (s) { return s.toUpperCase() })
@@ -122,7 +115,6 @@ export const generator = (routerMap, parent) => {
       parentPaths = []
     }
     const currentRouter = {
-      // 如果路由设置了 path，则作为默认 path，否则 路由地址 动态拼接生成如 /dashboard/workplace
       path: item.path || `${parent && parent.path || ''}/${item.id}`,
       // 路由名称，建议唯一
       name: generatorName(item),

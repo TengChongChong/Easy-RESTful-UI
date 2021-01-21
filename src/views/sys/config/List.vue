@@ -13,7 +13,7 @@
       </a-col>
       <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
         <a-form-model-item label="类型">
-          <e-dict-select type="dataType" v-model="queryParam.type" @change="$refs.table.refresh(true)"/>
+          <e-dict-select type="dataType" v-model="queryParam.type" @change="$refs.eTable.refresh(true)"/>
         </a-form-model-item>
       </a-col>
     </template>
@@ -26,7 +26,7 @@
 
     <template slot="table">
       <s-table
-        ref="table"
+        ref="eTable"
         :columns="columns"
         :data="loadData"
         :alert="true"
@@ -96,7 +96,7 @@ const columns = [
 ]
 
 export default {
-  name: 'SysDictList',
+  name: 'SysConfigList',
   components: {
     EProTable,
     EBtnRemoveBatch,
@@ -119,7 +119,7 @@ export default {
     }
   },
   activated () {
-    this.$refs.table.refresh(true)
+    this.$refs.eTable.refresh(true)
   },
   computed: {
     rowSelection () {
@@ -144,7 +144,7 @@ export default {
     },
     remove (id) {
       remove(id).then(res => {
-        this.$refs.table.refresh(true)
+        this.$refs.eTable.refresh(true)
         this.removeBathLoading = false
       }).catch(({ response }) => {
         this.removeBathLoading = false

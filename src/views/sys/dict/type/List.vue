@@ -15,7 +15,7 @@
         <template v-if="advanced">
           <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
             <a-form-model-item label="状态">
-              <e-dict-select type="commonStatus" v-model="queryParam.status" @change="$refs.table.refresh(true)"/>
+              <e-dict-select type="commonStatus" v-model="queryParam.status" @change="$refs.eTable.refresh(true)"/>
             </a-form-model-item>
           </a-col>
         </template>
@@ -28,7 +28,7 @@
 
       <template slot="table">
         <s-table
-          ref="table"
+          ref="eTable"
           :columns="columns"
           :data="loadData"
           :alert="true"
@@ -160,7 +160,7 @@ const columns = [
 ]
 
 export default {
-  name: 'SysDictList',
+  name: 'SysDictTypeList',
   components: {
     EProTable,
     EDictRadio,
@@ -210,7 +210,7 @@ export default {
     }
   },
   activated () {
-    this.$refs.table.refresh(true)
+    this.$refs.eTable.refresh(true)
   },
   computed: {
     rowSelection () {
@@ -230,11 +230,11 @@ export default {
         })
     },
     handleChange (value, key, column) {
-      const newData = [...this.$refs.table.localDataSource]
+      const newData = [...this.$refs.eTable.localDataSource]
       const target = newData.filter(item => key === item.key)[0]
       if (target) {
         target[column] = value
-        this.$refs.table.localDataSource = newData
+        this.$refs.eTable.localDataSource = newData
       }
     },
     handleAdd () {
@@ -244,12 +244,12 @@ export default {
       }
     },
     edit (key) {
-      const newData = [...this.$refs.table.localDataSource]
+      const newData = [...this.$refs.eTable.localDataSource]
       const target = newData.filter(item => key === item.key)[0]
       this.editingKey = key
       if (target) {
         target.editable = true
-        this.$refs.table.localDataSource = newData
+        this.$refs.eTable.localDataSource = newData
       }
     },
     saveData () {
@@ -257,7 +257,7 @@ export default {
         this.confirmLoading = true
         if (valid) {
           save(this.model).then((res) => {
-            this.$refs.table.refresh(true)
+            this.$refs.eTable.refresh(true)
             saveSuccessTip()
             this.addModalVisible = false
             this.confirmLoading = false
@@ -268,7 +268,7 @@ export default {
       })
     },
     save (key) {
-      const newData = [...this.$refs.table.localDataSource]
+      const newData = [...this.$refs.eTable.localDataSource]
       const newCacheData = [...this.cacheData]
       const target = newData.filter(item => key === item.key)[0]
       const targetCache = newCacheData.filter(item => key === item.key)[0]
@@ -276,7 +276,7 @@ export default {
         save(target).then(res => {
           saveSuccessTip()
           delete target.editable
-          this.$refs.table.localDataSource = newData
+          this.$refs.eTable.localDataSource = newData
           Object.assign(targetCache, target, res.data)
           this.cacheData = newCacheData
         })
@@ -284,13 +284,13 @@ export default {
       this.editingKey = ''
     },
     cancel (key) {
-      const newData = [...this.$refs.table.localDataSource]
+      const newData = [...this.$refs.eTable.localDataSource]
       const target = newData.filter(item => key === item.key)[0]
       this.editingKey = ''
       if (target) {
         Object.assign(target, this.cacheData.filter(item => key === item.key)[0])
         delete target.editable
-        this.$refs.table.localDataSource = newData
+        this.$refs.eTable.localDataSource = newData
       }
     },
     onSelectChange (selectedRowKeys, selectedRows) {
@@ -299,7 +299,7 @@ export default {
     },
     remove (id) {
       remove(id).then(res => {
-        this.$refs.table.refresh(true)
+        this.$refs.eTable.refresh(true)
         this.removeBathLoading = false
       }).catch(({ response }) => {
         this.removeBathLoading = false

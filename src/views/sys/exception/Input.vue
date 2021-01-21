@@ -23,7 +23,7 @@
         </a-col>
         <a-col :lg="12" :sm="24">
           <a-form-model-item label="触发时间">
-            {{ model.triggerTime }}
+            {{ model.triggerTime | moment }}
           </a-form-model-item>
         </a-col>
         <a-col :lg="12" :sm="24">
@@ -32,15 +32,17 @@
           </a-form-model-item>
         </a-col>
         <a-col :sm="24">
-          <a-form-model-item label="异常信息" :labelCol="{ span: 3 }" :wrapperCol="{ span: 19 }">
-            {{ model.message }}
+          <a-form-model-item label="异常信息" :labelCol="FULL_FORM_LAYOUT.labelCol" :wrapperCol="FULL_FORM_LAYOUT.wrapperCol">
+            <div class="scrollbar">
+              {{ model.message }}
+            </div>
           </a-form-model-item>
         </a-col>
         <a-col :sm="24">
-          <a-form-model-item label="异常信息" :labelCol="{ span: 3 }" :wrapperCol="{ span: 19 }">
-            <div class="traces">
-              <template v-for="item in traces">
-                <p :key="item">
+          <a-form-model-item label="异常信息" :labelCol="FULL_FORM_LAYOUT.labelCol" :wrapperCol="FULL_FORM_LAYOUT.wrapperCol">
+            <div class="traces scrollbar">
+              <template v-for="(item, index) in traces">
+                <p :key="index">
                   <a-tag color="red" v-if="item.indexOf('com.easy.restful') > -1">
                     {{ item }}
                   </a-tag>
@@ -56,8 +58,9 @@
 </template>
 
 <script>
-import { FORM_LAYOUT } from '@/utils/const/form'
+import { FORM_LAYOUT, FULL_FORM_LAYOUT } from '@/utils/const/form'
 import { get } from '@/api/sys/exception'
+import { DATE_PATTERN } from '@/utils/const/datePattern'
 
 export default {
   name: 'SysExceptionInput',
@@ -67,6 +70,8 @@ export default {
 
       // 表单
       formLayout: FORM_LAYOUT,
+      FULL_FORM_LAYOUT: FULL_FORM_LAYOUT,
+      DATE_PATTERN: DATE_PATTERN,
       model: {},
       traces: []
     }

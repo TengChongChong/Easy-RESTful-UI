@@ -70,7 +70,7 @@
         </a-col>
 
         <a-col :sm="24">
-          <a-form-model-item label="备注" :labelCol="{ span: 3 }" :wrapperCol="{ span: 19 }" prop="tips">
+          <a-form-model-item label="备注" :labelCol="FULL_FORM_LAYOUT.labelCol" :wrapperCol="FULL_FORM_LAYOUT.wrapperCol" prop="tips">
             <a-textarea v-model="model.tips"/>
           </a-form-model-item>
         </a-col>
@@ -92,7 +92,7 @@
 </template>
 
 <script>
-  import { FORM_LAYOUT } from '@/utils/const/form'
+import { FORM_LAYOUT, FULL_FORM_LAYOUT } from '@/utils/const/form'
   import IconSelector from '@/components/IconSelector'
   import EDictRadio from '@/components/Easy/data-entry/DictRadio'
   import { selectAll } from '@/api/sys/dict-type'
@@ -123,6 +123,7 @@
         // 表单
         saveLoading: false,
         formLayout: FORM_LAYOUT,
+        FULL_FORM_LAYOUT: FULL_FORM_LAYOUT,
         dictTypes: [],
         upDictDataArray: [],
         model: {},

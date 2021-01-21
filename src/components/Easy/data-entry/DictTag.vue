@@ -1,6 +1,6 @@
 <template>
   <span>
-    <a-tag v-if="dict.css" :color="error != null ? 'red' : dict.css">{{ error != null ? error : dict.name }}</a-tag>
+    <a-tag v-if="dict && dict.css" :color="dict.css">{{ dict.name }}</a-tag>
     <template v-else>{{ dict.name }}</template>
   </span>
 </template>
@@ -21,21 +21,24 @@
     },
     data () {
       return {
-        dict: {},
-        error: null
+        dict: {}
       }
     },
     watch: {
       code () {
-        this.dict = getSysDictObjectByQuery(this.type, this.code)
+        this.dict = getSysDictObjectByQuery(this.type, this.code) || {}
       }
     },
     created () {
       if (isBlank(this.type)) {
-        this.error = '字典类型[参数type]不能为空'
+        console.error('[参数type]为空')
+        this.dict = { name: '-' }
+        return
       }
       if (isBlank(this.code)) {
-        this.error = '字典编码[参数code]不能为空'
+        console.warn('[参数code]为空')
+        this.dict = { name: '-' }
+        return
       }
       this.dict = getSysDictObjectByQuery(this.type, this.code)
     }

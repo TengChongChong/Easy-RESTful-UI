@@ -89,22 +89,22 @@
           :label-col="formLayout.labelCol"
           :wrapper-col="formLayout.wrapperCol">
           <a-row class="form-row" :gutter="16">
-            <a-col :lg="12" :sm="24">
+            <a-col :xl="12" :lg="24">
               <a-form-model-item label="上级菜单">
                 <a-input v-model="model.pName" :disabled="true"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24">
+            <a-col :xl="12" :lg="24">
               <a-form-model-item label="菜单类型" prop="type">
                 <e-dict-radio name="type" v-model="model.type" type="permissionsType"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24">
+            <a-col :xl="12" :lg="24">
               <a-form-model-item label="菜单名称" prop="name">
                 <a-input v-model="model.name"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24">
+            <a-col :xl="12" :lg="24">
               <a-form-model-item prop="code">
                 <span slot="label">
                   权限标识
@@ -115,34 +115,34 @@
                 <a-input v-model="model.code"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24" v-if="model.type === PERMISSIONS_TYPE_CONST.MENU">
+            <a-col :xl="12" :lg="24" v-if="model.type === PERMISSIONS_TYPE_CONST.MENU">
               <a-form-model-item label="链接(Path)" prop="path">
                 <a-input v-model="model.path"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24" v-if="model.type === PERMISSIONS_TYPE_CONST.MENU">
+            <a-col :xl="12" :lg="24" v-if="model.type === PERMISSIONS_TYPE_CONST.MENU">
               <a-form-model-item label="页面地址" class="component-input" prop="component">
                 <a-input v-model="model.component" prefix="@/views"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24">
+            <a-col :xl="12" :lg="24">
               <a-form-model-item label="状态" prop="status">
                 <e-dict-radio name="status" v-model="model.status" type="commonStatus"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24" v-if="model.type === PERMISSIONS_TYPE_CONST.MENU">
+            <a-col :xl="12" :lg="24" v-if="model.type === PERMISSIONS_TYPE_CONST.MENU">
               <a-form-model-item label="是否显示" prop="hide">
                 <e-dict-radio name="hide" v-model="model.hide" type="hideMenu"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24" v-if="model.type === PERMISSIONS_TYPE_CONST.MENU">
+            <a-col :xl="12" :lg="24" v-if="model.type === PERMISSIONS_TYPE_CONST.MENU">
               <a-form-model-item label="图标" prop="icon">
                 <a-input v-model="model.icon" @click="handleIconInputClick">
                   <a-icon slot="addonAfter" v-if="model.icon != null && model.icon !== ''" :type="model.icon"/>
                 </a-input>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24" v-if="model.type === PERMISSIONS_TYPE_CONST.MENU">
+            <a-col :xl="12" :lg="24" v-if="model.type === PERMISSIONS_TYPE_CONST.MENU">
               <a-form-model-item label="打开方式">
                 <e-dict-radio name="target" v-model="model.target" type="target"/>
               </a-form-model-item>

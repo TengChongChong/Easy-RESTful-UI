@@ -47,7 +47,7 @@
           </a-form-model-item>
         </a-col>
         <a-col :sm="24">
-          <a-form-model-item label="参数" :labelCol="{ span: 3 }" :wrapperCol="{ span: 19 }">
+          <a-form-model-item label="参数" :labelCol="FULL_FORM_LAYOUT.labelCol" :wrapperCol="FULL_FORM_LAYOUT.wrapperCol">
             {{ model.params }}
           </a-form-model-item>
         </a-col>
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { FORM_LAYOUT } from '@/utils/const/form'
+import { FORM_LAYOUT, FULL_FORM_LAYOUT } from '@/utils/const/form'
 import { get } from '@/api/sys/log'
 
 export default {
@@ -68,6 +68,7 @@ export default {
 
       // 表单
       formLayout: FORM_LAYOUT,
+      FULL_FORM_LAYOUT: FULL_FORM_LAYOUT,
       model: {}
     }
   },

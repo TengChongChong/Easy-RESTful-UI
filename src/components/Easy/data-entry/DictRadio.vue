@@ -12,6 +12,7 @@
     name: 'EDictRadio',
     props: {
       name: {
+        required: true,
         type: String,
         default: null
       },
@@ -20,6 +21,7 @@
         default: false
       },
       type: {
+        required: true,
         type: String,
         default: null
       },

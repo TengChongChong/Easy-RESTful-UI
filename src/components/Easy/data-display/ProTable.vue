@@ -113,13 +113,13 @@ export default {
      */
     getTableNode () {
       let $parent = this.$parent
-      while (!$parent.$refs.table && $parent.$parent) {
+      while (!$parent.$refs.eTable && $parent.$parent) {
         $parent = $parent.$parent
       }
       if (!$parent) {
         console.error('获取table失败')
       }
-      return $parent.$refs.table
+      return $parent.$refs.eTable
     },
     /**
      * 查询

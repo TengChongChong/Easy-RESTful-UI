@@ -2,7 +2,7 @@
   <a-dropdown v-if="currentUser && currentUser.nickname" placement="bottomRight">
     <span class="ant-pro-account-avatar">
       <e-avatar :relative-path="false" size="small" :avatar="currentUser.avatar" :nickname="currentUser.nickname" class="antd-pro-global-header-index-avatar"/>
-      <span>{{ currentUser.nickname }}</span>
+      <span class="ant-pro-global-header-nickname">{{ currentUser.nickname }}</span>
     </span>
     <template v-slot:overlay>
       <a-menu class="ant-pro-drop-down menu" :selected-keys="[]">

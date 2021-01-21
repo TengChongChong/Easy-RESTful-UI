@@ -3,7 +3,7 @@
     <template slot="query">
       <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
         <a-form-model-item label="字典类型">
-          <a-select show-search option-filter-prop="children" :allowClear="true" v-model="queryParam.dictType" @change="$refs.table.refresh(true)">
+          <a-select show-search option-filter-prop="children" :allowClear="true" v-model="queryParam.dictType" @change="$refs.eTable.refresh(true)">
             <a-select-option v-for="item in dictTypes" :key="item.type">
               {{ item.name }}（{{ item.type }}）
             </a-select-option>
@@ -23,7 +23,7 @@
       <template v-if="advanced">
         <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
           <a-form-model-item label="状态">
-            <e-dict-select type="commonStatus" v-model="queryParam.status" @change="$refs.table.refresh(true)"/>
+            <e-dict-select type="commonStatus" v-model="queryParam.status" @change="$refs.eTable.refresh(true)"/>
           </a-form-model-item>
         </a-col>
       </template>
@@ -46,7 +46,7 @@
 
     <template slot="table">
       <s-table
-        ref="table"
+        ref="eTable"
         :columns="columns"
         :data="loadData"
         :alert="true"
@@ -170,7 +170,7 @@ export default {
     this.loadDictTypes()
   },
   activated () {
-    this.$refs.table.refresh(true)
+    this.$refs.eTable.refresh(true)
     this.loadDictTypes()
   },
   computed: {
@@ -201,7 +201,7 @@ export default {
     },
     remove (id) {
       remove(id).then(res => {
-        this.$refs.table.refresh(true)
+        this.$refs.eTable.refresh(true)
         this.removeBathLoading = false
       }).catch(({ response }) => {
         this.removeBathLoading = false

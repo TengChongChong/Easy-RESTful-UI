@@ -33,7 +33,6 @@ export default {
   },
   methods: {
     save () {
-      this.btnLoading = true
       this.$emit('update:loading', this.btnLoading)
       this.clickCallback()
     }

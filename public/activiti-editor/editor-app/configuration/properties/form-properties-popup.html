@@ -22,7 +22,7 @@
                             </div>
                         </div>
                     </div>
-            
+
                     <div class="col-xs-6">
                         <div ng-show="selectedProperties.length > 0">
                             <div class="form-group">
@@ -52,7 +52,18 @@
 							<div class="form-group" ng-show="selectedProperties[0].datePattern">
 								<label for="datePatternField" class="col-sm-3 control-label">{{'PROPERTY.FORMPROPERTIES.DATEPATTERN' | translate}}：</label>
 								<div class="col-sm-9">
-									<input id="datePatternField" class="form-control" type="text" ng-model="selectedProperties[0].datePattern" placeholder="{{'PROPERTY.FORMPROPERTIES.DATEPATTERN.PLACEHOLDER' | translate }}" />
+                  <select id="datePatternField" class="form-control" type="text" ng-model="selectedProperties[0].datePattern" placeholder="{{'PROPERTY.FORMPROPERTIES.DATEPATTERN.PLACEHOLDER' | translate }}">
+                    <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                    <option value="YYYY-MM-DD HH:mm">YYYY-MM-DD HH:mm</option>
+                    <option value="YYYY-MM-DD HH:mm:ss">YYYY-MM-DD HH:mm:ss</option>
+                    <option value="YYYY-MM-DD HH:mm:ss.SSS">YYYY-MM-DD HH:mm:ss.SSS</option>
+                    <option value="YYYY年MM月DD日">YYYY年MM月DD日</option>
+                    <option value="YYYYMMDD">YYYYMMDD</option>
+                    <option value="YYYYMMDDHHmmss">YYYYMMDDHHmmss</option>
+                    <option value="YYYYMMDDHHmmssSSS">YYYYMMDDHHmmssSSS</option>
+                    <option value="HH:mm:ss">HH:mm:ss</option>
+                    <option value="HHmmss">HHmmss</option>
+                  </select>
 								</div>
 							</div>
                             <div ng-if="selectedProperties[0].type == 'enum'" style="padding-bottom:10px">
@@ -70,10 +81,10 @@
 				                            </div>
 				                        </div>
 				                    </div>
-				            
+
 				                    <div class="col-xs-6">
 				                        <div ng-show="selectedEnumValues.length > 0">
-				            
+
 				                            <div class="form-group">
 				            			   		<label for="classField">{{'PROPERTY.FORMPROPERTIES.VALUES.ID' | translate}}</label>
 				            			   		<input type="text" id="classField" class="form-control" ng-model="selectedEnumValues[0].id" placeholder="{{'PROPERTY.FORMPROPERTIES.VALUES.ID.PLACEHOLDER' | translate}}" />
@@ -124,7 +135,7 @@
                         <div ng-show="selectedProperties.length == 0" class="muted no-property-selected" translate>PROPERTY.FORMPROPERTIES.EMPTY</div>
                     </div>
                 </div>
-            
+
             </div>
             <div class="modal-footer">
                 <button ng-click="cancel()" class="btn btn-primary" translate>ACTION.CANCEL</button>

@@ -22,6 +22,7 @@
         default: null
       },
       to: {
+        required: true,
         type: String,
         default: null
       }

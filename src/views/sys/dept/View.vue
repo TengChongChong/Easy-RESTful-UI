@@ -90,7 +90,7 @@
           :label-col="formLayout.labelCol"
           :wrapper-col="formLayout.wrapperCol">
           <a-row class="form-row" :gutter="16">
-            <a-col :lg="12" :sm="24">
+            <a-col :xl="12" :lg="24">
               <a-form-model-item label="部门类型" prop="typeCode">
                 <a-select show-search option-filter-prop="children" v-model="model.typeCode">
                   <a-select-option v-for="item in departTypes" :key="item.value">
@@ -99,7 +99,7 @@
                 </a-select>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24">
+            <a-col :xl="12" :lg="24">
               <a-form-model-item label="上级部门" prop="pId">
                 <a-select show-search option-filter-prop="children" v-model="model.pId">
                   <a-select-option v-if="parentDeparts.length > 0" v-for="item in parentDeparts" :key="item.value">
@@ -109,27 +109,27 @@
                 </a-select>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24">
+            <a-col :xl="12" :lg="24">
               <a-form-model-item label="部门名称" prop="name">
                 <a-input v-model="model.name"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24">
+            <a-col :xl="12" :lg="24">
               <a-form-model-item label="部门编码" prop="code">
                 <a-input v-model="model.code"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24">
+            <a-col :xl="12" :lg="24">
               <a-form-model-item label="部门简称" prop="simpleName">
                 <a-input v-model="model.simpleName"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24">
+            <a-col :xl="12" :lg="24">
               <a-form-model-item label="状态" prop="status">
                 <e-dict-radio name="status" v-model="model.status" type="commonStatus"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24">
+            <a-col :xl="12" :lg="24">
               <a-form-model-item label="排序值" prop="orderNo">
                 <a-tooltip placement="top" title="数字越小排名越靠前">
                   <a-input-number v-model="model.orderNo"/>
@@ -137,7 +137,7 @@
               </a-form-model-item>
             </a-col>
             <a-col :sm="24">
-              <a-form-model-item label="备注" :labelCol="{ span: 3 }" :wrapperCol="{ span: 19 }">
+              <a-form-model-item label="备注" :labelCol="{ sm: formLayout.labelCol, xl: { span: 3 } }" :wrapperCol="{ sm: formLayout.wrapperCol, xl: { span: 19 } }" prop="tips">
                 <a-textarea v-model="model.tips"/>
               </a-form-model-item>
             </a-col>
@@ -188,7 +188,7 @@
     generatorNodeIcon
   } from '@/utils/ant-design/data-display/tree'
   import { checkHasChild } from '@/api/sys/dept-type'
-  import { FORM_LAYOUT } from '@/utils/const/form'
+  import { FORM_LAYOUT, FULL_FORM_LAYOUT } from '@/utils/const/form'
   import EBtnSave from '@/components/Easy/general/BtnSave'
 
   const baseId = '0'
@@ -235,6 +235,7 @@
         saveLoading: false,
         hasData: false,
         formLayout: FORM_LAYOUT,
+        FULL_FORM_LAYOUT: FULL_FORM_LAYOUT,
         model: {},
         canAdd: false,
         departTypes: [],

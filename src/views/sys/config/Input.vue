@@ -26,7 +26,7 @@
         </a-col>
 
         <a-col :sm="24">
-          <a-form-model-item label="备注" :labelCol="{ span: 3 }" :wrapperCol="{ span: 19 }" prop="tips">
+          <a-form-model-item label="备注" :labelCol="FULL_FORM_LAYOUT.labelCol" :wrapperCol="FULL_FORM_LAYOUT.wrapperCol" prop="tips">
             <a-textarea v-model="model.tips"/>
           </a-form-model-item>
         </a-col>
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-  import { FORM_LAYOUT } from '@/utils/const/form'
+import { FORM_LAYOUT, FULL_FORM_LAYOUT } from '@/utils/const/form'
   import { get, save } from '@/api/sys/config'
   import { saveSuccessTip } from '@/utils/tips'
   import EDictSelect from '@/components/Easy/data-entry/DictSelect'
@@ -50,7 +50,7 @@
   import { DATA_TYPE_CONST } from '@/utils/const/sys/DataTypeConst'
 
   export default {
-    name: 'SysDictInput',
+    name: 'SysConfigInput',
     components: {
       EBtnSave,
       EDictSelect
@@ -63,6 +63,7 @@
         DATA_TYPE_CONST: DATA_TYPE_CONST,
         saveLoading: false,
         formLayout: FORM_LAYOUT,
+        FULL_FORM_LAYOUT: FULL_FORM_LAYOUT,
         model: {
           type: DATA_TYPE_CONST.STRING
         },

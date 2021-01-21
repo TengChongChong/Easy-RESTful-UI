@@ -18,10 +18,6 @@
               <a-icon type="safety" />
               安全设置
             </a-menu-item>
-            <a-menu-item key="custom">
-              <a-icon type="skin" />
-              个性化
-            </a-menu-item>
             <a-menu-item key="binding">
               <a-icon type="link" />
               账户绑定
@@ -31,7 +27,6 @@
         <div class="account-settings-info-right">
           <base-setting v-if="currentMenu === 'base-setting'"/>
           <security v-if="currentMenu === 'security'"/>
-          <custom v-if="currentMenu === 'custom'"/>
           <binding v-if="currentMenu === 'binding'"/>
         </div>
       </div>
@@ -43,7 +38,6 @@
 import { baseMixin } from '@/store/app-mixin'
 import BaseSetting from '@/views/sys/personal/settings/BaseSetting'
 import Security from '@/views/sys/personal/settings/Security'
-import Custom from '@/views/sys/personal/settings/Custom'
 import Binding from '@/views/sys/personal/settings/Binding'
 
 export default {
@@ -51,7 +45,6 @@ export default {
   components: {
     BaseSetting,
     Security,
-    Custom,
     Binding
   },
   mixins: [baseMixin],

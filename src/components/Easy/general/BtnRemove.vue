@@ -43,7 +43,6 @@
         require: true,
         default: () => {}
       }
-
     },
     data () {
       return {

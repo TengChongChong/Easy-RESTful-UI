@@ -9,7 +9,7 @@
       </a-col>
     </a-row>
     <s-table
-      ref="table"
+      ref="eTable"
       :columns="columns"
       :data="loadData"
       :alert="true"
@@ -151,11 +151,11 @@ export default {
   watch: {
     status: function (newPathKey) {
       this.status = newPathKey
-      this.$refs.table.refresh(true)
+      this.$refs.eTable.refresh(true)
     },
     star: function (newPathKey) {
       this.star = newPathKey
-      this.$refs.table.refresh(true)
+      this.$refs.eTable.refresh(true)
     }
   },
   data () {
@@ -168,7 +168,7 @@ export default {
     }
   },
   activated () {
-    this.$refs.table.refresh(true)
+    this.$refs.eTable.refresh(true)
   },
   methods: {
     // 加载数据方法 必须为 Promise 对象
@@ -182,7 +182,7 @@ export default {
         })
     },
     onSearch () {
-      this.$refs.table.refresh(true)
+      this.$refs.eTable.refresh(true)
     },
     /**
      * 设置消息标星/取消标星
@@ -192,7 +192,7 @@ export default {
      */
     setStar (id, type) {
       setStar(id, type).then(res => {
-        this.$refs.table.refresh(true)
+        this.$refs.eTable.refresh(true)
       })
     },
     /**
@@ -202,7 +202,7 @@ export default {
      */
     remove (id) {
       removeByIds(id, this.status === MESSAGE_CONST.RECEIVE_STATUS_DELETED).then(res => {
-        this.$refs.table.refresh(true)
+        this.$refs.eTable.refresh(true)
       })
     },
     /**
@@ -213,7 +213,7 @@ export default {
      */
     reductionByIds (id) {
       reductionByIds(id).then(res => {
-        this.$refs.table.refresh(true)
+        this.$refs.eTable.refresh(true)
       })
     },
     info (id, messageId) {

@@ -77,7 +77,7 @@
           :label-col="formLayout.labelCol"
           :wrapper-col="formLayout.wrapperCol">
           <a-row class="form-row" :gutter="16">
-            <a-col :lg="12" :sm="24">
+            <a-col :xl="12" :lg="24">
               <a-form-model-item label="上级类型">
                 <a-input v-model="model.pName" :disabled="true"/>
               </a-form-model-item>
@@ -94,7 +94,7 @@
                 <a-textarea v-model="model.tips"/>
               </a-form-model-item>
             </a-col>
-            <a-col :lg="12" :sm="24">
+            <a-col :xl="12" :lg="24">
               <div class="tree-wrapper">
                 <tree
                   ref="roleTree"

@@ -38,6 +38,7 @@
         default: true
       },
       type: {
+        required: true,
         type: String,
         default: null
       },

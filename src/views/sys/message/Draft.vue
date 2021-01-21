@@ -8,7 +8,7 @@
       </a-col>
     </a-row>
     <s-table
-      ref="table"
+      ref="eTable"
       :columns="columns"
       :data="loadData"
       :alert="true"
@@ -106,7 +106,7 @@ export default {
   watch: {
     status: function (newPathKey) {
       this.status = newPathKey
-      this.$refs.table.refresh(true)
+      this.$refs.eTable.refresh(true)
     }
   },
   data () {
@@ -118,7 +118,7 @@ export default {
     }
   },
   activated () {
-    this.$refs.table.refresh(true)
+    this.$refs.eTable.refresh(true)
   },
   methods: {
     // 加载数据方法 必须为 Promise 对象
@@ -133,11 +133,11 @@ export default {
     send (id) {
       send(id).then(res => {
         successTip()
-        this.$refs.table.refresh(true)
+        this.$refs.eTable.refresh(true)
       })
     },
     onSearch () {
-      this.$refs.table.refresh(true)
+      this.$refs.eTable.refresh(true)
     },
     edit (id) {
       this.setCurrentMenu('input')
@@ -145,7 +145,7 @@ export default {
     },
     remove (id) {
       remove(id).then(res => {
-        this.$refs.table.refresh(true)
+        this.$refs.eTable.refresh(true)
       })
     }
   }

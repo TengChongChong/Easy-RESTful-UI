@@ -27,7 +27,7 @@
       margin-right: 8px;
       color: @primary-color;
       vertical-align: top;
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(204, 204, 204, 0.3);
     }
   }
 
@@ -48,4 +48,22 @@
 
 .ant-pro-setting-drawer-handle {
   display: none;
+}
+
+@media (max-width: @screen-xs) {
+  .ant-pro-global-header-logo {
+    display: none;
+  }
+
+  .ant-pro-global-header-index-right {
+    .ant-pro-account-avatar {
+      .ant-pro-global-header-nickname {
+        display: none;
+      }
+
+      .antd-pro-global-header-index-avatar {
+        margin-right: 0;
+      }
+    }
+  }
 }

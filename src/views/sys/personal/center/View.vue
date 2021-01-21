@@ -23,11 +23,11 @@
           <div class="account-center-detail">
             <p>
               <a-icon type="phone"/>
-              {{ user.phone }}
+              {{ user.phone || '-' }}
             </p>
             <p>
               <a-icon type="mail"/>
-              {{ user.email }}
+              {{ user.email || '-' }}
             </p>
             <p>
               <a-icon type="team"/>
@@ -44,7 +44,10 @@
           <message-list/>
         </a-card>
         <a-card title="待办任务" :bordered="false" :body-style="{padding: '0px 20px'}">
-          <p>...</p>
+          <router-link slot="extra" to="/activiti/task/to-do">
+            更多
+          </router-link>
+          <e-to-do-list/>
         </a-card>
       </a-col>
     </a-row>
@@ -57,10 +60,11 @@ import EDictTag from '@/components/Easy/data-entry/DictTag'
 import { SEX_CONST } from '@/utils/const/sys/SexConst'
 import MessageList from '@/views/sys/message/MessageList'
 import EAvatar from '@/components/Easy/data-display/Avatar'
+import EToDoList from '@/views/activiti/task/ToDoList'
 
 export default {
   name: 'SysPersonalCenterView',
-  components: { EAvatar, EDictTag, MessageList },
+  components: { EToDoList, EAvatar, EDictTag, MessageList },
   data () {
     return {
       SEX_CONST: SEX_CONST

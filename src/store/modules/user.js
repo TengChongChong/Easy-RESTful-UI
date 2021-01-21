@@ -69,12 +69,13 @@ const user = {
       })
     },
 
-    // 提出
+    // 退出
     Logout ({ commit, state }) {
       return new Promise((resolve) => {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
+          this.dispatch('tagsView/delAllViews')
           resolve()
         }).catch(() => {
           resolve()

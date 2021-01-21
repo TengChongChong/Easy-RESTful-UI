@@ -32,6 +32,7 @@ import Info from '@/views/sys/message/Info'
 import EAvatar from '@/components/Easy/data-display/Avatar'
 
 export default {
+  name: 'EMessageList',
   props: {
     status: {
       type: String,

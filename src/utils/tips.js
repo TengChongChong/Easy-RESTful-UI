@@ -24,11 +24,13 @@ const commonTips = {
 
 /**
  * 操作成功提示
+ *
+ * @param description {string|null} 提示文字
  */
-export function successTip () {
+export function successTip (description) {
   notification.success({
     message: commonTips.success,
-    description: '操作成功'
+    description: description || '操作成功'
   })
 }
 
