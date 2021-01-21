@@ -14,7 +14,7 @@
         </a-col>
         <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
           <a-form-model-item label="状态">
-            <e-dict-select type="suspensionState" v-model="queryParam.suspensionState" @change="$refs.table.refresh(true)"/>
+            <e-dict-select type="suspensionState" v-model="queryParam.suspensionState" @change="$refs.eTable.refresh(true)"/>
           </a-form-model-item>
         </a-col>
 
@@ -26,7 +26,7 @@
 
       <template slot="table">
         <s-table
-          ref="table"
+          ref="eTable"
           row-key="deploymentId"
           :columns="columns"
           :data="loadData"
@@ -108,7 +108,10 @@
       </a-form-model>
     </a-modal>
 
-    <a-modal :width="800" v-model="modalVisible" title="流程图" @ok="() => {this.modalVisible = false}" okText="关闭">
+    <a-modal :width="800" v-model="modalVisible" title="流程图">
+      <template slot="footer">
+        <a-button @click="() => {this.modalVisible = false}">关闭</a-button>
+      </template>
       <img class="flow-chart" :src="`${VUE_APP_API_BASE_URL}/activiti/process/${deploymentId}/${resourceName}/image/stream`">
     </a-modal>
   </div>
@@ -235,7 +238,7 @@ export default {
     }
   },
   activated () {
-    this.$refs.table.refresh(true)
+    this.$refs.eTable.refresh(true)
   },
   computed: {
     rowSelection () {
@@ -260,7 +263,7 @@ export default {
     },
     remove (id) {
       remove(id).then(res => {
-        this.$refs.table.refresh(true)
+        this.$refs.eTable.refresh(true)
         this.removeBathLoading = false
       }).catch(({ response }) => {
         this.removeBathLoading = false
@@ -293,7 +296,7 @@ export default {
     suspend (processDefinitionId, suspendProcessInstances = true) {
       suspend(processDefinitionId, suspendProcessInstances).then(res => {
         successTip()
-        this.$refs.table.refresh(true)
+        this.$refs.eTable.refresh(true)
       })
     },
     /**
@@ -305,7 +308,7 @@ export default {
     activation (processDefinitionId, suspendProcessInstances = true) {
       activation(processDefinitionId, suspendProcessInstances).then(res => {
         successTip()
-        this.$refs.table.refresh(true)
+        this.$refs.eTable.refresh(true)
       })
     },
     /**

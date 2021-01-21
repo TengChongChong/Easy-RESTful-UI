@@ -56,3 +56,15 @@ export function exportModel (id) {
     method: HTTP_METHOD.GET
   })
 }
+/**
+ * 根据模型标识查询流程定义ID
+ *
+ * @param key 模型标识
+ * @return Tips 流程定义ID
+ */
+export function selectProcessDefinitionId (key) {
+  return request({
+    url: `${baseUrl}process/definition/id/${key}`,
+    method: HTTP_METHOD.GET
+  })
+}
