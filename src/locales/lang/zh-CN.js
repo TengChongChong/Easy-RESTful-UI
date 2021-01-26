@@ -9,11 +9,9 @@ const components = {
 
 const locale = {
   'message': '-',
-  'menu.home': '主页',
-  'menu.dashboard': '仪表盘',
-  'menu.dashboard.analysis': '分析页',
-  'menu.dashboard.monitor': '监控页',
-  'menu.dashboard.workplace': '工作台',
+  'layouts.usermenu.dialog.title': '提示',
+  'layouts.usermenu.dialog.content': '确定要退出吗？',
+
   'app.setting.pagestyle': '整体风格设置',
   'app.setting.pagestyle.light': '亮色菜单风格',
   'app.setting.pagestyle.dark': '暗色菜单风格',
@@ -23,7 +21,9 @@ const locale = {
   'app.setting.content-width': '内容区域宽度',
   'app.setting.fixedheader': '固定 Header',
   'app.setting.fixedsidebar': '固定侧边栏',
+  'app.setting.splitMenu': '自动分割菜单',
   'app.setting.sidemenu': '侧边菜单布局',
+  'app.setting.fixedsidebar.hint': '顶部菜单布局不支持此设置',
   'app.setting.topmenu': '顶部菜单布局',
   'app.setting.content-width.fixed': 'Fixed',
   'app.setting.content-width.fluid': 'Fluid',
