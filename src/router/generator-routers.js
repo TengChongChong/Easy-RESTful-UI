@@ -9,18 +9,18 @@ const constantRouterComponents = {
   BlankLayout: BlankLayout,
   RouteView: RouteView,
   PageView: PageView,
-  '403': () => import('@/views/exception/403'),
-  '404': () => import('@/views/exception/404'),
-  '500': () => import('@/views/exception/500'),
-  // exception
-  'Exception403': () => import('@/views/exception/403'),
-  'Exception404': () => import('@/views/exception/404'),
-  'Exception500': () => import('@/views/exception/500')
+  '403': () => import('@/views/global/403'),
+  '404': () => import('@/views/global/404'),
+  '500': () => import('@/views/global/500'),
+  // global
+  'Exception403': () => import('@/views/global/403'),
+  'Exception404': () => import('@/views/global/404'),
+  'Exception500': () => import('@/views/global/500')
 }
 
 // 前端未找到页面路由（固定不用改）
 const notFoundRouter = {
-  path: '*', redirect: '/404', hidden: true
+  path: '*', redirect: '/global/404', hidden: true
 }
 
 /**
@@ -44,7 +44,7 @@ export const generatorDynamicRouter = (menus) => {
     }]
     const routers = generator(menuNav)
     // 设置菜单
-    store.dispatch('setMenus', deepClone(routers, ['component']))
+    store.dispatch('setMenus', cleanHiddenMenu(deepClone(routers, ['component'])))
     // 由于3级及以上菜单缓存问题，此处菜单降级为2级
     getFlatRoutes(routers)
     // 路由全部设置为2级
@@ -58,6 +58,23 @@ export const generatorDynamicRouter = (menus) => {
     // 404
     routers.push(notFoundRouter)
     resolve(routers)
+  })
+}
+/**
+ * 清除隐藏的菜单，不然会导致菜单下面都是隐藏菜单依然显示有子菜单
+ *
+ * @param menus
+ * @return {*}
+ */
+const cleanHiddenMenu = (menus) => {
+  return menus.filter(item => {
+    if (!item.hidden && item.children && item.children.length) {
+      item.children = cleanHiddenMenu(item.children)
+    }
+    if (item.children && !item.children.length) {
+      delete item.children
+    }
+    return !item.hidden
   })
 }
 
@@ -90,11 +107,13 @@ function generatorName (menu) {
     const paths = menu.component.split(/\/|-/)
     let name = ''
     paths.map(item => {
-      name += item.replace(/^\S/, function (s) { return s.toUpperCase() })
+      name += item.replace(/^\S/, function (s) {
+        return s.toUpperCase()
+      })
     })
     return name
   } else {
-      return `${menu.name}-${menu.id}`
+    return `${menu.name}-${menu.id}`
   }
 }
 

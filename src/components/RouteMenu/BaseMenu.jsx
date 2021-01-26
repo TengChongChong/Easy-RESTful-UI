@@ -4,6 +4,7 @@ import 'ant-design-vue/es/menu/style'
 import Menu from 'ant-design-vue/es/menu'
 import 'ant-design-vue/es/icon/style'
 import Icon from 'ant-design-vue/es/icon'
+import store from '@/store'
 
 const {
   Item: MenuItem,
@@ -12,6 +13,7 @@ const {
 
 export const RouteMenuProps = {
   menus: PropTypes.array,
+  settings: PropTypes.object,
   theme: PropTypes.string.def('dark'),
   mode: PropTypes.string.def('inline'),
   collapsed: PropTypes.bool.def(false),
@@ -20,21 +22,9 @@ export const RouteMenuProps = {
 
 const httpReg = /(http|https|ftp):\/\/([\w.]+\/?)\S*/
 
-const hasShowMenu = (items) => {
-  let hasShow = false
-  if (items) {
-    items.map(item => {
-      if (!item.hidden && !hasShow) {
-        hasShow = true
-      }
-    })
-  }
-  return hasShow
-}
-
 const renderMenu = (h, item, i18nRender) => {
   if (item && !item.hidden) {
-    const bool = item.children && !item.hideChildrenInMenu && hasShowMenu(item.children)
+    const bool = item.children && !item.hideChildrenInMenu
     return bool ? renderSubMenu(h, item, i18nRender) : renderMenuItem(h, item, i18nRender)
   }
   return null
@@ -148,13 +138,19 @@ const RouteMenu = {
     updateMenu () {
       const routes = this.$route.matched.concat()
       const { hidden } = this.$route.meta
-      let openKeys = []
+      const openKeys = routes[routes.length - 1].meta.paths
+      if (this.settings.splitMenu) {
+        // 分割菜单，需要设置顶部菜单选中值
+        if (openKeys.length >= 2) {
+          store.dispatch('setCurrentTopMenu', openKeys[1])
+        } else {
+          store.dispatch('setCurrentTopMenu', routes.pop().path)
+        }
+      }
       if (routes.length >= 3 && hidden) {
-        openKeys = routes[routes.length - 1].meta.paths
         this.selectedKeys = routes[routes.length - 1].meta.paths
         this.selectedKeys = [this.selectedKeys[this.selectedKeys.length - 1]]
       } else {
-        openKeys = routes[routes.length - 1].meta.paths
         this.selectedKeys = [routes.pop().path]
       }
       this.collapsed ? (this.cachedOpenKeys = openKeys) : (this.openKeys = openKeys)

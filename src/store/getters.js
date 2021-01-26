@@ -11,7 +11,8 @@ const getters = {
   multiTab: state => state.app.multiTab,
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
-  menu: state => state.menu.menus
+  menu: state => state.menu.menus,
+  currentTopMenu: state => state.menu.currentTopMenu
 }
 
 export default getters

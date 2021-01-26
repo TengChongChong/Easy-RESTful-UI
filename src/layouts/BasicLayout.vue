@@ -22,7 +22,13 @@
 
     <setting-drawer ref="settingDrawer" :settings="settings" @change="handleSettingChange" />
     <template v-slot:rightContentRender>
-      <right-content :set-setting-drawer-show="setSettingDrawerShow" :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
+      <right-content
+        ref="rightContent"
+        :set-setting-drawer-show="setSettingDrawerShow"
+        :settings="settings"
+        :top-menu="settings.layout === 'topmenu'"
+        :is-mobile="isMobile"
+        :theme="settings.theme" />
     </template>
     <template v-slot:footerRender>
       <global-footer />
@@ -33,7 +39,9 @@
 </template>
 
 <script>
-import { SettingDrawer, updateTheme } from '@ant-design-vue/pro-layout'
+import { updateTheme } from '@ant-design-vue/pro-layout'
+import SettingDrawer from '@/components/SettingDrawer'
+// import { updateTheme } from '@ant-design-vue/pro-layout'
 // import { SettingDrawer, updateTheme } from '@/components/SettingDrawer'
 import { i18nRender } from '@/locales'
 import { mapState } from 'vuex'
@@ -45,6 +53,7 @@ import GlobalFooter from '@/components/GlobalFooter'
 import Ads from '@/components/Other/CarbonAds'
 import LogoSvg from '../assets/logo.svg?inline'
 import BaseMenu from '@/components/RouteMenu'
+import { isNotBlank } from '@/utils/util'
 export default {
   name: 'BasicLayout',
   components: {
@@ -79,6 +88,7 @@ export default {
         fixSiderbar: defaultSettings.fixSiderbar,
         colorWeak: defaultSettings.colorWeak,
 
+        splitMenu: defaultSettings.splitMenu,
         hideHintAlert: false,
         hideCopyButton: false
       },
@@ -94,20 +104,24 @@ export default {
       // 动态主路由
       mainMenu: state => state.menu,
       multiTab: (state) => state.app.multiTab
-    })
+    }),
+    currentTopMenu () {
+      return this.$store.state.menu.currentTopMenu
+    }
   },
   created () {
-    const routes = this.mainMenu.menus.find(item => item.path === '/')
-    this.menus = (routes && routes.children) || []
     // 处理侧栏收起状态
     this.$watch('collapsed', () => {
       this.$store.commit(SIDEBAR_TYPE, this.collapsed)
     })
     this.$watch('isMobile', () => {
       this.$store.commit(TOGGLE_MOBILE_TYPE, this.isMobile)
+      this.$refs.rightContent.setFirstLevelMenu()
     })
   },
   mounted () {
+    this.setMenu()
+
     // this.$refs.settingDrawer.setShow(true)
     const userAgent = navigator.userAgent
     if (userAgent.indexOf('Edge') > -1) {
@@ -121,14 +135,26 @@ export default {
 
     // first update color
     // TIPS: THEME COLOR HANDLER!! PLEASE CHECK THAT!!
-    if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_PREVIEW === 'true') {
+    // if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_PREVIEW === 'true') {
       updateTheme(this.settings.primaryColor)
+    // }
+  },
+  watch: {
+    currentTopMenu (newVal) {
+      this.setMenu(newVal)
     }
   },
   methods: {
+    setMenu (currentTopMenu) {
+      const routes = this.mainMenu.menus.find(item => item.path === '/')
+      this.menus = (routes && routes.children) || []
+      if (isNotBlank(currentTopMenu) && this.settings.splitMenu && this.settings.layout === 'sidemenu' && !this.isMobile) {
+        this.menus = this.menus.find(item => item.path === currentTopMenu).children || []
+      }
+    },
     menuRender (h, { collapsed, menus, mode, theme, i18nRender }) {
       return (
-        <BaseMenu collapsed={collapsed} menus={menus} mode={mode} theme={theme} i18nRender={i18nRender} />
+        <BaseMenu collapsed={collapsed} settings={this.settings} menus={menus} mode={mode} theme={theme} i18nRender={i18nRender} />
       )
     },
     i18nRender,
@@ -149,13 +175,13 @@ export default {
       this.collapsed = val
     },
     handleSettingChange ({ type, value }) {
-      console.log('type', type, value)
       type && (this.settings[type] = value)
       switch (type) {
         case 'contentWidth':
           this.settings[type] = value
           break
         case 'layout':
+          this.setMenu(this.currentTopMenu)
           if (value === 'sidemenu') {
             this.settings.contentWidth = CONTENT_WIDTH_TYPE.Fluid
           } else {
@@ -163,7 +189,10 @@ export default {
             this.settings.contentWidth = CONTENT_WIDTH_TYPE.Fixed
           }
           break
+        case 'splitMenu':
+          this.setMenu(this.currentTopMenu)
       }
+      this.$refs.rightContent.setFirstLevelMenu()
     },
     setSettingDrawerShow (show) {
       this.$refs.settingDrawer.setShow(show)

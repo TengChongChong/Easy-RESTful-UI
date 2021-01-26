@@ -24,6 +24,8 @@ export default {
   },
   title: 'Easy-RESTful-UI',
   pwa: false,
+  // 侧边菜单布局下、自动分割菜单
+  splitMenu: false,
   iconfontUrl: '',
   production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true'
 }
