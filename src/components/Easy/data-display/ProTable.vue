@@ -2,10 +2,10 @@
   <div>
     <div class="table-page-search-wrapper">
       <a-form-model
-        :label-col="formLayout.labelCol"
-        :wrapper-col="formLayout.wrapperCol">
+        :label-col="FORM_LAYOUT.labelCol"
+        :wrapper-col="FORM_LAYOUT.wrapperCol">
         <a-card :bordered="false">
-          <a-row :gutter="24">
+          <a-row :gutter="16">
             <slot name="query"></slot>
             <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
               <span
@@ -80,6 +80,7 @@
 <script>
 import { FORM_LAYOUT } from '@/utils/const/form'
 import { baseMixin } from '@/store/app-mixin'
+
 export default {
   name: 'EProTable',
   props: {
@@ -99,7 +100,7 @@ export default {
   mixins: [baseMixin],
   data () {
     return {
-      formLayout: FORM_LAYOUT,
+      FORM_LAYOUT: FORM_LAYOUT,
       currentAdvanced: this.advanced,
       currentSize: null
     }

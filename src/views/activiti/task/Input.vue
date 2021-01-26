@@ -5,8 +5,8 @@
       ref="form"
       :model="model"
       :rules="rules"
-      :label-col="formLayout.labelCol"
-      :wrapper-col="formLayout.wrapperCol">
+      :label-col="FORM_LAYOUT.labelCol"
+      :wrapper-col="FORM_LAYOUT.wrapperCol">
       <component v-if="variables != null" :is="businessDetails" :id="processInstance.businessKey"/>
       <a-divider style="margin: 0">发起人</a-divider>
       <a-row class="form-row" :gutter="16">
@@ -72,7 +72,7 @@ import { successTip } from '@/utils/tips'
       return {
         id: this.$route.params.id,
         saveLoading: false,
-        formLayout: FORM_LAYOUT,
+        FORM_LAYOUT: FORM_LAYOUT,
         DATE_PATTERN: DATE_PATTERN,
         applyUser: {},
         task: {},

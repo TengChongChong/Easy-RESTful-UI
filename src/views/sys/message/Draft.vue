@@ -28,14 +28,14 @@
           </template>
           <a-button type="primary" size="small" icon="edit" @click="edit(record.id)"/>
         </a-tooltip>
-        <a-divider type="vertical" />
+        <a-divider type="vertical"/>
         <a-tooltip placement="top">
           <template slot="title">
             <span>发送</span>
           </template>
           <a-button type="primary" size="small" icon="check-circle" @click="send(record.id)"/>
         </a-tooltip>
-        <a-divider type="vertical" />
+        <a-divider type="vertical"/>
         <e-btn-remove :id="record.id" :click-callback="remove" :divider="false"/>
       </span>
     </s-table>
@@ -47,7 +47,7 @@ import { STable, Ellipsis } from '@/components'
 import { select, send, remove } from '@/api/sys/message'
 import EBtnInfo from '@/components/Easy/general/BtnInfo'
 import EBtnRemove from '@/components/Easy/general/BtnRemove'
-import EDictTag from '@/components/Easy/data-entry/DictTag'
+import EDictTag from '@/components/Easy/data-display/DictTag'
 import { MESSAGE_CONST } from '@/utils/const/sys/MessageConst'
 import { formatDate } from '@/utils/util'
 import EBtnEdit from '@/components/Easy/general/BtnEdit'
@@ -88,11 +88,13 @@ export default {
   props: {
     setCurrentMenu: {
       type: Function,
-      default: () => {}
+      default: () => {
+      }
     },
     setId: {
       type: Function,
-      default: () => {}
+      default: () => {
+      }
     }
   },
   components: {

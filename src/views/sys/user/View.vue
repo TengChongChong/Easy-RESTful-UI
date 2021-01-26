@@ -87,7 +87,7 @@
               <e-dict-tag type="sex" :code="text"/>
             </span>
             <span slot="avatar" slot-scope="text, record">
-              <e-avatar :avatar="text" :nickname="record.nickname" />
+              <e-avatar :avatar="text" :nickname="record.nickname"/>
             </span>
             <span slot="action" slot-scope="text, record">
               <e-btn-edit :to="`/sys/user/input`" :tab-name="record.nickname" :id="record.id"/>
@@ -102,7 +102,7 @@
 <script>
 import { Tree } from 'ant-design-vue'
 import { STable, Ellipsis } from '@/components'
-import EDictTag from '@/components/Easy/data-entry/DictTag'
+import EDictTag from '@/components/Easy/data-display/DictTag'
 import EDictSelect from '@/components/Easy/data-entry/DictSelect'
 import EBtnAdd from '@/components/Easy/general/BtnAdd'
 import EBtnEdit from '@/components/Easy/general/BtnEdit'

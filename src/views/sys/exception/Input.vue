@@ -3,8 +3,8 @@
     <a-form-model
       ref="form"
       :model="model"
-      :label-col="formLayout.labelCol"
-      :wrapper-col="formLayout.wrapperCol">
+      :label-col="FORM_LAYOUT.labelCol"
+      :wrapper-col="FORM_LAYOUT.wrapperCol">
       <a-row class="form-row" :gutter="16">
         <a-col :lg="12" :sm="24">
           <a-form-model-item label="错误代码">
@@ -32,14 +32,20 @@
           </a-form-model-item>
         </a-col>
         <a-col :sm="24">
-          <a-form-model-item label="异常信息" :labelCol="FULL_FORM_LAYOUT.labelCol" :wrapperCol="FULL_FORM_LAYOUT.wrapperCol">
+          <a-form-model-item
+            label="异常信息"
+            :labelCol="FULL_FORM_LAYOUT.labelCol"
+            :wrapperCol="FULL_FORM_LAYOUT.wrapperCol">
             <div class="scrollbar">
               {{ model.message }}
             </div>
           </a-form-model-item>
         </a-col>
         <a-col :sm="24">
-          <a-form-model-item label="异常信息" :labelCol="FULL_FORM_LAYOUT.labelCol" :wrapperCol="FULL_FORM_LAYOUT.wrapperCol">
+          <a-form-model-item
+            label="异常信息"
+            :labelCol="FULL_FORM_LAYOUT.labelCol"
+            :wrapperCol="FULL_FORM_LAYOUT.wrapperCol">
             <div class="traces scrollbar">
               <template v-for="(item, index) in traces">
                 <p :key="index">
@@ -69,7 +75,7 @@ export default {
       id: this.$route.query.id,
 
       // 表单
-      formLayout: FORM_LAYOUT,
+      FORM_LAYOUT: FORM_LAYOUT,
       FULL_FORM_LAYOUT: FULL_FORM_LAYOUT,
       DATE_PATTERN: DATE_PATTERN,
       model: {},

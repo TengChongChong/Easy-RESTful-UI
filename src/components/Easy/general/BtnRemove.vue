@@ -11,55 +11,56 @@
         <a-button type="danger" size="small" :loading="loading" :icon="icon"/>
       </a-tooltip>
     </a-popconfirm>
-    <a-divider v-if="divider" type="vertical" />
+    <a-divider v-if="divider" type="vertical"/>
   </span>
 </template>
 <script>
-  export default {
-    name: 'EBtnRemove',
-    props: {
-      name: {
-        type: String,
-        default: '删除'
-      },
-      icon: {
-        type: String,
-        default: 'delete'
-      },
-      id: {
-        type: String,
-        default: null
-      },
-      params: {
-        type: Object,
-        default: null
-      },
-      divider: {
-        type: Boolean,
-        default: true
-      },
-      clickCallback: {
-        type: Function,
-        require: true,
-        default: () => {}
-      }
+export default {
+  name: 'EBtnRemove',
+  props: {
+    name: {
+      type: String,
+      default: '删除'
     },
-    data () {
-      return {
-        loading: false,
-        query: this.params
-      }
+    icon: {
+      type: String,
+      default: 'delete'
     },
-    watch: {
-      params (val, oldVal) {
-        this.query = val
-      }
+    id: {
+      type: String,
+      default: null
     },
-    methods: {
-      remove () {
-        this.loading = true
-        this.clickCallback(this.id, this.params)
+    params: {
+      type: Object,
+      default: null
+    },
+    divider: {
+      type: Boolean,
+      default: true
+    },
+    clickCallback: {
+      type: Function,
+      require: true,
+      default: () => {
       }
     }
+  },
+  data () {
+    return {
+      loading: false,
+      query: this.params
+    }
+  },
+  watch: {
+    params (val, oldVal) {
+      this.query = val
+    }
+  },
+  methods: {
+    remove () {
+      this.loading = true
+      this.clickCallback(this.id, this.params)
+    }
   }
+}
 </script>

@@ -1,6 +1,6 @@
 <template>
   <a-select
-    style="min-width: 120px"
+    style="width: 100%"
     show-search
     option-filter-prop="children"
     :mode="mode"
@@ -16,60 +16,60 @@
   </a-select>
 </template>
 <script>
-  import { getSysDictArrayByDictType, isBlank } from '@/utils/util'
+import { getSysDictArrayByDictType, isBlank } from '@/utils/util'
 
-  export default {
-    name: 'EDictSelect',
-    props: {
-      mode: {
-        type: String,
-        default: null
-      },
-      placeholder: {
-        type: String,
-        default: null
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      },
-      allowClear: {
-        type: Boolean,
-        default: true
-      },
-      type: {
-        required: true,
-        type: String,
-        default: null
-      },
-      value: {
-        type: [String, Number, Array],
-        default: null
-      }
+export default {
+  name: 'EDictSelect',
+  props: {
+    mode: {
+      type: String,
+      default: null
     },
-    data () {
-      return {
-        dictArray: {},
-        error: null,
-        currentValue: this.value
-      }
+    placeholder: {
+      type: String,
+      default: null
     },
-    watch: {
-      value (newValue) {
-        this.currentValue = newValue
-      }
+    disabled: {
+      type: Boolean,
+      default: false
     },
-    created () {
-      if (isBlank(this.type)) {
-        this.error = '字典类型[参数type]不能为空'
-      }
-      this.dictArray = getSysDictArrayByDictType(this.type)
+    allowClear: {
+      type: Boolean,
+      default: true
     },
-    methods: {
-      handleChange () {
-        this.$emit('input', this.currentValue)
-        this.$emit('change')
-      }
+    type: {
+      required: true,
+      type: String,
+      default: null
+    },
+    value: {
+      type: [String, Number, Array],
+      default: null
+    }
+  },
+  data () {
+    return {
+      dictArray: {},
+      error: null,
+      currentValue: this.value
+    }
+  },
+  watch: {
+    value (newValue) {
+      this.currentValue = newValue
+    }
+  },
+  created () {
+    if (isBlank(this.type)) {
+      this.error = '字典类型[参数type]不能为空'
+    }
+    this.dictArray = getSysDictArrayByDictType(this.type)
+  },
+  methods: {
+    handleChange () {
+      this.$emit('input', this.currentValue)
+      this.$emit('change', this.currentValue)
     }
   }
+}
 </script>

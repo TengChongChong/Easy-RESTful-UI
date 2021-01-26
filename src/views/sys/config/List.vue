@@ -51,7 +51,7 @@
 <script>
 import { STable, Ellipsis } from '@/components'
 import { select, remove, refreshCache } from '@/api/sys/config'
-import EDictTag from '@/components/Easy/data-entry/DictTag'
+import EDictTag from '@/components/Easy/data-display/DictTag'
 import EDictSelect from '@/components/Easy/data-entry/DictSelect'
 import EBtnAdd from '@/components/Easy/general/BtnAdd'
 import EBtnEdit from '@/components/Easy/general/BtnEdit'

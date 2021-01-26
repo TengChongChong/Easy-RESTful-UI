@@ -1,9 +1,15 @@
 <template>
+
   <e-pro-table title="字典管理" :advanced.sync="advanced">
     <template slot="query">
       <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
         <a-form-model-item label="字典类型">
-          <a-select show-search option-filter-prop="children" :allowClear="true" v-model="queryParam.dictType" @change="$refs.eTable.refresh(true)">
+          <a-select
+            show-search
+            option-filter-prop="children"
+            :allowClear="true"
+            v-model="queryParam.dictType"
+            @change="$refs.eTable.refresh(true)">
             <a-select-option v-for="item in dictTypes" :key="item.type">
               {{ item.name }}（{{ item.type }}）
             </a-select-option>
@@ -70,7 +76,10 @@
         </span>
         <span slot="action" slot-scope="text, record">
           <template>
-            <e-btn-add-sub :to="`/sys/dict/input`" :tab-name="`新增下级 - ${record.name}`" :params="{ pId: record.id, dictType: record.dictType }"/>
+            <e-btn-add-sub
+              :to="`/sys/dict/input`"
+              :tab-name="`新增下级 - ${record.name}`"
+              :params="{ pId: record.id, dictType: record.dictType }"/>
 
             <e-btn-edit :to="`/sys/dict/input`" :tab-name="record.name" :id="record.id"/>
 
@@ -86,7 +95,7 @@
 import { STable, Ellipsis } from '@/components'
 import { select, remove, generateDictData } from '@/api/sys/dict'
 import { selectAll } from '@/api/sys/dict-type'
-import EDictTag from '@/components/Easy/data-entry/DictTag'
+import EDictTag from '@/components/Easy/data-display/DictTag'
 import EDictSelect from '@/components/Easy/data-entry/DictSelect'
 import EBtnAddSub from '@/components/Easy/general/BtnAddSub'
 import EBtnAdd from '@/components/Easy/general/BtnAdd'

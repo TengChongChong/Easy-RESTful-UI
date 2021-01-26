@@ -10,8 +10,8 @@
     <!--  撤销申请  -->
     <a-modal v-model="revokeModalVisible" :confirm-loading="revokeConfirmLoading" title="撤销申请" @ok="revoke">
       <a-form
-        :label-col="formLayout.labelCol"
-        :wrapper-col="formLayout.wrapperCol">
+        :label-col="FORM_LAYOUT.labelCol"
+        :wrapper-col="FORM_LAYOUT.wrapperCol">
         <a-form-item label="撤销原因" :prop="deleteReason" class="last">
           <a-textarea v-model="deleteReason"/>
         </a-form-item>
@@ -59,7 +59,7 @@ export default {
   data () {
     return {
       loading: false,
-      formLayout: FORM_LAYOUT,
+      FORM_LAYOUT: FORM_LAYOUT,
       // -- 撤销
       revokeModalVisible: false,
       revokeConfirmLoading: false,

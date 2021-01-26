@@ -29,8 +29,8 @@
         ref="changePasswordForm"
         :model="changePasswordModel"
         :rules="changePasswordRules"
-        :label-col="formLayout.labelCol"
-        :wrapper-col="formLayout.wrapperCol">
+        :label-col="FORM_LAYOUT.labelCol"
+        :wrapper-col="FORM_LAYOUT.wrapperCol">
         <a-row class="form-row" :gutter="16">
           <a-col>
             <a-form-model-item label="原密码" prop="password">
@@ -56,8 +56,8 @@
         ref="bindingPhoneForm"
         :model="bindingPhoneModel"
         :rules="bindingPhoneRules"
-        :label-col="formLayout.labelCol"
-        :wrapper-col="formLayout.wrapperCol">
+        :label-col="FORM_LAYOUT.labelCol"
+        :wrapper-col="FORM_LAYOUT.wrapperCol">
         <a-row class="form-row" :gutter="16">
           <a-col>
             <a-form-model-item label="手机号" prop="phone">
@@ -96,8 +96,8 @@
         ref="bindingEmailForm"
         :model="bindingEmailModel"
         :rules="bindingEmailRules"
-        :label-col="formLayout.labelCol"
-        :wrapper-col="formLayout.wrapperCol">
+        :label-col="FORM_LAYOUT.labelCol"
+        :wrapper-col="FORM_LAYOUT.wrapperCol">
         <a-row class="form-row" :gutter="16">
           <a-col>
             <a-form-model-item label="邮箱" prop="email">
@@ -127,7 +127,7 @@ export default {
   components: { Password },
   data () {
     return {
-      formLayout: FORM_LAYOUT,
+      FORM_LAYOUT: FORM_LAYOUT,
 
       // 修改密码
       changePasswordModalVisible: false,

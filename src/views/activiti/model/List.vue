@@ -59,8 +59,8 @@
         ref="form"
         :model="model"
         :rules="rules"
-        :label-col="formLayout.labelCol"
-        :wrapper-col="formLayout.wrapperCol">
+        :label-col="FORM_LAYOUT.labelCol"
+        :wrapper-col="FORM_LAYOUT.wrapperCol">
         <a-form-model-item label="名称" prop="name">
           <a-input v-model="model.name"/>
         </a-form-model-item>
@@ -81,7 +81,7 @@
 <script>
 import { STable, Ellipsis } from '@/components'
 import { select, remove, save, deploymentProcess, exportModel } from '@/api/activiti/model'
-import EDictTag from '@/components/Easy/data-entry/DictTag'
+import EDictTag from '@/components/Easy/data-display/DictTag'
 import EDictSelect from '@/components/Easy/data-entry/DictSelect'
 import EBtnAdd from '@/components/Easy/general/BtnAdd'
 import EBtnEdit from '@/components/Easy/general/BtnEdit'
@@ -166,7 +166,7 @@ export default {
 
       // 新增窗口
       addModalVisible: false,
-      formLayout: FORM_LAYOUT,
+      FORM_LAYOUT: FORM_LAYOUT,
       fileList: [
       ],
       model: {},

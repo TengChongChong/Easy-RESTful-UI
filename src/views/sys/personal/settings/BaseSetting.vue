@@ -6,8 +6,8 @@
           ref="form"
           :model="model"
           :rules="rules"
-          :label-col="formLayout.labelCol"
-          :wrapper-col="formLayout.wrapperCol">
+          :label-col="FORM_LAYOUT.labelCol"
+          :wrapper-col="FORM_LAYOUT.wrapperCol">
           <a-row class="form-row" :gutter="16">
             <a-col>
               <a-form-model-item label="昵称" prop="nickname">
@@ -70,7 +70,7 @@ export default {
   data () {
     return {
       saveLoading: false,
-      formLayout: FORM_LAYOUT,
+      FORM_LAYOUT: FORM_LAYOUT,
       VUE_APP_API_BASE_URL: process.env.VUE_APP_API_BASE_URL,
 
       model: {},

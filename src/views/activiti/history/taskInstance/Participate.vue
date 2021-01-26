@@ -48,7 +48,7 @@
 <script>
 import { STable, Ellipsis } from '@/components'
 import { selectParticipate } from '@/api/activiti/historyTaskInstance'
-import EDictTag from '@/components/Easy/data-entry/DictTag'
+import EDictTag from '@/components/Easy/data-display/DictTag'
 import EDictSelect from '@/components/Easy/data-entry/DictSelect'
 import EProTable from '@/components/Easy/data-display/ProTable'
 import { SUSPENSION_STATUS } from '@/utils/const/activiti/SuspensionStatus'

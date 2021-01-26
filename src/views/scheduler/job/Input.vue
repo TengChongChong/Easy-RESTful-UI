@@ -4,8 +4,8 @@
       ref="form"
       :model="model"
       :rules="rules"
-      :label-col="formLayout.labelCol"
-      :wrapper-col="formLayout.wrapperCol">
+      :label-col="FORM_LAYOUT.labelCol"
+      :wrapper-col="FORM_LAYOUT.wrapperCol">
       <a-row class="form-row" :gutter="16">
         <a-col :lg="12" :sm="24">
           <a-form-model-item label="名称" prop="name">
@@ -59,13 +59,13 @@
 
 <script>
 import { FORM_LAYOUT, FULL_FORM_LAYOUT } from '@/utils/const/form'
+import { DATA_TYPE_CONST } from '@/utils/const/sys/DataTypeConst'
+import { SCHEDULER_STATUS_CONST } from '@/utils/const/scheduler/SchedulerStatusConst'
 import { get, save } from '@/api/scheduler/job'
 import { saveSuccessTip } from '@/utils/tips'
 import { isNotBlank } from '@/utils/util'
 import EBtnSave from '@/components/Easy/general/BtnSave'
-import { DATA_TYPE_CONST } from '@/utils/const/sys/DataTypeConst'
 import EDictRadio from '@/components/Easy/data-entry/DictRadio'
-import { SCHEDULER_STATUS_CONST } from '@/utils/const/scheduler/SchedulerStatusConst'
 
 export default {
   name: 'SchedulerJobInput',
@@ -80,7 +80,7 @@ export default {
       // 表单
       DATA_TYPE_CONST: DATA_TYPE_CONST,
       saveLoading: false,
-      formLayout: FORM_LAYOUT,
+      FORM_LAYOUT: FORM_LAYOUT,
       FULL_FORM_LAYOUT: FULL_FORM_LAYOUT,
       SCHEDULER_STATUS_CONST: SCHEDULER_STATUS_CONST,
       model: {

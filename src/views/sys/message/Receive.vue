@@ -17,7 +17,10 @@
     >
       <span slot="m-title" slot-scope="text, record">
         <a-tag v-if="MESSAGE_CONST.IMPORTANT_YES === record.important" color="red">重要</a-tag>
-        <a-button :class="record.readDate == null ? 'unread' : ''" type="link" @click="info(record.id, record.messageId)">{{ text }}</a-button>
+        <a-button
+          :class="record.readDate == null ? 'unread' : ''"
+          type="link"
+          @click="info(record.id, record.messageId)">{{ text }}</a-button>
       </span>
       <span slot="star" slot-scope="text, record">
         <a-icon v-if="MESSAGE_CONST.STAR_NO === text" type="star" @click="setStar(record.id, true)"/>
@@ -38,7 +41,7 @@
             </template>
             <a-button type="primary" size="small" icon="search" @click="info(record.id, record.messageId)"/>
           </a-tooltip>
-          <a-divider type="vertical" />
+          <a-divider type="vertical"/>
           <e-btn-remove :click-callback="remove" :id="record.id" :divider="false"/>
         </template>
         <template v-if="status === MESSAGE_CONST.RECEIVE_STATUS_DELETED">
@@ -48,7 +51,7 @@
             </template>
             <a-button type="primary" size="small" icon="reload" @click="reductionByIds(record.id)"/>
           </a-tooltip>
-          <a-divider type="vertical" />
+          <a-divider type="vertical"/>
           <e-btn-remove :click-callback="remove" :id="record.id" :divider="false"/>
         </template>
       </span>
@@ -64,7 +67,7 @@ import EBtnRemove from '@/components/Easy/general/BtnRemove'
 import EBtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
 import { formatDate } from '@/utils/util'
 import { MESSAGE_CONST } from '@/utils/const/sys/MessageConst'
-import EDictTag from '@/components/Easy/data-entry/DictTag'
+import EDictTag from '@/components/Easy/data-display/DictTag'
 import { reductionByIds, removeByIds, setStar } from '@/api/sys/message-details'
 import EAvatar from '@/components/Easy/data-display/Avatar'
 

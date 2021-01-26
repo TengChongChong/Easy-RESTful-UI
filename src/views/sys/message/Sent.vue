@@ -29,7 +29,7 @@
 import { STable, Ellipsis } from '@/components'
 import { select } from '@/api/sys/message'
 import EBtnInfo from '@/components/Easy/general/BtnInfo'
-import EDictTag from '@/components/Easy/data-entry/DictTag'
+import EDictTag from '@/components/Easy/data-display/DictTag'
 import { MESSAGE_CONST } from '@/utils/const/sys/MessageConst'
 import { formatDate } from '@/utils/util'
 
@@ -61,11 +61,13 @@ export default {
   props: {
     setCurrentMenu: {
       type: Function,
-      default: () => {}
+      default: () => {
+      }
     },
     setMessageId: {
       type: Function,
-      default: () => {}
+      default: () => {
+      }
     }
   },
   components: {

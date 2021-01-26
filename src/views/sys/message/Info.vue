@@ -4,10 +4,10 @@
     <p>
       <e-avatar :avatar="model.avatar" :nickname="model.nickname"/>
       {{ model.nickname }}
-      <a-divider type="vertical" />
+      <a-divider type="vertical"/>
       {{ sendDate }}
     </p>
-    <a-divider />
+    <a-divider/>
     <div v-html="model.content"></div>
   </div>
 </template>

@@ -3,8 +3,8 @@
     <a-form-model
       ref="form"
       :model="model"
-      :label-col="formLayout.labelCol"
-      :wrapper-col="formLayout.wrapperCol">
+      :label-col="FORM_LAYOUT.labelCol"
+      :wrapper-col="FORM_LAYOUT.wrapperCol">
       <a-row class="form-row" :gutter="16">
         <a-col :lg="12" :sm="24">
           <a-form-model-item label="模块">
@@ -67,7 +67,7 @@ export default {
       id: this.$route.query.id,
 
       // 表单
-      formLayout: FORM_LAYOUT,
+      FORM_LAYOUT: FORM_LAYOUT,
       FULL_FORM_LAYOUT: FULL_FORM_LAYOUT,
       model: {}
     }

@@ -5,9 +5,13 @@
         <a-list-item-meta
           :description="`${item.nickname} ${fromNow(item.sendDate)}`"
         >
-          <a slot="title" :class="item.readDate == null ? 'unread' : ''" type="link" @click="info(item.id, item.messageId)">{{ item.title }}</a>
+          <a
+            slot="title"
+            :class="item.readDate == null ? 'unread' : ''"
+            type="link"
+            @click="info(item.id, item.messageId)">{{ item.title }}</a>
           <template slot="avatar">
-            <e-avatar :avatar="item.avatar" :nickname="item.nickname" />
+            <e-avatar :avatar="item.avatar" :nickname="item.nickname"/>
           </template>
         </a-list-item-meta>
       </a-list-item>

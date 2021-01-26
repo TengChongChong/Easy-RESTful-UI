@@ -169,7 +169,7 @@ export default {
 }
 </script>
 <style>
-.ant-timeline-item-last > .ant-timeline-item-content{
+.ant-timeline-item-last > .ant-timeline-item-content {
   min-height: auto;
 }
 </style>

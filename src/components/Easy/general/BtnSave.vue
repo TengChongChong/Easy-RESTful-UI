@@ -14,7 +14,8 @@ export default {
     clickCallback: {
       type: Function,
       require: true,
-      default: () => {}
+      default: () => {
+      }
     },
     loading: {
       type: Boolean,

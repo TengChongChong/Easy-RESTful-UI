@@ -4,43 +4,43 @@
   </a-button>
 </template>
 <script>
-  import { openView } from '@/utils/util'
+import { openView } from '@/utils/util'
 
-  export default {
-    name: 'EBtnAdd',
-    props: {
-      tabName: {
-        type: String,
-        default: '新增'
-      },
-      icon: {
-        type: String,
-        default: 'plus'
-      },
-      params: {
-        type: Object,
-        default: null
-      },
-      to: {
-        required: true,
-        type: String,
-        default: null
-      }
+export default {
+  name: 'EBtnAdd',
+  props: {
+    tabName: {
+      type: String,
+      default: '新增'
     },
-    data () {
-      return {
-        query: this.params
-      }
+    icon: {
+      type: String,
+      default: 'plus'
     },
-    watch: {
-      params (val, oldVal) {
-        this.query = val
-      }
+    params: {
+      type: Object,
+      default: null
     },
-    methods: {
-      onClick () {
-        openView(this.$router, this.to, this.tabName, this.query)
-      }
+    to: {
+      required: true,
+      type: String,
+      default: null
+    }
+  },
+  data () {
+    return {
+      query: this.params
+    }
+  },
+  watch: {
+    params (val, oldVal) {
+      this.query = val
+    }
+  },
+  methods: {
+    onClick () {
+      openView(this.$router, this.to, this.tabName, this.query)
     }
   }
+}
 </script>

@@ -44,7 +44,7 @@
               <a-input
                 v-if="record.editable"
                 :value="text"
-                @change="e => handleChange(e.target.value, record.key, col)"
+                @change="e => handleChange(e.target.value, record.id, col)"
               />
               <template v-else>
                 {{ text }}
@@ -53,7 +53,11 @@
           </template>
 
           <span slot="status" slot-scope="text, record">
-            <e-dict-select v-if="record.editable" type="commonStatus" v-model="record.status" @change="e => handleChange(e.target.value, record.key, 'status')"/>
+            <e-dict-select
+              v-if="record.editable"
+              type="commonStatus"
+              v-model="record.status"
+              @change="e => handleChange(e.target.value, record.id, 'status')"/>
             <template v-else>
               <e-dict-tag type="commonStatus" :code="record.status"/>
             </template>
@@ -62,21 +66,21 @@
           <span slot="action" slot-scope="text, record">
             <template>
               <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
-              <a-divider type="vertical" />
+              <a-divider type="vertical"/>
               <span v-if="record.editable">
                 <a-tooltip placement="top">
                   <template slot="title">
                     <span>保存</span>
                   </template>
-                  <a-button type="primary" size="small" icon="save" @click="() => save(record.key)"/>
+                  <a-button type="primary" size="small" icon="save" @click="() => save(record.id)"/>
                 </a-tooltip>
-                <a-divider type="vertical" />
+                <a-divider type="vertical"/>
 
                 <a-tooltip placement="top">
                   <template slot="title">
                     <span>取消编辑</span>
                   </template>
-                  <a-button size="small" icon="rollback" @click="() => cancel(record.key)"/>
+                  <a-button size="small" icon="rollback" @click="() => cancel(record.id)"/>
                 </a-tooltip>
               </span>
               <span v-else>
@@ -84,7 +88,12 @@
                   <template slot="title">
                     <span>修改</span>
                   </template>
-                  <a-button type="primary" size="small" icon="edit" :disabled="editingKey !== ''" @click="() => edit(record.key)"/>
+                  <a-button
+                    type="primary"
+                    size="small"
+                    icon="edit"
+                    :disabled="editingId !== ''"
+                    @click="() => edit(record.id)"/>
                 </a-tooltip>
               </span>
             </template>
@@ -97,8 +106,8 @@
         ref="form"
         :model="model"
         :rules="rules"
-        :label-col="formLayout.labelCol"
-        :wrapper-col="formLayout.wrapperCol">
+        :label-col="FORM_LAYOUT.labelCol"
+        :wrapper-col="FORM_LAYOUT.wrapperCol">
         <a-form-model-item label="类型" prop="type">
           <a-input v-model="model.type"/>
         </a-form-model-item>
@@ -116,7 +125,7 @@
 <script>
 import { STable, Ellipsis } from '@/components'
 import { select, remove, save } from '@/api/sys/dict-type'
-import EDictTag from '@/components/Easy/data-entry/DictTag'
+import EDictTag from '@/components/Easy/data-display/DictTag'
 import EDictSelect from '@/components/Easy/data-entry/DictSelect'
 import EBtnAdd from '@/components/Easy/general/BtnAdd'
 import EBtnEdit from '@/components/Easy/general/BtnEdit'
@@ -185,14 +194,14 @@ export default {
       dictTypes: [],
       selectedRowKeys: [],
       selectedRows: [],
-      editingKey: '',
+      editingId: '',
       cacheData: [],
       removeBathLoading: false,
 
       // 新增窗口
       addModalVisible: false,
       confirmLoading: false,
-      formLayout: FORM_LAYOUT,
+      FORM_LAYOUT: FORM_LAYOUT,
       model: {},
       rules: {
         type: [
@@ -229,9 +238,9 @@ export default {
           return res.data
         })
     },
-    handleChange (value, key, column) {
+    handleChange (value, id, column) {
       const newData = [...this.$refs.eTable.localDataSource]
-      const target = newData.filter(item => key === item.key)[0]
+      const target = newData.filter(item => id === item.id)[0]
       if (target) {
         target[column] = value
         this.$refs.eTable.localDataSource = newData
@@ -243,10 +252,10 @@ export default {
         status: COMMON_STATUS_CONST.ENABLE
       }
     },
-    edit (key) {
+    edit (id) {
       const newData = [...this.$refs.eTable.localDataSource]
-      const target = newData.filter(item => key === item.key)[0]
-      this.editingKey = key
+      const target = newData.filter(item => id === item.id)[0]
+      this.editingId = id
       if (target) {
         target.editable = true
         this.$refs.eTable.localDataSource = newData
@@ -267,11 +276,11 @@ export default {
         }
       })
     },
-    save (key) {
+    save (id) {
       const newData = [...this.$refs.eTable.localDataSource]
       const newCacheData = [...this.cacheData]
-      const target = newData.filter(item => key === item.key)[0]
-      const targetCache = newCacheData.filter(item => key === item.key)[0]
+      const target = newData.filter(item => id === item.id)[0]
+      const targetCache = newCacheData.filter(item => id === item.id)[0]
       if (target && targetCache) {
         save(target).then(res => {
           saveSuccessTip()
@@ -281,14 +290,14 @@ export default {
           this.cacheData = newCacheData
         })
       }
-      this.editingKey = ''
+      this.editingId = ''
     },
-    cancel (key) {
+    cancel (id) {
       const newData = [...this.$refs.eTable.localDataSource]
-      const target = newData.filter(item => key === item.key)[0]
-      this.editingKey = ''
+      const target = newData.filter(item => id === item.id)[0]
+      this.editingId = ''
       if (target) {
-        Object.assign(target, this.cacheData.filter(item => key === item.key)[0])
+        Object.assign(target, this.cacheData.filter(item => id === item.id)[0])
         delete target.editable
         this.$refs.eTable.localDataSource = newData
       }

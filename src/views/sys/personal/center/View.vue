@@ -56,7 +56,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import EDictTag from '@/components/Easy/data-entry/DictTag'
+import EDictTag from '@/components/Easy/data-display/DictTag'
 import { SEX_CONST } from '@/utils/const/sys/SexConst'
 import MessageList from '@/views/sys/message/MessageList'
 import EAvatar from '@/components/Easy/data-display/Avatar'

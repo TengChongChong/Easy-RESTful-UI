@@ -33,12 +33,20 @@
           <span slot="action" slot-scope="text, record">
             <template>
               <template v-if="record.processInstanceId == null">
-                <e-btn-work-flow-start model-key="leave" :business-key="record.id" :business-title="getBusinessTitle(record)" business-details-path="views/sample/work-flow/Info"/>
+                <e-btn-work-flow-start
+                  model-key="leave"
+                  :business-key="record.id"
+                  :business-title="getBusinessTitle(record)"
+                  business-details-path="views/sample/work-flow/Info"/>
                 <e-btn-edit :to="`/sample/work-flow/input`" :tab-name="record.key" :id="record.id"/>
                 <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
               </template>
               <e-btn-work-flow-progress v-if="record.processInstanceId != null" :business-key="record.id"/>
-              <e-btn-work-flow-revoke v-if="record.processInstanceId != null && record.workFlowStatus !== '已办结' && record.workFlowStatus !== '已撤销'" :business-key="record.id" :divider="false" :reason="true"/>
+              <e-btn-work-flow-revoke
+                v-if="record.processInstanceId != null && record.workFlowStatus !== '已办结' && record.workFlowStatus !== '已撤销'"
+                :business-key="record.id"
+                :divider="false"
+                :reason="true"/>
             </template>
           </span>
         </s-table>
@@ -50,7 +58,7 @@
 <script>
 import { STable, Ellipsis } from '@/components'
 import { select, remove } from '@/api/sample/work-flow'
-import EDictTag from '@/components/Easy/data-entry/DictTag'
+import EDictTag from '@/components/Easy/data-display/DictTag'
 import EDictSelect from '@/components/Easy/data-entry/DictSelect'
 import EBtnAdd from '@/components/Easy/general/BtnAdd'
 import EBtnEdit from '@/components/Easy/general/BtnEdit'

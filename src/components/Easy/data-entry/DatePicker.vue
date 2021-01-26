@@ -8,85 +8,85 @@
     @change="handleChange"/>
 </template>
 <script>
-  import { DATE_PATTERN } from '@/utils/const/datePattern'
-  import moment from 'moment'
+import { DATE_PATTERN } from '@/utils/const/datePattern'
+import moment from 'moment'
 
-  export default {
-    name: 'EDatePicker',
-    props: {
-      placeholder: {
-        type: String,
-        default: null
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      },
-      value: {
-        type: [String, Date, Number],
-        default: null
-      },
-      datePattern: {
-        type: String,
-        default: DATE_PATTERN.NORM_DATE_PATTERN
-      }
+export default {
+  name: 'EDatePicker',
+  props: {
+    placeholder: {
+      type: String,
+      default: null
     },
-    data () {
-      return {
-        showTime: null,
-        timePattern: null,
-        currentValue: this.convertToMoment(this.value)
-      }
+    disabled: {
+      type: Boolean,
+      default: false
     },
-    watch: {
-      value (newValue) {
-        this.currentValue = this.convertToMoment(newValue)
-      },
-      datePattern (newValue) {
-        this.timePattern = newValue
-        this.setShowTime()
-      }
+    value: {
+      type: [String, Date, Number],
+      default: null
     },
-    created () {
+    datePattern: {
+      type: String,
+      default: DATE_PATTERN.NORM_DATE_PATTERN
+    }
+  },
+  data () {
+    return {
+      showTime: null,
+      timePattern: null,
+      currentValue: this.convertToMoment(this.value)
+    }
+  },
+  watch: {
+    value (newValue) {
+      this.currentValue = this.convertToMoment(newValue)
+    },
+    datePattern (newValue) {
+      this.timePattern = newValue
       this.setShowTime()
-    },
-    methods: {
-      /**
-       * 设置是否显示时间选择器以及各式
-       */
-      setShowTime () {
-        const timePattern = this.datePattern.match(/[H|h|k](\S*)/)
-        if (timePattern) {
-          this.timePattern = timePattern[0]
-          if (this.timePattern) {
-            this.showTime = {
-              format: this.timePattern
-            }
-          } else {
-            this.showTime = false
-          }
-        }
-      },
-      /**
-       * 将传入value转为需要的格式
-       *
-       * @param object {string|object} value
-       * @return {moment.Moment|null}
-       */
-      convertToMoment (object) {
-        if (object) {
-          if (typeof object === 'string') {
-            return moment(this.value, this.datePattern)
-          } else {
-            return moment(object)
+    }
+  },
+  created () {
+    this.setShowTime()
+  },
+  methods: {
+    /**
+     * 设置是否显示时间选择器以及各式
+     */
+    setShowTime () {
+      const timePattern = this.datePattern.match(/[H|h|k](\S*)/)
+      if (timePattern) {
+        this.timePattern = timePattern[0]
+        if (this.timePattern) {
+          this.showTime = {
+            format: this.timePattern
           }
         } else {
-          return null
+          this.showTime = false
         }
-      },
-      handleChange () {
-        this.$emit('input', this.currentValue.format(this.datePattern))
       }
+    },
+    /**
+     * 将传入value转为需要的格式
+     *
+     * @param object {string|object} value
+     * @return {moment.Moment|null}
+     */
+    convertToMoment (object) {
+      if (object) {
+        if (typeof object === 'string') {
+          return moment(this.value, this.datePattern)
+        } else {
+          return moment(object)
+        }
+      } else {
+        return null
+      }
+    },
+    handleChange () {
+      this.$emit('input', this.currentValue.format(this.datePattern))
     }
   }
+}
 </script>

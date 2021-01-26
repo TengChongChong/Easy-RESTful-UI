@@ -43,7 +43,11 @@
         </span>
         <span slot="action" slot-scope="text, record">
           <template>
-            <e-btn-info :to="`/sys/log/input`" :tab-name="record.method || record.modular" :id="record.id" :divider="false"/>
+            <e-btn-info
+              :to="`/sys/log/input`"
+              :tab-name="record.method || record.modular"
+              :id="record.id"
+              :divider="false"/>
           </template>
         </span>
       </s-table>
