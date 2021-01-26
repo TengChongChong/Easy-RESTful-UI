@@ -104,6 +104,7 @@ export default {
         }
       } else {
         store.dispatch('setCurrentTopMenu', null)
+        this.firstLevelMenu = []
       }
     },
     onTopMenuClick ({ item, key, keyPath }) {
