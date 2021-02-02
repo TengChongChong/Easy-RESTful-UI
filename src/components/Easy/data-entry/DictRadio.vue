@@ -7,28 +7,19 @@
 </template>
 <script>
 import { getSysDictArrayByDictType, isBlank } from '@/utils/util'
+import PropTypes from 'ant-design-vue/es/_util/vue-types'
 
 export default {
   name: 'EDictRadio',
   props: {
-    name: {
-      required: true,
-      type: String,
-      default: null
-    },
-    disabled: {
-      type: Boolean,
-      default: false
-    },
+    name: PropTypes.string.def(),
+    disabled: PropTypes.bool.def(false),
     type: {
       required: true,
       type: String,
       default: null
     },
-    value: {
-      type: [String, Number, Array],
-      default: null
-    }
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array])
   },
   data () {
     return {

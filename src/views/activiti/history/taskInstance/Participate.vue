@@ -36,7 +36,7 @@
           <span slot="action" slot-scope="text, record">
             <template>
               <e-btn-work-flow-progress :divider="record.deleteReason == null || record.endTime == null" :execution-id="record.executionId" :process-instance-id="record.processInstanceId"/>
-              <e-btn-work-flow-revoke v-if="record.deleteReason == null || record.endTime == null" :reason="true" :divider="false" :process-instance-id="record.processInstanceId"/>
+              <e-btn-work-flow-revoke v-if="$role(ROLE_CODE.SYS_ADMIN) && record.deleteReason == null || record.endTime == null" :reason="true" :divider="false" :process-instance-id="record.processInstanceId"/>
             </template>
           </span>
         </s-table>
@@ -56,6 +56,7 @@ import { formatDate } from '@/utils/util'
 import { TASK_STATUS } from '@/utils/const/activiti/TaskStatus'
 import EBtnWorkFlowProgress from '@/components/Easy/general/work-flow/BtnProgress'
 import EBtnWorkFlowRevoke from '@/components/Easy/general/work-flow/BtnRevoke'
+import { ROLE_CODE } from '@/utils/const/role-code'
 
 const columns = [
   {
@@ -145,6 +146,8 @@ export default {
   data () {
     this.columns = columns
     return {
+      ROLE_CODE: ROLE_CODE,
+
       SUSPENSION_STATUS: SUSPENSION_STATUS,
       TASK_STATUS: TASK_STATUS,
       // 查询参数

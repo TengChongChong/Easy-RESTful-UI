@@ -9,7 +9,6 @@
               {{ item.name }}
             </a-menu-item>
           </a-menu>
-
         </a-col>
         <a-col :sm="24" :md="12" :lg="8">
           <div class="key-wrapper">
@@ -34,7 +33,7 @@
               </div>
             </a-descriptions-item>
           </a-descriptions>
-          <div class="text-center">
+          <div class="text-center" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_REDIS_REMOVE)">
             <a-popconfirm
               title="确定要删除吗?"
               @confirm="() => remove()"
@@ -52,11 +51,14 @@
 
 import { getSysDictArrayByDictType } from '@/utils/util'
 import { selectByPrefix, get, remove } from '@/api/sys/redis'
+import { SYS_PERMISSIONS_CODE } from '@/utils/const/sys/PermissionsCode'
 
 export default {
   name: 'SysRedisView',
   data () {
     return {
+      SYS_PERMISSIONS_CODE: SYS_PERMISSIONS_CODE,
+
       redisPrefix: [],
       current: null,
       keys: [],

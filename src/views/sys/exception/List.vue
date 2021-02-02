@@ -26,7 +26,7 @@
     </template>
 
     <template slot="button">
-      <e-btn-remove-batch :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+      <e-btn-remove-batch :permissions="SYS_PERMISSIONS_CODE.SYS_EXCEPTION_REMOVE" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
     </template>
 
     <template slot="table">
@@ -41,7 +41,7 @@
         <span slot="action" slot-scope="text, record">
           <template>
             <e-btn-info :to="`/sys/exception/input`" :tab-name="record.message" :id="record.id"/>
-            <btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
+            <btn-remove :permissions="SYS_PERMISSIONS_CODE.SYS_EXCEPTION_REMOVE" :id="record.id" :divider="false" :click-callback="remove"/>
           </template>
         </span>
       </s-table>
@@ -57,6 +57,7 @@ import EBtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
 import EProTable from '@/components/Easy/data-display/ProTable'
 import EBtnInfo from '@/components/Easy/general/BtnInfo'
 import { formatDate } from '@/utils/util'
+import { SYS_PERMISSIONS_CODE } from '@/utils/const/sys/PermissionsCode'
 
 const columns = [
   {
@@ -118,6 +119,8 @@ export default {
   data () {
     this.columns = columns
     return {
+      SYS_PERMISSIONS_CODE: SYS_PERMISSIONS_CODE,
+
       // 高级搜索 展开/关闭
       advanced: false,
       // 查询参数

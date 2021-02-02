@@ -1,10 +1,11 @@
-import { UserLayout, BasicLayout } from '@/layouts'
+import { UserLayout, BasicLayout, BlankLayout } from '@/layouts'
 
 /**
  * 基础路由
  * @type { *[] }
  */
 export const constantRouterMap = [
+
   {
     path: '/user',
     component: UserLayout,
@@ -14,17 +15,7 @@ export const constantRouterMap = [
       {
         path: 'login',
         name: 'login',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login')
-      },
-      {
-        path: 'register',
-        name: 'register',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Register')
-      },
-      {
-        path: 'register-result',
-        name: 'registerResult',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/RegisterResult')
+        component: () => import('@/views/sys/login/Login')
       },
       {
         path: 'recover',
@@ -72,8 +63,20 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/user',
+    component: BlankLayout,
+    hidden: true,
+    children: [
+      {
+        path: '/user/retrieve/password',
+        name: 'RetrievePassword',
+        component: () => import('@/views/sys/user/RetrievePassword')
+      }
+    ]
+  },
+  {
     path: '/404',
-    component: () => import(/* webpackChunkName: "fail" */ '@/views/global/404')
+    component: () => import('@/views/global/404')
   }
 
 ]

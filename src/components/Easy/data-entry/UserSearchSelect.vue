@@ -26,35 +26,18 @@
 import { selectByKeyword, selectUsersByIds } from '@/api/sys/user'
 import { isNotBlank } from '@/utils/util'
 import EAvatar from '@/components/Easy/data-display/Avatar'
+import PropTypes from 'ant-design-vue/es/_util/vue-types'
 
 export default {
   name: 'EUserSearchSelect',
   components: { EAvatar },
   props: {
-    mode: {
-      type: String,
-      default: null
-    },
-    placeholder: {
-      type: String,
-      default: null
-    },
-    disabled: {
-      type: Boolean,
-      default: false
-    },
-    allowClear: {
-      type: Boolean,
-      default: true
-    },
-    type: {
-      type: String,
-      default: null
-    },
-    value: {
-      type: [String, Number, Array],
-      default: null
-    }
+    mode: PropTypes.string.def(),
+    placeholder: PropTypes.string.def(),
+    disabled: PropTypes.bool.def(false),
+    allowClear: PropTypes.bool.def(true),
+    type: PropTypes.string.def(),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array])
   },
   data () {
     return {

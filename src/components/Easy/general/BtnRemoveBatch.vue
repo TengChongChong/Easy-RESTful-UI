@@ -1,34 +1,25 @@
 <template>
-  <a-button v-if="ids && ids.length > 0" type="danger" :loading="btnLoading" :icon="icon" @click="showConfirm">
+  <a-button
+    v-if="(permissions == null || permissions === '' || $permissions(permissions)) && ids && ids.length > 0"
+    type="danger"
+    :loading="btnLoading"
+    :icon="icon"
+    @click="showConfirm">
     <slot>删除</slot>
   </a-button>
 </template>
 <script>
+import PropTypes from 'ant-design-vue/es/_util/vue-types'
+
 export default {
   name: 'EBtnRemoveBatch',
   props: {
-    icon: {
-      type: String,
-      default: 'delete'
-    },
-    ids: {
-      type: Array,
-      default: null
-    },
-    params: {
-      type: Object,
-      default: null
-    },
-    clickCallback: {
-      type: Function,
-      require: true,
-      default: () => {
-      }
-    },
-    loading: {
-      type: Boolean,
-      default: false
-    }
+    permissions: PropTypes.string.def(),
+    icon: PropTypes.string.def('delete'),
+    ids: PropTypes.array.def(),
+    params: PropTypes.object.def(),
+    clickCallback: PropTypes.func.def(),
+    loading: PropTypes.bool.def(false)
   },
   data () {
     return {

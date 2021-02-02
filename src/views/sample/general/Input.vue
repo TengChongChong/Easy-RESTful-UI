@@ -35,7 +35,7 @@
 
         <a-col :sm="24">
           <div class="input-btn-group">
-            <e-btn-save :loading="saveLoading" :click-callback="save"/>
+            <e-btn-save permissions="sample:general:save" :loading="saveLoading" :click-callback="save"/>
           </div>
         </a-col>
       </a-row>
@@ -82,6 +82,7 @@ export default {
         age: [
         ],
         address: [
+          { required: true, message: '请输入地址', trigger: 'blur' },
           { max: 500, message: '地址不能超过500个字符', trigger: 'blur' }
         ]
       }

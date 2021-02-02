@@ -1,33 +1,8 @@
 @import "~ant-design-vue/es/style/themes/default.less";
 
 @media (min-width: @screen-md) {
-  .ant-layout {
-    &.ant-layout-has-sider {
-      .ant-pro-global-header {
-        display: flex;
-
-        .ant-pro-global-header-trigger {
-          width: 64px;
-          min-width: 64px;
-          max-width: 64px;
-          flex-grow: 0;
-        }
-
-        .ant-pro-global-header-index-right {
-          width: auto;
-          flex-grow: 1;
-
-          .ant-pro-global-header-top-menu {
-            float: left;
-            width: calc(100% - 250px);
-          }
-
-          .ant-pro-global-header-top-bar {
-            float: right;
-          }
-        }
-      }
-    }
+  .ant-pro-global-header-content{
+    width: calc(100% - 360px);
   }
 }
 
@@ -55,11 +30,8 @@
 
   .ant-pro-account-avatar {
     .antd-pro-global-header-index-avatar {
-      margin: ~'calc((@{layout-header-height} - 24px) / 2)' 0;
-      margin-right: 8px;
-      color: @primary-color;
+      margin: ~'calc((@{layout-header-height} - 24px) / 2)' 8px ~'calc((@{layout-header-height} - 24px) / 2)' 0;
       vertical-align: top;
-      background: rgba(204, 204, 204, 0.3);
     }
   }
 

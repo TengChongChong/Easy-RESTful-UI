@@ -23,8 +23,8 @@
     </template>
 
     <template slot="button">
-      <e-btn-add to="/sample/general/input"/>
-      <e-btn-remove-batch :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+      <e-btn-add permissions="sample:general:save" to="/sample/general/input"/>
+      <e-btn-remove-batch permissions="sample:general:remove" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
     </template>
 
     <template slot="table">
@@ -41,8 +41,8 @@
         </span>
         <span slot="action" slot-scope="text, record">
           <template>
-            <e-btn-edit :to="`/sample/general/input`" :tab-name="record.key" :id="record.id"/>
-            <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
+            <e-btn-edit permissions="sample:general:save" :to="`/sample/general/input`" :tab-name="record.key" :id="record.id"/>
+            <e-btn-remove permissions="sample:general:remove" :id="record.id" :divider="false" :click-callback="remove"/>
           </template>
         </span>
       </s-table>

@@ -1,26 +1,23 @@
 <template>
-  <a-button type="primary" :icon="icon" @click="onClick">
+  <a-button
+    v-if="permissions == null || permissions === '' || $permissions(permissions)"
+    type="primary"
+    :icon="icon"
+    @click="onClick">
     <slot>新增</slot>
   </a-button>
 </template>
 <script>
 import { openView } from '@/utils/util'
+import PropTypes from 'ant-design-vue/es/_util/vue-types'
 
 export default {
   name: 'EBtnAdd',
   props: {
-    tabName: {
-      type: String,
-      default: '新增'
-    },
-    icon: {
-      type: String,
-      default: 'plus'
-    },
-    params: {
-      type: Object,
-      default: null
-    },
+    permissions: PropTypes.string.def(),
+    tabName: PropTypes.string.def('新增'),
+    icon: PropTypes.string.def('plus'),
+    params: PropTypes.object.def(),
     to: {
       required: true,
       type: String,

@@ -1,0 +1,215 @@
+@import '~ant-design-vue/es/style/themes/default.less';
+
+.text-overflow() {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
+.ant-avatar {
+  width: 72px;
+  height: 72px;
+  line-height: 72px;
+  font-size: 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  color: @primary-color;
+  background-color: color(~`colorPalette('@{primary-color}', 1) `);
+
+  img {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+// mixins for clearfix
+// ------------------------
+.clearfix() {
+  zoom: 1;
+  &::before,
+  &::after {
+    display: table;
+    content: ' ';
+  }
+  &::after {
+    clear: both;
+    height: 0;
+    font-size: 0;
+    visibility: hidden;
+  }
+}
+
+.ant-page-header {
+  margin-bottom: 16px;
+}
+
+.page-header-content {
+  display: flex;
+
+  .avatar {
+    flex: 0 1 72px;
+
+    & > span {
+      display: block;
+      width: 72px;
+      height: 72px;
+      border-radius: 72px;
+    }
+  }
+
+  .content {
+    position: relative;
+    top: 4px;
+    flex: 1 1 auto;
+    margin-left: 24px;
+    color: @text-color-secondary;
+    line-height: 22px;
+
+    .content-title {
+      margin-bottom: 12px;
+      color: @heading-color;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 28px;
+    }
+  }
+}
+
+.extra-content {
+  .clearfix();
+  float: right;
+  white-space: nowrap;
+
+  .stat-item {
+    position: relative;
+    display: inline-block;
+    padding: 0 32px;
+
+    > p:first-child {
+      margin-bottom: 4px;
+      color: @text-color-secondary;
+      font-size: @font-size-base;
+      line-height: 22px;
+    }
+
+    > p {
+      margin: 0;
+      color: @heading-color;
+      font-size: 30px;
+      line-height: 38px;
+
+      > span {
+        color: @text-color-secondary;
+        font-size: 20px;
+      }
+    }
+
+    &::after {
+      position: absolute;
+      top: 8px;
+      right: 0;
+      width: 1px;
+      height: 40px;
+      background-color: @border-color-split;
+      content: '';
+    }
+
+    &:last-child {
+      padding-right: 0;
+
+      &::after {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: @screen-xs) {
+  .extra-content {
+    margin-top: 20px;
+  }
+}
+
+
+
+.project-list {
+  .ant-card {
+    margin-bottom: 0;
+  }
+  .card-title {
+    font-size: 0;
+
+    a {
+      color: rgba(0, 0, 0, 0.85);
+      margin-left: 12px;
+      line-height: 24px;
+      height: 24px;
+      display: inline-block;
+      vertical-align: top;
+      font-size: 14px;
+
+      &:hover {
+        color: #1890ff;
+      }
+    }
+  }
+
+  .card-description a {
+    display: block;
+    color: rgba(0, 0, 0, 0.45);
+    line-height: 22px;
+    overflow: hidden;
+  }
+
+  .project-item {
+    display: flex;
+    margin-top: 8px;
+    overflow: hidden;
+    font-size: 12px;
+    height: 20px;
+    line-height: 20px;
+
+    span.node-name {
+      color: rgba(0, 0, 0, 0.45);
+      display: inline-block;
+      flex: 1 1 0;
+    }
+
+    .datetime {
+      color: rgba(0, 0, 0, 0.25);
+      flex: 0 0 auto;
+      float: right;
+    }
+  }
+}
+
+.item-group {
+  padding: 20px 0 8px 24px;
+  font-size: 0;
+
+  a {
+    color: rgba(0, 0, 0, 0.65);
+    display: inline-block;
+    font-size: 14px;
+    margin-bottom: 13px;
+    width: 25%;
+  }
+}
+
+@media (max-width: @screen-xs) {
+  .project-list {
+    .project-card-grid {
+      width: 100%;
+    }
+    .card-description a {
+      height: auto;
+    }
+  }
+
+  .more-info {
+    border: 0;
+    padding-top: 16px;
+    margin: 16px 0 16px;
+  }
+}

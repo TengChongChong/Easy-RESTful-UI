@@ -20,8 +20,8 @@
       </template>
 
       <template slot="button">
-        <e-btn-add to="/scheduler/job/input"/>
-        <e-btn-remove-batch :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+        <e-btn-add :permissions="SCHEDULER_PERMISSIONS_CODE.JOB_SAVE" to="/scheduler/job/input"/>
+        <e-btn-remove-batch :permissions="SCHEDULER_PERMISSIONS_CODE.JOB_REMOVE" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
       </template>
 
       <template slot="table">
@@ -45,16 +45,16 @@
 
           <span slot="action" slot-scope="text, record">
             <template>
-              <a-tooltip placement="top">
+              <a-tooltip placement="top" v-if="$permissions(SCHEDULER_PERMISSIONS_CODE.JOB_SAVE)">
                 <template slot="title">
                   <span>立即执行</span>
                 </template>
                 <a-button type="primary" size="small" icon="play-circle" @click="immediateExecution(record.id)"/>
               </a-tooltip>
-              <a-divider type="vertical"/>
-              <e-btn-edit :to="`/scheduler/job/input`" :tab-name="record.key" :id="record.id"/>
-              <e-btn-remove :id="record.id" :click-callback="remove"/>
-              <a-tooltip placement="top">
+              <a-divider type="vertical" v-if="$permissions(SCHEDULER_PERMISSIONS_CODE.JOB_SAVE)"/>
+              <e-btn-edit :permissions="SCHEDULER_PERMISSIONS_CODE.JOB_SAVE" :to="`/scheduler/job/input`" :tab-name="record.key" :id="record.id"/>
+              <e-btn-remove :permissions="SCHEDULER_PERMISSIONS_CODE.JOB_REMOVE" :id="record.id" :click-callback="remove"/>
+              <a-tooltip placement="top" v-if="$permissions(SCHEDULER_PERMISSIONS_CODE.JOB_LOG_SELECT)">
                 <template slot="title">
                   <span>查看日志</span>
                 </template>
@@ -89,6 +89,7 @@ import { formatDate } from '@/utils/util'
 import { SCHEDULER_STATUS_CONST } from '@/utils/const/scheduler/SchedulerStatusConst'
 import { successTip } from '@/utils/tips'
 import SchedulerJobLogList from '@/views/scheduler/job-log/List'
+import { SCHEDULER_PERMISSIONS_CODE } from '@/utils/const/scheduler/PermissionsCode'
 
 const columns = [
   {
@@ -161,6 +162,8 @@ export default {
   data () {
     this.columns = columns
     return {
+      SCHEDULER_PERMISSIONS_CODE: SCHEDULER_PERMISSIONS_CODE,
+
       SCHEDULER_STATUS_CONST: SCHEDULER_STATUS_CONST,
       // 查询参数
       queryParam: {},

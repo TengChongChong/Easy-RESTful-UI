@@ -1,5 +1,4 @@
 <template>
-
   <e-pro-table title="字典管理" :advanced.sync="advanced">
     <template slot="query">
       <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
@@ -36,18 +35,25 @@
     </template>
 
     <template slot="button">
-      <e-btn-add to="/sys/dict/input" :params="{dictType: queryParam.dictType}"/>
-      <router-link to="/sys/dict/type/list">
+      <e-btn-add
+        :permissions="SYS_PERMISSIONS_CODE.SYS_DICT_SAVE"
+        to="/sys/dict/input"
+        :params="{dictType: queryParam.dictType}"/>
+      <router-link to="/sys/dict/type/list" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_DICT_TYPE_SAVE)">>
         <a-button icon="bars">字典类型管理</a-button>
       </router-link>
-      <a-tooltip placement="top">
+      <a-tooltip placement="top" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_DICT_SAVE)">
         <template slot="title">
           <span>重新生成字典js文件</span>
         </template>
         <a-button icon="sync" @click="generateDictData">更新字典资源</a-button>
       </a-tooltip>
 
-      <e-btn-remove-batch :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+      <e-btn-remove-batch
+        :permissions="SYS_PERMISSIONS_CODE.SYS_DICT_REMOVE"
+        :loading="removeBathLoading"
+        :ids="selectedRowKeys"
+        :click-callback="remove"/>
     </template>
 
     <template slot="table">
@@ -77,13 +83,22 @@
         <span slot="action" slot-scope="text, record">
           <template>
             <e-btn-add-sub
+              :permissions="SYS_PERMISSIONS_CODE.SYS_DICT_SAVE"
               :to="`/sys/dict/input`"
               :tab-name="`新增下级 - ${record.name}`"
               :params="{ pId: record.id, dictType: record.dictType }"/>
 
-            <e-btn-edit :to="`/sys/dict/input`" :tab-name="record.name" :id="record.id"/>
+            <e-btn-edit
+              :permissions="SYS_PERMISSIONS_CODE.SYS_DICT_SAVE"
+              :to="`/sys/dict/input`"
+              :tab-name="record.name"
+              :id="record.id"/>
 
-            <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
+            <e-btn-remove
+              :permissions="SYS_PERMISSIONS_CODE.SYS_DICT_REMOVE"
+              :id="record.id"
+              :divider="false"
+              :click-callback="remove"/>
           </template>
         </span>
       </s-table>
@@ -104,6 +119,7 @@ import EBtnRemove from '@/components/Easy/general/BtnRemove'
 import { successTip } from '@/utils/tips'
 import EBtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
 import EProTable from '@/components/Easy/data-display/ProTable'
+import { SYS_PERMISSIONS_CODE } from '@/utils/const/sys/PermissionsCode'
 
 const columns = [
   {
@@ -165,6 +181,8 @@ export default {
   data () {
     this.columns = columns
     return {
+      SYS_PERMISSIONS_CODE: SYS_PERMISSIONS_CODE,
+
       // 高级搜索 展开/关闭
       advanced: false,
       // 查询参数

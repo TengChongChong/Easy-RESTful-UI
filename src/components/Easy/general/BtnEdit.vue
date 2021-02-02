@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <span v-if="permissions == null || permissions === '' || $permissions(permissions)">
     <a-tooltip placement="top">
       <template slot="title">
         <span>{{ name }}</span>
@@ -11,38 +11,22 @@
 </template>
 <script>
 import { openView } from '@/utils/util'
+import PropTypes from 'ant-design-vue/es/_util/vue-types'
 
 export default {
   name: 'EBtnEdit',
   props: {
-    name: {
-      type: String,
-      default: '修改'
-    },
-    tabName: {
-      type: String,
-      default: '修改'
-    },
-    icon: {
-      type: String,
-      default: 'edit'
-    },
-    id: {
-      type: String,
-      default: null
-    },
-    params: {
-      type: Object,
-      default: null
-    },
+    permissions: PropTypes.string.def(),
+    name: PropTypes.string.def('修改'),
+    tabName: PropTypes.string.def('修改'),
+    icon: PropTypes.string.def('edit'),
+    id: PropTypes.string.def(),
+    params: PropTypes.object.def(),
+    divider: PropTypes.bool.def(true),
     to: {
       required: true,
       type: String,
       default: null
-    },
-    divider: {
-      type: Boolean,
-      default: true
     }
   },
   data () {

@@ -67,7 +67,7 @@
         </a-col>
         <a-col :sm="24">
           <div class="input-btn-group">
-            <e-btn-save :loading="saveLoading" :click-callback="save"/>
+            <e-btn-save :permissions="SYS_PERMISSIONS_CODE.SYS_USER_SAVE" :loading="saveLoading" :click-callback="save"/>
           </div>
         </a-col>
       </a-row>
@@ -84,6 +84,7 @@ import { isNotBlank } from '@/utils/util'
 import EBtnSave from '@/components/Easy/general/BtnSave'
 import EDatePicker from '@/components/Easy/data-entry/DatePicker'
 import { selectRoleByDept } from '@/api/sys/dept-type'
+import { SYS_PERMISSIONS_CODE } from '@/utils/const/sys/PermissionsCode'
 
 export default {
   name: 'SysUserInput',
@@ -99,6 +100,7 @@ export default {
 
       // 表单
       saveLoading: false,
+      SYS_PERMISSIONS_CODE: SYS_PERMISSIONS_CODE,
       VUE_APP_API_BASE_URL: process.env.VUE_APP_API_BASE_URL,
       FORM_LAYOUT: FORM_LAYOUT,
       roles: [],

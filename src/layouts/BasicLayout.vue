@@ -21,9 +21,12 @@
     </template>
 
     <setting-drawer ref="settingDrawer" :settings="settings" @change="handleSettingChange" />
+    <template v-slot:headerContentRender>
+      <header-split-menu ref="headerSplitMenu" v-if="!isMobile && settings.layout !== 'topmenu'" :settings="settings"/>
+    </template>
+
     <template v-slot:rightContentRender>
       <right-content
-        ref="rightContent"
         :set-setting-drawer-show="setSettingDrawerShow"
         :settings="settings"
         :top-menu="settings.layout === 'topmenu'"
@@ -41,8 +44,6 @@
 <script>
 import { updateTheme } from '@ant-design-vue/pro-layout'
 import SettingDrawer from '@/components/SettingDrawer'
-// import { updateTheme } from '@ant-design-vue/pro-layout'
-// import { SettingDrawer, updateTheme } from '@/components/SettingDrawer'
 import { i18nRender } from '@/locales'
 import { mapState } from 'vuex'
 import { CONTENT_WIDTH_TYPE, SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from '@/store/mutation-types'
@@ -51,12 +52,14 @@ import defaultSettings from '@/config/defaultSettings'
 import RightContent from '@/components/GlobalHeader/RightContent'
 import GlobalFooter from '@/components/GlobalFooter'
 import Ads from '@/components/Other/CarbonAds'
-import LogoSvg from '../assets/logo.svg?inline'
+import LogoSvg from '@/assets/logo.svg?inline'
 import BaseMenu from '@/components/RouteMenu'
 import { isNotBlank } from '@/utils/util'
+import HeaderSplitMenu from '@/components/GlobalHeader/HeaderSplitMenu'
 export default {
   name: 'BasicLayout',
   components: {
+    HeaderSplitMenu,
     SettingDrawer,
     RightContent,
     GlobalFooter,
@@ -116,7 +119,7 @@ export default {
     })
     this.$watch('isMobile', () => {
       this.$store.commit(TOGGLE_MOBILE_TYPE, this.isMobile)
-      this.$refs.rightContent.setFirstLevelMenu()
+      this.$refs.headerSplitMenu && this.$refs.headerSplitMenu.setFirstLevelMenu()
     })
   },
   mounted () {
@@ -192,7 +195,7 @@ export default {
         case 'splitMenu':
           this.setMenu(this.currentTopMenu)
       }
-      this.$refs.rightContent.setFirstLevelMenu()
+      this.$refs.headerSplitMenu && this.$refs.headerSplitMenu.setFirstLevelMenu()
     },
     setSettingDrawerShow (show) {
       this.$refs.settingDrawer.setShow(show)

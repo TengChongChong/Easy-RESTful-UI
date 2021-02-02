@@ -23,7 +23,7 @@
         <a-textarea v-model="model.reason"/>
       </a-form-model-item>
       <div class="input-btn-group">
-        <e-btn-save :loading="saveLoading" :click-callback="save"/>
+        <e-btn-save :permissions="SAMPLE_PERMISSIONS_CODE.SAMPLE_WORK_FLOW_SAVE" :loading="saveLoading" :click-callback="save"/>
       </div>
     </a-form-model>
   </a-card>
@@ -37,6 +37,7 @@ import EDictSelect from '@/components/Easy/data-entry/DictSelect'
 import { isNotBlank } from '@/utils/util'
 import EBtnSave from '@/components/Easy/general/BtnSave'
 import moment from 'moment'
+import { SAMPLE_PERMISSIONS_CODE } from '@/utils/const/sample/PermissionsCode'
 
 export default {
   name: 'SampleWorkFlowInput',
@@ -46,6 +47,8 @@ export default {
   },
   data () {
     return {
+      SAMPLE_PERMISSIONS_CODE: SAMPLE_PERMISSIONS_CODE,
+
       id: this.$route.query.id,
       dateFormat: 'YYYY-MM-DD HH:mm',
       rangePickerValue: [],

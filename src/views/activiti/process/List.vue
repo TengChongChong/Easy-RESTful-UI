@@ -21,7 +21,7 @@
       </template>
 
       <template slot="button">
-        <e-btn-remove-batch :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+        <e-btn-remove-batch :permissions="ACTIVITI_PERMISSIONS_CODE.PROCESS_REMOVE" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
       </template>
 
       <template slot="table">
@@ -43,7 +43,7 @@
           <span slot="action" slot-scope="text, record">
             <template>
               <e-btn-remove :id="record.deploymentId" :click-callback="remove"/>
-              <template v-if="SUSPENSION_STATUS.ACTIVATION === record.suspensionState">
+              <template v-if="$permissions(ACTIVITI_PERMISSIONS_CODE.PROCESS_SUSPEND) && SUSPENSION_STATUS.ACTIVATION === record.suspensionState">
                 <a-popconfirm
                   title="挂起流程将同时挂起流程相关的任务"
                   @confirm="() => suspend(record.processDefinitionId)"
@@ -57,7 +57,7 @@
                 </a-popconfirm>
                 <a-divider type="vertical" />
               </template>
-              <template v-if="SUSPENSION_STATUS.SUSPENSION === record.suspensionState">
+              <template v-if="$permissions(ACTIVITI_PERMISSIONS_CODE.PROCESS_ACTIVATION) && SUSPENSION_STATUS.SUSPENSION === record.suspensionState">
                 <a-popconfirm
                   title="激活流程将同时激活流程相关的任务"
                   @confirm="() => activation(record.processDefinitionId)"
@@ -78,7 +78,7 @@
                 <a-button size="small" icon="deployment-unit" @click="showModelModal(record.deploymentId, record.dgrmResourceName)"/>
               </a-tooltip>
               <a-divider type="vertical" />
-              <a-tooltip placement="top">
+              <a-tooltip placement="top" v-if="$permissions(ACTIVITI_PERMISSIONS_CODE.MODEL_SAVE)">
                 <template slot="title">
                   <span>转为模型</span>
                 </template>
@@ -131,6 +131,7 @@ import { FORM_LAYOUT } from '@/utils/const/form'
 import { successTip } from '@/utils/tips'
 import { SUSPENSION_STATUS } from '@/utils/const/activiti/SuspensionStatus'
 import { formatDate } from '@/utils/util'
+import { ACTIVITI_PERMISSIONS_CODE } from '@/utils/const/activiti/PermissionsCode'
 
 const columns = [
   {
@@ -203,6 +204,8 @@ export default {
   data () {
     this.columns = columns
     return {
+      ACTIVITI_PERMISSIONS_CODE: ACTIVITI_PERMISSIONS_CODE,
+
       SUSPENSION_STATUS: SUSPENSION_STATUS,
 
       // 查询参数

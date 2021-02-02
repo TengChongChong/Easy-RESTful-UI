@@ -80,22 +80,14 @@
 <script>
 import { FORM_LAYOUT } from '@/utils/const/form'
 import { baseMixin } from '@/store/app-mixin'
+import PropTypes from 'ant-design-vue/es/_util/vue-types'
 
 export default {
   name: 'EProTable',
   props: {
-    title: {
-      type: String,
-      default: ''
-    },
-    advanced: {
-      type: Boolean,
-      default: false
-    },
-    noAdvanced: {
-      type: Boolean,
-      default: false
-    }
+    title: PropTypes.string.def(''),
+    advanced: PropTypes.bool.def(false),
+    noAdvanced: PropTypes.bool.def(false)
   },
   mixins: [baseMixin],
   data () {

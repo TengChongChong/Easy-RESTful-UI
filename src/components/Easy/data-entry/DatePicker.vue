@@ -10,26 +10,18 @@
 <script>
 import { DATE_PATTERN } from '@/utils/const/datePattern'
 import moment from 'moment'
+import PropTypes from 'ant-design-vue/es/_util/vue-types'
 
 export default {
   name: 'EDatePicker',
   props: {
-    placeholder: {
-      type: String,
-      default: null
-    },
-    disabled: {
-      type: Boolean,
-      default: false
-    },
+    placeholder: PropTypes.string.def(),
+    disabled: PropTypes.bool.def(false),
     value: {
       type: [String, Date, Number],
       default: null
     },
-    datePattern: {
-      type: String,
-      default: DATE_PATTERN.NORM_DATE_PATTERN
-    }
+    datePattern: PropTypes.string.def(DATE_PATTERN.NORM_DATE_PATTERN)
   },
   data () {
     return {

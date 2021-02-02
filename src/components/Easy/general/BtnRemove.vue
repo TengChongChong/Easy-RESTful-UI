@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <span v-if="permissions == null || permissions === '' || $permissions(permissions)">
     <a-popconfirm
       title="确定要删除吗?"
       @confirm="() => remove()"
@@ -15,29 +15,17 @@
   </span>
 </template>
 <script>
+import PropTypes from 'ant-design-vue/es/_util/vue-types'
+
 export default {
   name: 'EBtnRemove',
   props: {
-    name: {
-      type: String,
-      default: '删除'
-    },
-    icon: {
-      type: String,
-      default: 'delete'
-    },
-    id: {
-      type: String,
-      default: null
-    },
-    params: {
-      type: Object,
-      default: null
-    },
-    divider: {
-      type: Boolean,
-      default: true
-    },
+    permissions: PropTypes.string.def(),
+    name: PropTypes.string.def('删除'),
+    icon: PropTypes.string.def('delete'),
+    id: PropTypes.string.def(),
+    params: PropTypes.object.def(),
+    divider: PropTypes.bool.def(true),
     clickCallback: {
       type: Function,
       require: true,

@@ -6,18 +6,13 @@
 </template>
 <script>
 import { getSysDictObjectByQuery, isBlank } from '@/utils/util'
+import PropTypes from 'ant-design-vue/es/_util/vue-types'
 
 export default {
   name: 'EDictTag',
   props: {
-    type: {
-      type: String,
-      default: null
-    },
-    code: {
-      type: [String, Number],
-      default: null
-    }
+    type: PropTypes.string.def(),
+    code: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   },
   data () {
     return {

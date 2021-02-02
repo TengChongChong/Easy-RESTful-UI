@@ -8,25 +8,15 @@
   </a-avatar>
 </template>
 <script>
+import PropTypes from 'ant-design-vue/es/_util/vue-types'
+
 export default {
   name: 'EAvatar',
   props: {
-    avatar: {
-      type: String,
-      default: null
-    },
-    nickname: {
-      type: String,
-      default: null
-    },
-    relativePath: {
-      type: Boolean,
-      default: true
-    },
-    size: {
-      type: String,
-      default: 'default'
-    }
+    avatar: PropTypes.string.def(),
+    nickname: PropTypes.string.def(),
+    relativePath: PropTypes.bool.def(true),
+    size: PropTypes.string.def('default')
   },
   data () {
     return {
@@ -35,3 +25,11 @@ export default {
   }
 }
 </script>
+<style lang="less">
+@import '~ant-design-vue/es/style/themes/default.less';
+
+.ant-avatar {
+  color: @primary-color;
+  background-color: color(~`colorPalette('@{primary-color}', 1) `);
+}
+</style>

@@ -7,6 +7,7 @@ const user = {
   state: {
     token: '',
     roles: [],
+    permissions: [],
     user: {},
     unreadCount: 0
   },
@@ -18,11 +19,21 @@ const user = {
     SET_ROLES: (state, roles) => {
       state.roles = roles
     },
+    SET_PERMISSIONS: (state, permissions) => {
+      state.permissions = permissions
+    },
     SET_USER: (state, user) => {
       state.user = user
     },
     SET_UNREAD_COUNT: (state, unreadCount) => {
       state.unreadCount = unreadCount
+    },
+    SET_LOGOUT: (state) => {
+      state.token = ''
+      state.roles = []
+      state.permissions = []
+      state.user = {}
+      state.unreadCount = 0
     }
   },
 
@@ -57,6 +68,7 @@ const user = {
             //   }
             // })
             // role.permissionList = role.permissions.map(permission => { return permission.permissionId })
+            commit('SET_PERMISSIONS', result.permissionList)
             commit('SET_ROLES', roles)
             commit('SET_USER', result)
           } else {
@@ -73,9 +85,12 @@ const user = {
     Logout ({ commit, state }) {
       return new Promise((resolve) => {
         logout(state.token).then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
+          commit('SET_LOGOUT')
+
           this.dispatch('tagsView/delAllViews')
+          this.dispatch('setMenus', [])
+          this.dispatch('setCurrentTopMenu', null)
+          this.dispatch('GenerateRoutes', [])
           resolve()
         }).catch(() => {
           resolve()

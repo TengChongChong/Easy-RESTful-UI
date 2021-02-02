@@ -22,39 +22,22 @@
 <script>
 import { FORM_LAYOUT } from '@/utils/const/form'
 import { revoke } from '@/api/activiti/task'
-import { successTip } from '@/utils/tips'
+import { errorTip, successTip } from '@/utils/tips'
 import { isBlank, isNotBlank, refreshList } from '@/utils/util'
 import { selectTask } from '@/api/activiti/historic'
+import PropTypes from 'ant-design-vue/es/_util/vue-types'
 
 export default {
   name: 'EBtnWorkFlowRevoke',
   components: {},
   props: {
-    name: {
-      type: String,
-      default: '撤销申请'
-    },
-    icon: {
-      type: String,
-      default: 'rollback'
-    },
-    divider: {
-      type: Boolean,
-      default: true
-    },
-    businessKey: {
-      type: String,
-      default: null
-    },
-    processInstanceId: {
-      type: String,
-      default: null
-    },
+    name: PropTypes.string.def('撤销申请'),
+    icon: PropTypes.string.def('rollback'),
+    divider: PropTypes.bool.def(true),
+    businessKey: PropTypes.string.def(),
+    processInstanceId: PropTypes.string.def(),
     // 是否需要填写原因
-    reason: {
-      type: Boolean,
-      default: false
-    }
+    reason: PropTypes.bool.def(false)
   },
   data () {
     return {
@@ -74,6 +57,9 @@ export default {
      */
     revoke () {
       if (this.reason && isBlank(this.deleteReason)) {
+        if (this.revokeModalVisible) {
+          errorTip('请输入原因')
+        }
         this.revokeModalVisible = true
         return
       }

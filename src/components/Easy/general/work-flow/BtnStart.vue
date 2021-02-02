@@ -38,23 +38,16 @@ import { isBlank, refreshList } from '@/utils/util'
 import EDictRadio from '@/components/Easy/data-entry/DictRadio'
 import EDatePicker from '@/components/Easy/data-entry/DatePicker'
 import notification from 'ant-design-vue/lib/notification'
+import PropTypes from 'ant-design-vue/es/_util/vue-types'
 
 export default {
   name: 'EBtnWorkFlowStart',
   components: { EDatePicker, EDictRadio },
   props: {
-    name: {
-      type: String,
-      default: '提交'
-    },
-    icon: {
-      type: String,
-      default: 'check'
-    },
-    divider: {
-      type: Boolean,
-      default: true
-    },
+    name: PropTypes.string.def('提交'),
+    icon: PropTypes.string.def('check'),
+    divider: PropTypes.bool.def(true),
+    params: PropTypes.object.def(),
     modelKey: {
       required: true,
       type: String,
@@ -73,10 +66,6 @@ export default {
     businessDetailsPath: {
       required: true,
       type: String,
-      default: null
-    },
-    params: {
-      type: Object,
       default: null
     }
   },

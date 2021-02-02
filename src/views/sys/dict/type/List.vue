@@ -22,8 +22,8 @@
       </template>
 
       <template slot="button">
-        <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
-        <e-btn-remove-batch :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+        <a-button v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_DICT_TYPE_SAVE)" type="primary" icon="plus" @click="handleAdd">新增</a-button>
+        <e-btn-remove-batch :permissions="SYS_PERMISSIONS_CODE.SYS_DICT_TYPE_REMOVE" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
       </template>
 
       <template slot="table">
@@ -66,36 +66,38 @@
           <span slot="action" slot-scope="text, record">
             <template>
               <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
-              <a-divider type="vertical"/>
-              <span v-if="record.editable">
-                <a-tooltip placement="top">
-                  <template slot="title">
-                    <span>保存</span>
-                  </template>
-                  <a-button type="primary" size="small" icon="save" @click="() => save(record.id)"/>
-                </a-tooltip>
+              <template v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_DICT_TYPE_SAVE)">
                 <a-divider type="vertical"/>
+                <span v-if="record.editable">
+                  <a-tooltip placement="top">
+                    <template slot="title">
+                      <span>保存</span>
+                    </template>
+                    <a-button type="primary" size="small" icon="save" @click="() => save(record.id)"/>
+                  </a-tooltip>
+                  <a-divider type="vertical"/>
 
-                <a-tooltip placement="top">
-                  <template slot="title">
-                    <span>取消编辑</span>
-                  </template>
-                  <a-button size="small" icon="rollback" @click="() => cancel(record.id)"/>
-                </a-tooltip>
-              </span>
-              <span v-else>
-                <a-tooltip placement="top">
-                  <template slot="title">
-                    <span>修改</span>
-                  </template>
-                  <a-button
-                    type="primary"
-                    size="small"
-                    icon="edit"
-                    :disabled="editingId !== ''"
-                    @click="() => edit(record.id)"/>
-                </a-tooltip>
-              </span>
+                  <a-tooltip placement="top">
+                    <template slot="title">
+                      <span>取消编辑</span>
+                    </template>
+                    <a-button size="small" icon="rollback" @click="() => cancel(record.id)"/>
+                  </a-tooltip>
+                </span>
+                <span v-else>
+                  <a-tooltip placement="top">
+                    <template slot="title">
+                      <span>修改</span>
+                    </template>
+                    <a-button
+                      type="primary"
+                      size="small"
+                      icon="edit"
+                      :disabled="editingId !== ''"
+                      @click="() => edit(record.id)"/>
+                  </a-tooltip>
+                </span>
+              </template>
             </template>
           </span>
         </s-table>
@@ -136,6 +138,7 @@ import { saveSuccessTip } from '@/utils/tips'
 import EDictRadio from '@/components/Easy/data-entry/DictRadio'
 import EProTable from '@/components/Easy/data-display/ProTable'
 import { COMMON_STATUS_CONST } from '@/utils/const/sys/CommonStatusConst'
+import { SYS_PERMISSIONS_CODE } from '@/utils/const/sys/PermissionsCode'
 
 const columns = [
   {
@@ -185,6 +188,7 @@ export default {
   data () {
     this.columns = columns
     return {
+      SYS_PERMISSIONS_CODE: SYS_PERMISSIONS_CODE,
       COMMON_STATUS_CONST: COMMON_STATUS_CONST,
 
       // 高级搜索 展开/关闭

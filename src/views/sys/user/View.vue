@@ -53,8 +53,8 @@
         </template>
 
         <template slot="button">
-          <e-btn-add to="/sys/user/input" :params="{deptId: queryParam.deptId}"/>
-          <e-btn-remove-batch :loading.sync="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+          <e-btn-add :permissions="SYS_PERMISSIONS_CODE.SYS_USER_SAVE" to="/sys/user/input" :params="{deptId: queryParam.deptId}"/>
+          <e-btn-remove-batch :permissions="SYS_PERMISSIONS_CODE.SYS_USER_REMOVE" :loading.sync="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
         </template>
 
         <template slot="table">
@@ -90,8 +90,20 @@
               <e-avatar :avatar="text" :nickname="record.nickname"/>
             </span>
             <span slot="action" slot-scope="text, record">
-              <e-btn-edit :to="`/sys/user/input`" :tab-name="record.nickname" :id="record.id"/>
-              <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
+              <e-btn-edit :permissions="SYS_PERMISSIONS_CODE.SYS_USER_SAVE" :to="`/sys/user/input`" :tab-name="record.nickname" :id="record.id"/>
+              <e-btn-remove :permissions="SYS_PERMISSIONS_CODE.SYS_USER_REMOVE" :id="record.id" :click-callback="remove"/>
+              <a-popconfirm
+                v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_USER_RESET_PASSWORD)"
+                :title="`确定要将密码重置为${defaultPassword}吗?`"
+                @confirm="() => resetPassword(record.id)"
+              >
+                <a-tooltip placement="top">
+                  <template slot="title">
+                    <span>重置密码</span>
+                  </template>
+                  <a-button type="danger" size="small" icon="undo"/>
+                </a-tooltip>
+              </a-popconfirm>
             </span>
           </s-table>
         </template>
@@ -117,10 +129,14 @@ import {
   convertTreeData,
   generatorNodeIcon, updateNodeLeaf
 } from '@/utils/ant-design/data-display/tree'
-import { select, remove, disableUser, enableUser } from '@/api/sys/user'
+import { select, remove, disableUser, enableUser, resetPassword } from '@/api/sys/user'
 import EProTable from '@/components/Easy/data-display/ProTable'
 import { USER_STATUS_CONST } from '@/utils/const/sys/UserStatusConst'
 import EAvatar from '@/components/Easy/data-display/Avatar'
+import { successTip } from '@/utils/tips'
+import { getByKey } from '@/api/sys/config'
+import { SYS_CONFIG_KEY } from '@/utils/const/sys/SysConfigKey'
+import { SYS_PERMISSIONS_CODE } from '@/utils/const/sys/PermissionsCode'
 
 const baseId = '0'
 const columns = [
@@ -180,7 +196,7 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'action',
-    width: 90,
+    width: 130,
     fixed: 'right',
     scopedSlots: { customRender: 'action' }
   }
@@ -204,6 +220,9 @@ export default {
     this.columns = columns
     return {
       USER_STATUS_CONST: USER_STATUS_CONST,
+      SYS_PERMISSIONS_CODE: SYS_PERMISSIONS_CODE,
+      // 默认密码
+      defaultPassword: null,
 
       query: '',
       search: false,
@@ -232,6 +251,9 @@ export default {
     this.firstLoadData()
     this.selectedKeys = [this.$store.getters.user.deptId]
     this.queryParam.deptId = this.$store.getters.user.deptId
+    getByKey(SYS_CONFIG_KEY.DEFAULT_PASSWORD).then(res => {
+      this.defaultPassword = res.data.value
+    })
   },
   activated () {
     this.$refs.eTable.refresh(true)
@@ -354,6 +376,16 @@ export default {
           this.switchLoading.splice(index, 1, false)
         })
       }
+    },
+    /**
+     * 重置密码
+     *
+     * @param id {string} id
+     */
+    resetPassword (id) {
+      resetPassword(id).then(res => {
+        successTip('重置成功')
+      })
     }
   }
 }

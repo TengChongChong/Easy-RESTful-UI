@@ -1,53 +1,95 @@
 <template>
   <div class="page-header-index-wide page-header-wrapper-grid-content-main user-personal-center">
-    <a-row :gutter="16">
-      <a-col :md="20" :lg="6">
-        <a-card :bordered="false">
-          <div class="account-center-avatarHolder">
-            <div class="avatar">
-              <e-avatar :relative-path="false" :avatar="user.avatar" :nickname="user.nickname"/>
+    <div class="ant-page-header">
+      <div class="ant-page-header-content">
+        <div class="ant-pro-page-header-wrap-detail">
+          <div class="ant-pro-page-header-wrap-main">
+            <div class="ant-pro-page-header-wrap-row">
+              <div class="ant-pro-page-header-wrap-content">
+                <div class="page-header-content">
+                  <div class="avatar">
+                    <e-avatar :relative-path="false" :avatar="user.avatar" :nickname="user.nickname"/>
+                  </div>
+                  <div class="content">
+                    <div class="content-title">
+                      晚上好，{{ user.nickname }}
+                    </div>
+                    <div>
+                      <template v-if="user.sex != null && user.sex !== ''">
+                        <a-tag v-if="SEX_CONST.BOY === user.sex" color="blue">
+                          <a-icon type="man"/>
+                        </a-tag>
+                        <a-tag v-if="SEX_CONST.GIRL === user.sex" color="pink">
+                          <a-icon type="woman"/>
+                        </a-tag>
+                      </template>
+                      <a-tag v-if="user.age != null" :color="SEX_CONST.GIRL === user.sex ? 'pink' : 'cyan'">
+                        {{ user.age }} 岁
+                      </a-tag>
+
+                      {{ user.dept && user.dept.name }} |
+                      <span :key="item" v-for="item in user.roleNames">{{ item }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="ant-pro-page-header-wrap-extra-content">
+                <div class="extra-content">
+                  <div class="stat-item">
+                    <a-statistic title="消息" :value="unreadCount"/>
+                  </div>
+                  <div class="stat-item">
+                    <a-statistic title="待办任务" :value="toDoCount"/>
+                  </div>
+                </div>
+              </div>
             </div>
-            <a-tag v-if="SEX_CONST.BOY === user.sex" color="blue">
-              <a-icon type="man"/>
-            </a-tag>
-            <a-tag v-if="SEX_CONST.GIRL === user.sex" color="pink">
-              <a-icon type="woman"/>
-            </a-tag>
-            <a-tag v-if="user.sex === null || user.sex === ''">-</a-tag>
-            <a-tag color="cyan">
-              {{ user.age }} 岁
-            </a-tag>
-            <div class="username">{{ user.nickname }}</div>
-            <div class="bio">{{ user.dept.name }}</div>
           </div>
-          <div class="account-center-detail">
-            <p>
-              <a-icon type="phone"/>
-              {{ user.phone || '-' }}
-            </p>
-            <p>
-              <a-icon type="mail"/>
-              {{ user.email || '-' }}
-            </p>
-            <p>
-              <a-icon type="team"/>
-              <a-tag :key="item" v-for="item in user.roleNames">{{ item }}</a-tag>
-            </p>
+        </div>
+      </div>
+    </div>
+    <a-row :gutter="16">
+      <a-col :lg="16">
+        <a-card
+          class="project-list"
+          style="margin-bottom: 24px;"
+          :bordered="false"
+          title="待办任务"
+          :body-style="{ padding: 0 }">
+          <a slot="extra">
+            <router-link slot="extra" to="/activiti/task/to-do">
+              全部任务
+            </router-link>
+          </a>
+          <div>
+            <a-card-grid class="project-card-grid" :key="i" v-for="(item, i) in toDoList">
+              <a-card :bordered="false" :body-style="{ padding: 0 }">
+                <a-card-meta>
+                  <div slot="title" class="card-title">
+                    <e-avatar size="small" :avatar="item.avatar" :nickname="item.applyUser"/>
+                    <a>{{ item.applyUser }}</a>
+                  </div>
+                  <div slot="description" class="card-description">
+                    <a slot="title" type="link" @click="handleTask(item)">
+                      {{ item.businessTitle }}
+                    </a>
+                  </div>
+                </a-card-meta>
+                <div class="project-item">
+                  <span class="node-name">{{ item.name }}</span>
+                  <span class="datetime">{{ fromNow(item.createTime) }}</span>
+                </div>
+              </a-card>
+            </a-card-grid>
           </div>
         </a-card>
       </a-col>
-      <a-col :md="16" :lg="18" class="right-wrapper">
+      <a-col :lg="8">
         <a-card title="我的消息" :bordered="false" :body-style="{padding: '0px 20px'}">
           <router-link slot="extra" to="/sys/message">
-            更多
+            全部消息
           </router-link>
           <message-list/>
-        </a-card>
-        <a-card title="待办任务" :bordered="false" :body-style="{padding: '0px 20px'}">
-          <router-link slot="extra" to="/activiti/task/to-do">
-            更多
-          </router-link>
-          <e-to-do-list/>
         </a-card>
       </a-col>
     </a-row>
@@ -61,65 +103,48 @@ import { SEX_CONST } from '@/utils/const/sys/SexConst'
 import MessageList from '@/views/sys/message/MessageList'
 import EAvatar from '@/components/Easy/data-display/Avatar'
 import EToDoList from '@/views/activiti/task/ToDoList'
+import { select } from '@/api/activiti/task'
+import { fromNow, openView } from '@/utils/util'
 
 export default {
   name: 'SysPersonalCenterView',
   components: { EToDoList, EAvatar, EDictTag, MessageList },
   data () {
     return {
-      SEX_CONST: SEX_CONST
+      SEX_CONST: SEX_CONST,
+      toDoList: [],
+      toDoCount: 0
     }
   },
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user', 'unreadCount'])
+  },
+  activated () {
+    this.loadToDoData()
+  },
+  mounted () {
+    this.loadToDoData()
+  },
+  methods: {
+    // 加载数据方法 必须为 Promise 对象
+    loadToDoData () {
+      return select('claimed', {
+        size: 6
+      }).then(res => {
+        this.toDoList = res.data.data
+        this.toDoCount = res.data.total
+      })
+    },
+    fromNow (time) {
+      return fromNow(time)
+    },
+    handleTask (record) {
+      openView(this.$router, `/activiti/task/input/${record.id}`, record.processDefinitionName)
+    }
   }
 }
 </script>
 
-<style lang="less">
-.page-header-wrapper-grid-content-main&.user-personal-center {
-  width: 100%;
-  height: 100%;
-  min-height: 100%;
-  transition: 0.3s;
-
-  .account-center-avatarHolder {
-    text-align: center;
-    margin-bottom: 24px;
-
-    .ant-avatar {
-      margin: 0 auto 20px auto;
-      width: 104px;
-      height: 104px;
-      line-height: 104px;
-      font-size: 24px;
-      border-radius: 50%;
-      overflow: hidden;
-
-      img {
-        height: 100%;
-        width: 100%;
-      }
-    }
-
-    .username {
-      color: rgba(0, 0, 0, 0.85);
-      font-size: 20px;
-      line-height: 28px;
-      font-weight: 500;
-      margin-bottom: 4px;
-    }
-  }
-
-  .account-center-detail {
-    p {
-      margin-bottom: 8px;
-      position: relative;
-
-      .anticon {
-        margin-right: 12px;
-      }
-    }
-  }
-}
+<style lang="less" scoped>
+@import "View";
 </style>

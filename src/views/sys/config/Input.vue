@@ -36,7 +36,7 @@
         </a-col>
         <a-col :sm="24">
           <div class="input-btn-group">
-            <e-btn-save :loading="saveLoading" :click-callback="save"/>
+            <e-btn-save :permissions="SYS_PERMISSIONS_CODE.SYS_CONFIG_SAVE" :loading="saveLoading" :click-callback="save"/>
           </div>
         </a-col>
       </a-row>
@@ -52,6 +52,7 @@ import EDictSelect from '@/components/Easy/data-entry/DictSelect'
 import { isNotBlank } from '@/utils/util'
 import EBtnSave from '@/components/Easy/general/BtnSave'
 import { DATA_TYPE_CONST } from '@/utils/const/sys/DataTypeConst'
+import { SYS_PERMISSIONS_CODE } from '@/utils/const/sys/PermissionsCode'
 
 export default {
   name: 'SysConfigInput',
@@ -64,6 +65,7 @@ export default {
       id: this.$route.query.id,
 
       // 表单
+      SYS_PERMISSIONS_CODE: SYS_PERMISSIONS_CODE,
       DATA_TYPE_CONST: DATA_TYPE_CONST,
       saveLoading: false,
       FORM_LAYOUT: FORM_LAYOUT,

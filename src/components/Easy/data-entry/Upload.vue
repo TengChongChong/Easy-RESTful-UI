@@ -23,38 +23,20 @@
 import storage from 'store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { getUniqueID } from '@/utils/util'
-// import { getUniqueID } from '@/utils/util'
+import PropTypes from 'ant-design-vue/es/_util/vue-types'
 
 export default {
   name: 'EUpload',
   props: {
-    multiple: {
-      type: Boolean,
-      default: false
-    },
-    disabled: {
-      type: Boolean,
-      default: false
-    },
-    value: {
-      type: Array,
-      default: null
-    },
+    multiple: PropTypes.bool.def(false),
+    disabled: PropTypes.bool.def(false),
+    value: PropTypes.array.def(),
     // 接受上传的文件类型 详见 https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept
-    accept: {
-      type: String,
-      default: null
-    },
+    accept: PropTypes.string.def(),
     // 设置最多可以上传多少文件
-    maxFiles: {
-      type: Number,
-      default: 1
-    },
+    maxFiles: PropTypes.number.def(1),
     // 设置上传文件的大小限制[MB为单位]
-    maxFileSize: {
-      type: Number,
-      default: 5
-    }
+    maxFileSize: PropTypes.number.def(5)
   },
   data () {
     return {

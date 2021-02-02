@@ -44,6 +44,7 @@ import { Timeline } from 'ant-design-vue'
 import { selectHistoric, selectTask } from '@/api/activiti/historic'
 import { fromNow, isNotBlank } from '@/utils/util'
 import { selectVariable } from '@/api/activiti/variable'
+import PropTypes from 'ant-design-vue/es/_util/vue-types'
 
 const TimelineItem = Timeline.Item
 export default {
@@ -53,32 +54,14 @@ export default {
     TimelineItem
   },
   props: {
-    name: {
-      type: String,
-      default: '查询进度'
-    },
-    icon: {
-      type: String,
-      default: 'deployment-unit'
-    },
-    divider: {
-      type: Boolean,
-      default: true
-    },
+    name: PropTypes.string.def('查询进度'),
+    icon: PropTypes.string.def('deployment-unit'),
+    divider: PropTypes.bool.def(true),
     // 执行实例ID
-    executionId: {
-      type: String,
-      default: null
-    },
+    executionId: PropTypes.string.def(),
     // 流程实例ID
-    processInstanceId: {
-      type: String,
-      default: null
-    },
-    businessKey: {
-      type: String,
-      default: null
-    }
+    processInstanceId: PropTypes.string.def(),
+    businessKey: PropTypes.string.def()
   },
   data () {
     return {

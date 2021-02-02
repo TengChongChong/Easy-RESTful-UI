@@ -1,23 +1,20 @@
-@import '~ant-design-vue/lib/style/themes/default.less';
+@import '~ant-design-vue/es/style/themes/default.less';
 
-@import '../index';
+@ant-pro-prefix             : ant-pro;
+@ant-global-sider-zindex    : 106;
+@ant-global-header-zindex   : 105;
 
 @multi-tab-prefix-cls: ~"@{ant-pro-prefix}-multi-tab";
 @multi-tab-wrapper-prefix-cls: ~"@{ant-pro-prefix}-multi-tab-wrapper";
 
-/*
-.topmenu .@{multi-tab-prefix-cls} {
-  max-width: 1200px;
-  margin: -23px auto 24px auto;
-}
-*/
 .@{multi-tab-prefix-cls} {
   position: fixed;
   top: @layout-header-height;
   z-index: 3;
   width: calc(100% - 256px);
-  margin: 0 -20px;
+  margin: 0 -16px;
   background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
 
   &.sidebar-collapsed {
     width: calc(100% - 80px);
@@ -29,19 +26,43 @@
 
   .ant-tabs.ant-tabs-card {
     .ant-tabs-card-bar {
+      .ant-tabs-ink-bar {
+        display: none !important;
+      }
+
       .ant-tabs-tab {
         max-width: 180px;
         height: 39px;
-        padding: 0 15px;
+        padding: 0 22px;
+        margin: 0 -10px 0 0;
         border: 0;
         border-radius: 0;
+        background-color: #fff;
+        font-weight: 500;
+        transition: all .3s cubic-bezier(.645, .045, .355, 1);
+
+        &:hover {
+          color: #515a6e;
+          background: #dee1e6;
+
+          .ant-tabs-close-x {
+            transition: all .3s cubic-bezier(.645, .045, .355, 1);
+            width: 14px;
+          }
+        }
 
         > div {
           height: 39px;
         }
 
         &.ant-tabs-tab-active {
-          background-color: #f0f2f5;
+          color: @primary-color;
+          background-color: color(~`colorPalette('@{primary-color}', 1) `);
+
+          .ant-tabs-close-x {
+            width: 14px;
+            color: @primary-color;
+          }
         }
 
         .ant-tabs-tab-unclosable {
@@ -57,13 +78,33 @@
           white-space: nowrap;
           overflow: hidden;
           width: 100%;
-          padding-right: 18px;
+        }
+
+        .anticon {
+          position: relative;
+          top: -14px;
+          right: 0;
         }
 
         .ant-tabs-close-x {
-          position: absolute;
-          top: 13px;
-          right: 15px;
+          display: inline-block;
+          position: relative;
+          top: -14px;
+          right: 34px;
+          width: 0;
+          height: 14px;
+          font-size: 8px;
+          margin-right: 0;
+          border-radius: 50%;
+
+          svg {
+            margin-top: 3px;
+          }
+
+          &:hover {
+            color: #fff;
+            background-color: #ccc;
+          }
         }
       }
     }
@@ -94,12 +135,3 @@
     margin: 0 auto;
   }
 }
-
-//.topmenu.content-width-Fluid .@{multi-tab-wrapper-prefix-cls} {
-//  max-width: 100%;
-//  margin: 0 auto;
-//}
-//
-//.ant-layout-sider-collapsed .@{multi-tab-wrapper-prefix-cls} {
-//  width: calc(100% - 80px);
-//}

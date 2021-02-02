@@ -1,4 +1,6 @@
 <script>
+import { isNotBlank } from '@/utils/util'
+
 export default {
   name: 'MultiTab',
   props: {
@@ -128,6 +130,19 @@ export default {
           <span style={{ userSelect: 'none' }}>{ title }</span>
         </a-dropdown>
       )
+    },
+    getIcon (page) {
+      if (page.meta.icon) return page.meta.icon
+      let icon = null
+      if (page.meta.icons && page.meta.icons.length) {
+        page.meta.icons.map(item => {
+          if (isNotBlank(item)) {
+            icon = item
+            return item
+          }
+        })
+      }
+      return icon || 'profile'
     }
   },
   watch: {
@@ -153,9 +168,12 @@ export default {
       return (
         <a-tab-pane
           style={{ height: 0 }}
-          tab={this.renderTabPane(page.query.customTabName || page.meta.customTitle || page.meta.title, page.fullPath)}
           key={page.fullPath} closable={this.visitedViews.length > 1}
         >
+          <template slot="tab">
+            <a-icon type={this.getIcon(page)} />
+            {this.renderTabPane(page.query.customTabName || page.meta.customTitle || page.meta.title, page.fullPath)}
+          </template>
         </a-tab-pane>)
     })
 

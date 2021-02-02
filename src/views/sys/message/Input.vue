@@ -20,7 +20,7 @@
           <div id="content"></div>
         </a-form-model-item>
       </a-col>
-      <a-col :sm="24">
+      <a-col :sm="24" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_MESSAGE_SAVE)">>
         <div class="input-btn-group" v-if="showBtn">
           <e-btn-save :loading="saveLoading" :click-callback="save"/>
           <a-button type="primary" icon="check-circle" @click="saveAndSend">保存并发送</a-button>
@@ -44,6 +44,7 @@ import EUserSearchSelect from '@/components/Easy/data-entry/UserSearchSelect'
 import { saveSuccessTip } from '@/utils/tips'
 import { MESSAGE_CONST } from '@/utils/const/sys/MessageConst'
 import { isNotBlank } from '@/utils/util'
+import { SYS_PERMISSIONS_CODE } from '@/utils/const/sys/PermissionsCode'
 
 export default {
   props: {
@@ -62,6 +63,8 @@ export default {
   },
   data () {
     return {
+      SYS_PERMISSIONS_CODE: SYS_PERMISSIONS_CODE,
+
       saveLoading: false,
       FORM_LAYOUT: {
         labelCol: { span: 4 },

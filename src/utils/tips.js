@@ -33,6 +33,17 @@ export function successTip (description) {
     description: description || '操作成功'
   })
 }
+/**
+ * 操作失败提示
+ *
+ * @param description {string|null} 提示文字
+ */
+export function errorTip (description) {
+  notification.error({
+    message: commonTips.fail,
+    description: description || '操作失败'
+  })
+}
 
 /**
  * 保存成功提示

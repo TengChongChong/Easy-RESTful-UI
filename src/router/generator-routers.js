@@ -30,31 +30,34 @@ const notFoundRouter = {
  */
 export const generatorDynamicRouter = (menus) => {
   return new Promise((resolve, reject) => {
-    // 树结构菜单
-    const childrenNav = []
-    // 将后端数据转为树结构菜单
-    listToTree(menus, childrenNav, '0')
-    const menuNav = [{
-      id: '',
-      name: '首页',
-      path: '/',
-      component: 'BasicLayout',
-      redirect: '/sys/personal/center',
-      children: childrenNav
-    }]
-    const routers = generator(menuNav)
-    // 设置菜单
-    store.dispatch('setMenus', cleanHiddenMenu(deepClone(routers, ['component'])))
-    // 由于3级及以上菜单缓存问题，此处菜单降级为2级
-    getFlatRoutes(routers)
-    // 路由全部设置为2级
-    routers[0].children = [{
-      path: '/base',
-      name: 'base',
-      component: RouteView,
-      meta: { title: 'base' },
-      children: routers[0].children
-    }]
+    let routers = []
+    if (menus && menus.length) {
+      // 树结构菜单
+      const childrenNav = []
+      // 将后端数据转为树结构菜单
+      listToTree(menus, childrenNav, '0')
+      const menuNav = [{
+        id: '',
+        name: '首页',
+        path: '/',
+        component: 'BasicLayout',
+        redirect: '/sys/personal/center',
+        children: childrenNav
+      }]
+      routers = generator(menuNav)
+      // 设置菜单
+      store.dispatch('setMenus', cleanHiddenMenu(deepClone(routers, ['component'])))
+      // 由于3级及以上菜单缓存问题，此处菜单降级为2级
+      getFlatRoutes(routers)
+      // 路由全部设置为2级
+      routers[0].children = [{
+        path: '/base',
+        name: 'base',
+        component: RouteView,
+        meta: { title: 'base' },
+        children: routers[0].children
+      }]
+    }
     // 404
     routers.push(notFoundRouter)
     resolve(routers)
@@ -133,6 +136,12 @@ export const generator = (routerMap, parent) => {
     } else {
       parentPaths = []
     }
+    let parentIcons
+    if (parent) {
+      parentIcons = parent.meta.icons.concat([parent.meta.icon])
+    } else {
+      parentIcons = []
+    }
     const currentRouter = {
       path: item.path || `${parent && parent.path || ''}/${item.id}`,
       // 路由名称，建议唯一
@@ -145,6 +154,7 @@ export const generator = (routerMap, parent) => {
         target: OPEN_MODE_CONST.NEW_WINDOW === target ? '_blank' : null,
         permission: item.code,
         paths: parentPaths,
+        icons: parentIcons,
         hidden: hide === '1'
       },
       hidden

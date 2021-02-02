@@ -10,8 +10,8 @@
       </template>
 
       <template slot="button">
-        <e-btn-add to="/sample/work-flow/input"/>
-        <e-btn-remove-batch :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+        <e-btn-add :permissions="SAMPLE_PERMISSIONS_CODE.SAMPLE_WORK_FLOW_SAVE" to="/sample/work-flow/input"/>
+        <e-btn-remove-batch :permissions="SAMPLE_PERMISSIONS_CODE.SAMPLE_WORK_FLOW_REMOVE" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
       </template>
 
       <template slot="table">
@@ -38,8 +38,8 @@
                   :business-key="record.id"
                   :business-title="getBusinessTitle(record)"
                   business-details-path="views/sample/work-flow/Info"/>
-                <e-btn-edit :to="`/sample/work-flow/input`" :tab-name="record.key" :id="record.id"/>
-                <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
+                <e-btn-edit :permissions="SAMPLE_PERMISSIONS_CODE.SAMPLE_WORK_FLOW_SAVE" :to="`/sample/work-flow/input`" :tab-name="record.key" :id="record.id"/>
+                <e-btn-remove :permissions="SAMPLE_PERMISSIONS_CODE.SAMPLE_WORK_FLOW_REMOVE" :id="record.id" :divider="false" :click-callback="remove"/>
               </template>
               <e-btn-work-flow-progress v-if="record.processInstanceId != null" :business-key="record.id"/>
               <e-btn-work-flow-revoke
@@ -69,6 +69,7 @@ import { formatDate, getSysDictNameByQuery } from '@/utils/util'
 import EBtnWorkFlowStart from '@/components/Easy/general/work-flow/BtnStart'
 import EBtnWorkFlowProgress from '@/components/Easy/general/work-flow/BtnProgress'
 import EBtnWorkFlowRevoke from '@/components/Easy/general/work-flow/BtnRevoke'
+import { SAMPLE_PERMISSIONS_CODE } from '@/utils/const/sample/PermissionsCode'
 
 const columns = [
   {
@@ -138,6 +139,8 @@ export default {
   data () {
     this.columns = columns
     return {
+      SAMPLE_PERMISSIONS_CODE: SAMPLE_PERMISSIONS_CODE,
+
       // 查询参数
       queryParam: {},
       selectedRowKeys: [],

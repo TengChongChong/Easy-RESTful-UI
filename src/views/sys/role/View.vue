@@ -11,59 +11,34 @@
 
         <div class="tree-wrapper">
           <a-alert v-if="noResults" :style="{marginTop: '5px', marginBottom: '5px'}" message="未查询到数据" banner/>
-          <tree
-            :load-data="onLoadData"
-            :tree-data="treeData"
-            :expanded-keys="expandedKeys"
-            :selected-keys="selectedKeys"
-            show-icon
-            draggable
-            show-line
-            @drop="onDrop"
-            @select="onSelect"
-            @expand="onExpand"
-            @rightClick="rightClick"
-          >
-            <a-icon v-for="item in iconArrays" :key="item" :slot="item" :type="item"/>
-          </tree>
+          <a-dropdown :trigger="['contextmenu']" :visible="rightMenuVisible">
+            <tree
+              :load-data="onLoadData"
+              :tree-data="treeData"
+              :expanded-keys="expandedKeys"
+              :selected-keys="selectedKeys"
+              show-icon
+              :draggable="$permissions(SYS_PERMISSIONS_CODE.SYS_ROLE_MOVE)"
+              show-line
+              @drop="onDrop"
+              @select="onSelect"
+              @expand="onExpand"
+              @rightClick="rightClick"
+            >
+              <a-icon v-for="item in iconArrays" :key="item" :slot="item" :type="item"/>
+            </tree>
+
+            <a-menu slot="overlay" @click="onRightMenuClick">
+              <a-menu-item key="add" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_ROLE_SAVE)"><a-icon type="plus"/> 新增下级</a-menu-item>
+              <a-menu-item key="edit" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_ROLE_SAVE)" :disabled="!rightMenuState.edit"><a-icon type="edit"/> 修改</a-menu-item>
+              <a-menu-item key="remove" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_ROLE_REMOVE)" :disabled="!rightMenuState.remove"><a-icon type="delete"/> 删除</a-menu-item>
+              <a-menu-item key="enable" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_ROLE_SAVE)" :disabled="!rightMenuState.enable"><a-icon type="check"/> 启用</a-menu-item>
+              <a-menu-item key="disable" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_ROLE_SAVE)" :disabled="!rightMenuState.disable"><a-icon type="stop"/> 禁用</a-menu-item>
+            </a-menu>
+          </a-dropdown>
           <a-button size="small" v-if="search" @click="firstLoadData">
             返回
           </a-button>
-        </div>
-        <div class="right-menu" v-show="rightMenuVisible" @click="onRightMenuClick">
-          <div class="ant-dropdown" :style="{top: rightMenu.top + 'px', left: rightMenu.left + 'px'}">
-            <ul
-              class="ant-dropdown-menu ant-dropdown-menu-vertical ant-dropdown-menu-root ant-dropdown-menu-light ant-dropdown-content">
-              <li data-key="add" class="ant-dropdown-menu-item">
-                <a-icon type="plus"/>
-                新增下级
-              </li>
-              <li
-                data-key="edit"
-                :class="['ant-dropdown-menu-item', rightMenuState.edit ? '' : 'ant-dropdown-menu-item-disabled']">
-                <a-icon type="edit"/>
-                修改
-              </li>
-              <li
-                data-key="remove"
-                :class="['ant-dropdown-menu-item', rightMenuState.remove ? '' : 'ant-dropdown-menu-item-disabled']">
-                <a-icon type="delete"/>
-                删除
-              </li>
-              <li
-                data-key="enable"
-                :class="['ant-dropdown-menu-item', rightMenuState.enable ? '' : 'ant-dropdown-menu-item-disabled']">
-                <a-icon type="check"/>
-                启用
-              </li>
-              <li
-                data-key="disable"
-                :class="['ant-dropdown-menu-item', rightMenuState.disable ? '' : 'ant-dropdown-menu-item-disabled']">
-                <a-icon type="stop"/>
-                禁用
-              </li>
-            </ul>
-          </div>
         </div>
       </a-card>
     </a-col>
@@ -119,8 +94,9 @@
             </a-col>
             <a-col :sm="24">
               <div class="input-btn-group">
-                <e-btn-save :loading="saveLoading" :click-callback="save"/>
+                <e-btn-save :permissions="SYS_PERMISSIONS_CODE.SYS_ROLE_SAVE" :loading="saveLoading" :click-callback="save"/>
                 <a-popconfirm
+                  v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_ROLE_REMOVE)"
                   title="确定要删除吗?"
                   @confirm="() => remove(model.id)"
                 >
@@ -129,7 +105,7 @@
                   </a-button>
                 </a-popconfirm>
 
-                <a-button type="default" icon="plus" @click="add(model.id)" v-if="model.id != null && model.id !== ''">
+                <a-button type="default" icon="plus" @click="add(model.id)" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_ROLE_SAVE) && model.id != null && model.id !== ''">
                   新增下级
                 </a-button>
 
@@ -170,6 +146,7 @@ import {
 import { selectAll } from '@/api/sys/permissions'
 import { FORM_LAYOUT } from '@/utils/const/form'
 import EBtnSave from '@/components/Easy/general/BtnSave'
+import { SYS_PERMISSIONS_CODE } from '@/utils/const/sys/PermissionsCode'
 
 const baseId = '0'
 
@@ -182,6 +159,8 @@ export default {
   },
   data () {
     return {
+      SYS_PERMISSIONS_CODE: SYS_PERMISSIONS_CODE,
+
       query: '',
       search: false,
       noResults: false,
@@ -206,10 +185,6 @@ export default {
       // 右键菜单
       rightClickChoseNode: null,
       rightMenuVisible: false,
-      rightMenu: {
-        top: 0,
-        right: 0
-      },
       rightMenuState: {
         edit: false,
         remove: false,
@@ -241,9 +216,10 @@ export default {
       }
     }
   },
-  created () {
+  mounted () {
     this.firstLoadData()
     this.loadMenuTree()
+    document.addEventListener('click', this.closeRightMenu)
   },
   methods: {
     firstLoadData () {
@@ -382,12 +358,9 @@ export default {
       }
       this.treeData = data
     },
-    rightClick ({ event, node }) {
+    rightClick ({ node }) {
       this.rightClickChoseNode = node.dataRef
-      this.rightMenu.left = event.pageX - this.elementOffset.actualLeft
-      this.rightMenu.top = event.pageY - this.elementOffset.actualTop
       this.rightMenuVisible = true
-      document.addEventListener('click', this.closeRightMenu)
       Object.keys(this.rightMenuState).forEach((key) => {
         this.rightMenuState[key] = false
       })
@@ -398,10 +371,7 @@ export default {
         this.rightMenuState.disable = true
       }
     },
-    onRightMenuClick (e) {
-      if (e.target.nodeName === 'LI') {
-        const key = e.target.dataset.key
-        console.log('key', key)
+    onRightMenuClick ({ key }) {
         switch (key) {
           case 'add':
             this.add(this.rightClickChoseNode.id)
@@ -426,11 +396,9 @@ export default {
             this.setStatus(this.rightClickChoseNode.id, 2)
             break
         }
-      }
     },
     closeRightMenu () {
       this.rightMenuVisible = false
-      document.removeEventListener('click', this.closeRightMenu)
     },
     add (id) {
       add(id).then((res) => {
@@ -506,6 +474,10 @@ export default {
         }
       })
     }
+  },
+  beforeDestroy () {
+    // 删除绑定的click事件
+    window.removeEventListener('click', this.closeRightMenu)
   }
 }
 </script>

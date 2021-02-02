@@ -19,9 +19,9 @@
     </template>
 
     <template slot="button">
-      <e-btn-add to="/sys/config/input"/>
-      <a-button type="primary" icon="sync" @click="refreshCache">更新缓存数据</a-button>
-      <e-btn-remove-batch :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+      <e-btn-add :permissions="SYS_PERMISSIONS_CODE.SYS_CONFIG_SAVE" to="/sys/config/input"/>
+      <a-button v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_CONFIG_SAVE)" type="primary" icon="sync" @click="refreshCache">更新缓存数据</a-button>
+      <e-btn-remove-batch :permissions="SYS_PERMISSIONS_CODE.SYS_CONFIG_REMOVE" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
     </template>
 
     <template slot="table">
@@ -39,8 +39,8 @@
 
         <span slot="action" slot-scope="text, record">
           <template>
-            <e-btn-edit :to="`/sys/config/input`" :tab-name="record.key" :id="record.id"/>
-            <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
+            <e-btn-edit :permissions="SYS_PERMISSIONS_CODE.SYS_CONFIG_SAVE" :to="`/sys/config/input`" :tab-name="record.key" :id="record.id"/>
+            <e-btn-remove :permissions="SYS_PERMISSIONS_CODE.SYS_CONFIG_REMOVE" :id="record.id" :divider="false" :click-callback="remove"/>
           </template>
         </span>
       </s-table>
@@ -59,6 +59,7 @@ import EBtnRemove from '@/components/Easy/general/BtnRemove'
 import { successTip } from '@/utils/tips'
 import EBtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
 import EProTable from '@/components/Easy/data-display/ProTable'
+import { SYS_PERMISSIONS_CODE } from '@/utils/const/sys/PermissionsCode'
 
 const columns = [
   {
@@ -111,6 +112,8 @@ export default {
   data () {
     this.columns = columns
     return {
+      SYS_PERMISSIONS_CODE: SYS_PERMISSIONS_CODE,
+
       // 查询参数
       queryParam: {},
       selectedRowKeys: [],

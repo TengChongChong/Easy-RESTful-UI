@@ -15,8 +15,8 @@
       </template>
 
       <template slot="button">
-        <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
-        <e-btn-remove-batch :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+        <a-button v-if="$permissions(ACTIVITI_PERMISSIONS_CODE.MODEL_SAVE)" type="primary" icon="plus" @click="handleAdd">新增</a-button>
+        <e-btn-remove-batch :permissions="ACTIVITI_PERMISSIONS_CODE.MODEL_REMOVE" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
       </template>
 
       <template slot="table">
@@ -33,22 +33,22 @@
           </span>
           <span slot="action" slot-scope="text, record">
             <template>
-              <e-btn-edit :to="`/iframe?path=/activiti-editor/modeler.html?modelId=${record.id}`" :tab-name="record.name"/>
-              <a-tooltip placement="top">
+              <e-btn-edit :permissions="ACTIVITI_PERMISSIONS_CODE.MODEL_SAVE" :to="`/iframe?path=/activiti-editor/modeler.html?modelId=${record.id}`" :tab-name="record.name"/>
+              <a-tooltip placement="top" v-if="$permissions(ACTIVITI_PERMISSIONS_CODE.MODEL_DEPLOYMENT)">
                 <template slot="title">
                   <span>部署</span>
                 </template>
                 <a-button type="primary" size="small" icon="check" @click="deploymentProcess(record.id)"/>
               </a-tooltip>
-              <a-divider type="vertical" />
-              <a-tooltip placement="top">
+              <a-divider type="vertical" v-if="$permissions(ACTIVITI_PERMISSIONS_CODE.MODEL_DEPLOYMENT)"/>
+              <a-tooltip placement="top" v-if="$permissions(ACTIVITI_PERMISSIONS_CODE.MODEL_SELECT)">
                 <template slot="title">
                   <span>导出</span>
                 </template>
                 <a-button size="small" icon="download" @click="exportModel(record.id)"/>
               </a-tooltip>
-              <a-divider type="vertical" />
-              <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
+              <a-divider type="vertical" v-if="$permissions(ACTIVITI_PERMISSIONS_CODE.MODEL_SELECT)"/>
+              <e-btn-remove :permissions="ACTIVITI_PERMISSIONS_CODE.MODEL_REMOVE" :id="record.id" :divider="false" :click-callback="remove"/>
             </template>
           </span>
         </s-table>
@@ -92,6 +92,7 @@ import { downloadFileById, formatDate } from '@/utils/util'
 import { FORM_LAYOUT } from '@/utils/const/form'
 import { saveSuccessTip, successTip } from '@/utils/tips'
 import EUpload from '@/components/Easy/data-entry/Upload'
+import { ACTIVITI_PERMISSIONS_CODE } from '@/utils/const/activiti/PermissionsCode'
 
 const columns = [
   {
@@ -158,6 +159,7 @@ export default {
   data () {
     this.columns = columns
     return {
+      ACTIVITI_PERMISSIONS_CODE: ACTIVITI_PERMISSIONS_CODE,
       // 查询参数
       queryParam: {},
       selectedRowKeys: [],

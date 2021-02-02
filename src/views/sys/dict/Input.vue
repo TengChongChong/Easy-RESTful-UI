@@ -80,9 +80,9 @@
         </a-col>
         <a-col :sm="24">
           <div class="input-btn-group">
-            <e-btn-save :loading="saveLoading" :click-callback="save"/>
+            <e-btn-save :permissions="SYS_PERMISSIONS_CODE.SYS_DICT_SAVE" :loading="saveLoading" :click-callback="save"/>
 
-            <a-button type="default" icon="plus" @click="add(model.id)" v-if="model.id != null && model.id !== ''">
+            <a-button type="default" icon="plus" @click="add(model.id)" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_DICT_SAVE) && model.id != null && model.id !== ''">
               新增下级
             </a-button>
           </div>
@@ -104,6 +104,7 @@ import { add, get, save, selectByDictType } from '@/api/sys/dict'
 import { saveSuccessTip } from '@/utils/tips'
 import { isNotBlank } from '@/utils/util'
 import EBtnSave from '@/components/Easy/general/BtnSave'
+import { SYS_PERMISSIONS_CODE } from '@/utils/const/sys/PermissionsCode'
 
 export default {
   name: 'SysDictInput',
@@ -114,6 +115,8 @@ export default {
   },
   data () {
     return {
+      SYS_PERMISSIONS_CODE: SYS_PERMISSIONS_CODE,
+
       id: this.$route.query.id,
       pId: this.$route.query.pId,
       dictType: this.$route.query.dictType,

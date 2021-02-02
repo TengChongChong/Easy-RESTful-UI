@@ -49,7 +49,7 @@
         </a-col>
         <a-col :sm="24">
           <div class="input-btn-group">
-            <e-btn-save :loading="saveLoading" :click-callback="save"/>
+            <e-btn-save :permissions="SCHEDULER_PERMISSIONS_CODE.JOB_SAVE" :loading="saveLoading" :click-callback="save"/>
           </div>
         </a-col>
       </a-row>
@@ -66,6 +66,7 @@ import { saveSuccessTip } from '@/utils/tips'
 import { isNotBlank } from '@/utils/util'
 import EBtnSave from '@/components/Easy/general/BtnSave'
 import EDictRadio from '@/components/Easy/data-entry/DictRadio'
+import { SCHEDULER_PERMISSIONS_CODE } from '@/utils/const/scheduler/PermissionsCode'
 
 export default {
   name: 'SchedulerJobInput',
@@ -75,6 +76,8 @@ export default {
   },
   data () {
     return {
+      SCHEDULER_PERMISSIONS_CODE: SCHEDULER_PERMISSIONS_CODE,
+
       id: this.$route.query.id,
 
       // 表单
