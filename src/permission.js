@@ -9,9 +9,9 @@ import { resetRouter } from '@/router'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const allowList = ['login', 'register', 'registerResult'] // no redirect allowList
+const allowList = ['login', 'RetrievePassword'] // 无需登录
 const loginRoutePath = '/user/login'
-const defaultRoutePath = '/dashboard'
+const defaultRoutePath = '/sys/personal/center'
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
@@ -23,7 +23,7 @@ router.beforeEach((to, from, next) => {
       NProgress.done()
     } else {
       // 没有授权
-      if (store.getters.roles.length === 0) {
+      if (store.getters.permissions.length === 0) {
         // request login userInfo
         store
           .dispatch('GetInfo')
