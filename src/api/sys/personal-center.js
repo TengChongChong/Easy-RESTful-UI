@@ -12,7 +12,7 @@ const baseUrl = '/auth/sys/user/personal/center/'
  */
 export function currentUser () {
   return request({
-    url: baseUrl + 'current/user',
+    url: `${baseUrl}current/user`,
     method: HTTP_METHOD.GET
   })
 }
@@ -26,7 +26,7 @@ export function currentUser () {
  */
 export function changePassword (oldPassword, password, passwordStrength) {
   return request({
-    url: baseUrl + 'change/password',
+    url: `${baseUrl}change/password`,
     method: HTTP_METHOD.POST,
     data: {
       oldPassword, password, passwordStrength
@@ -41,7 +41,7 @@ export function changePassword (oldPassword, password, passwordStrength) {
  */
 export function saveUserAvatar (path) {
   return request({
-    url: baseUrl + 'user/avatar',
+    url: `${baseUrl}user/avatar`,
     method: HTTP_METHOD.POST,
     data: {
       path
@@ -56,7 +56,7 @@ export function saveUserAvatar (path) {
  */
 export function saveUserInfo (params) {
   return request({
-    url: baseUrl + 'user/info',
+    url: `${baseUrl}user/info`,
     method: HTTP_METHOD.POST,
     data: params
   })
@@ -69,7 +69,7 @@ export function saveUserInfo (params) {
  */
 export function applicationBindingEmail (email) {
   return request({
-    url: baseUrl + 'email',
+    url: `${baseUrl}email`,
     method: HTTP_METHOD.POST,
     data: { email }
   })
@@ -82,7 +82,7 @@ export function applicationBindingEmail (email) {
  */
 export function bindingPhone (params) {
   return request({
-    url: baseUrl + 'phone',
+    url: `${baseUrl}phone`,
     method: HTTP_METHOD.POST,
     data: params
   })
@@ -95,7 +95,7 @@ export function bindingPhone (params) {
  */
 export function saveUserSetting (params) {
   return request({
-    url: baseUrl + 'user/setting',
+    url: `${baseUrl}user/setting`,
     method: HTTP_METHOD.POST,
     data: params
   })

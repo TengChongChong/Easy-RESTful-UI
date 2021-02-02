@@ -13,7 +13,7 @@ export function select (params) {
 
 export function remove (ids) {
   return request({
-    url: baseUrl + ids,
+    url: `${baseUrl}${ids}`,
     method: HTTP_METHOD.DELETE
   })
 }

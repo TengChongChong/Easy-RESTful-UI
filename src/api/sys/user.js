@@ -25,7 +25,7 @@ export function select (params) {
  */
 export function selectByKeyword (keyword) {
   return request({
-    url: baseUrl + 'keyword',
+    url: `${baseUrl}keyword`,
     method: HTTP_METHOD.GET,
     params: {
       keyword
@@ -41,7 +41,7 @@ export function selectByKeyword (keyword) {
  */
 export function selectUsersByIds (ids) {
   return request({
-    url: baseUrl + 'users/' + ids,
+    url: `${baseUrl}users/${ids}`,
     method: HTTP_METHOD.GET
   })
 }
@@ -54,7 +54,7 @@ export function selectUsersByIds (ids) {
  */
 export function add (deptId) {
   return request({
-    url: baseUrl + 'add/' + deptId,
+    url: `${baseUrl}add/${deptId}`,
     method: HTTP_METHOD.GET
   })
 }
@@ -67,7 +67,7 @@ export function add (deptId) {
  */
 export function remove (id) {
   return request({
-    url: baseUrl + id,
+    url: `${baseUrl}${id}`,
     method: HTTP_METHOD.DELETE
   })
 }
@@ -80,7 +80,7 @@ export function remove (id) {
  */
 export function disableUser (ids) {
   return request({
-    url: baseUrl + 'disable/user/' + ids,
+    url: `${baseUrl}disable/user/${ids}`,
     method: HTTP_METHOD.POST
   })
 }
@@ -93,7 +93,7 @@ export function disableUser (ids) {
  */
 export function enableUser (ids) {
   return request({
-    url: baseUrl + 'enable/user/' + ids,
+    url: `${baseUrl}enable/user/${ids}`,
     method: HTTP_METHOD.POST
   })
 }
@@ -106,7 +106,7 @@ export function enableUser (ids) {
  */
 export function resetPassword (ids) {
   return request({
-    url: baseUrl + 'reset/password/' + ids,
+    url: `${baseUrl}reset/password/${ids}`,
     method: HTTP_METHOD.POST
   })
 }
@@ -133,7 +133,7 @@ export function save (params) {
  */
 export function get (id) {
   return request({
-    url: baseUrl + id,
+    url: `${baseUrl}${id}`,
     method: HTTP_METHOD.GET
   })
 }
@@ -144,7 +144,7 @@ export function get (id) {
  */
 export function current () {
   return request({
-    url: baseUrl + 'current',
+    url: `${baseUrl}current`,
     method: HTTP_METHOD.GET
   })
 }
@@ -157,7 +157,7 @@ export function current () {
  */
 export function selectUser (params) {
   return request({
-    url: baseUrl + 'users',
+    url: `${baseUrl}users`,
     method: HTTP_METHOD.GET,
     params
   })

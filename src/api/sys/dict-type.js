@@ -2,9 +2,6 @@ import request from '@/utils/request'
 import { HTTP_METHOD } from '@/utils/const/http/method'
 
 const baseUrl = '/auth/sys/dict/type/'
-const api = {
-  selectAll: baseUrl + 'all'
-}
 
 export function select (params) {
   return request({
@@ -16,14 +13,14 @@ export function select (params) {
 
 export function selectAll () {
   return request({
-    url: api.selectAll,
+    url: `${baseUrl}all`,
     method: HTTP_METHOD.GET
   })
 }
 
 export function remove (ids) {
   return request({
-    url: baseUrl + ids,
+    url: `${baseUrl}${ids}`,
     method: HTTP_METHOD.DELETE
   })
 }

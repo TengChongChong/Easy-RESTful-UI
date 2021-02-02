@@ -1,19 +1,6 @@
 import request from '@/utils/request'
 import { HTTP_METHOD } from '@/utils/const/http/method'
 
-const userApi = {
-  Login: '/auth/login',
-  Logout: '/logout',
-  ForgePassword: '/auth/forge-password',
-  Register: '/auth/register',
-  twoStepCode: '/auth/2step-code',
-  SendSms: '/account/sms',
-  SendSmsErr: '/account/sms_err',
-  // get my info
-  UserInfo: '/auth/sys/user/current',
-  UserMenu: '/user/nav'
-}
-
 /**
  * login func
  * parameter: {
@@ -27,7 +14,7 @@ const userApi = {
  */
 export function login (parameter) {
   return request({
-    url: userApi.Login,
+    url: '/auth/login',
     method: HTTP_METHOD.POST,
     data: parameter
   })
@@ -35,21 +22,21 @@ export function login (parameter) {
 
 export function logout () {
   return request({
-    url: userApi.Logout,
+    url: '/logout',
     method: HTTP_METHOD.POST
   })
 }
 
 export function getInfo () {
   return request({
-    url: userApi.UserInfo,
+    url: '/auth/sys/user/current',
     method: HTTP_METHOD.GET
   })
 }
 
 export function getSmsCaptcha (parameter) {
   return request({
-    url: userApi.SendSms,
+    url: '/account/sms',
     method: 'post',
     data: parameter
   })

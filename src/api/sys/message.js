@@ -17,7 +17,7 @@ export function select (params) {
  */
 export function selectReceive (params) {
   return request({
-    url: baseUrl + 'receive',
+    url: `${baseUrl}receive`,
     method: HTTP_METHOD.GET,
     params
   })
@@ -25,7 +25,7 @@ export function selectReceive (params) {
 
 export function get (id) {
   return request({
-    url: baseUrl + id,
+    url: `${baseUrl}${id}`,
     method: HTTP_METHOD.GET
   })
 }
@@ -38,7 +38,7 @@ export function get (id) {
  */
 export function info (id, messageId) {
   return request({
-    url: baseUrl + 'info',
+    url: `${baseUrl}info`,
     method: HTTP_METHOD.GET,
     params: {
       id, messageId
@@ -48,14 +48,14 @@ export function info (id, messageId) {
 
 export function add () {
   return request({
-    url: baseUrl + 'add',
+    url: `${baseUrl}add`,
     method: HTTP_METHOD.GET
   })
 }
 
 export function remove (ids) {
   return request({
-    url: baseUrl + ids,
+    url: `${baseUrl}${ids}`,
     method: HTTP_METHOD.DELETE
   })
 }
@@ -75,7 +75,7 @@ export function save (params) {
  */
 export function send (ids) {
   return request({
-    url: baseUrl + 'send',
+    url: `${baseUrl}send`,
     method: HTTP_METHOD.POST,
     data: {
       ids
@@ -87,7 +87,7 @@ export function send (ids) {
  */
 export function selectUnreadCount () {
   return request({
-    url: baseUrl + 'unread/count',
+    url: `${baseUrl}unread/count`,
     method: HTTP_METHOD.GET
   })
 }

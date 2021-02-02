@@ -35,7 +35,7 @@ export function save (params) {
  */
 export function get (key) {
   return request({
-    url: baseUrl + 'key/' + key,
+    url: `${baseUrl}key/${key}`,
     method: HTTP_METHOD.GET
   })
 }

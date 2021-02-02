@@ -2,14 +2,7 @@ import request from '@/utils/request'
 import { HTTP_METHOD } from '@/utils/const/http/method'
 
 const baseUrl = '/auth/sys/permissions/'
-const api = {
-  add: baseUrl + 'add/',
-  batchRemove: baseUrl + 'batch/',
-  selectByPId: baseUrl + 'pId/',
-  selectAll: baseUrl + 'all',
-  selectByTitle: baseUrl + 'title',
-  move: baseUrl + 'move'
-}
+
 /**
  * 新增
  *
@@ -17,7 +10,7 @@ const api = {
  */
 export function add (pId) {
   return request({
-    url: api.add + pId,
+    url: `${baseUrl}add/${pId}`,
     method: HTTP_METHOD.GET
   })
 }
@@ -28,7 +21,7 @@ export function add (pId) {
  */
 export function remove (id) {
   return request({
-    url: baseUrl + id,
+    url: `${baseUrl}${id}`,
     method: HTTP_METHOD.DELETE
   })
 }
@@ -39,7 +32,7 @@ export function remove (id) {
  */
 export function batchRemove (ids) {
   return request({
-    url: api.batchRemove + ids,
+    url: `${baseUrl}batch/${ids}`,
     method: HTTP_METHOD.DELETE
   })
 }
@@ -51,7 +44,7 @@ export function batchRemove (ids) {
  */
 export function setStatus (ids, status) {
   return request({
-    url: baseUrl + ids + '/status/' + status,
+    url: `${baseUrl}${ids}/status/${status}`,
     method: HTTP_METHOD.POST
   })
 }
@@ -63,7 +56,7 @@ export function setStatus (ids, status) {
  */
 export function copyNodes (nodeIds, targetId) {
   return request({
-    url: baseUrl + 'copy/' + nodeIds + '/to/' + targetId,
+    url: `${baseUrl}copy/${nodeIds}/to/${targetId}`,
     method: HTTP_METHOD.POST
   })
 }
@@ -86,7 +79,7 @@ export function save (params) {
  */
 export function get (id) {
   return request({
-    url: baseUrl + id,
+    url: `${baseUrl}${id}`,
     method: HTTP_METHOD.GET
   })
 }
@@ -98,7 +91,7 @@ export function get (id) {
  */
 export function selectByPId (pId) {
   return request({
-    url: api.selectByPId + pId,
+    url: `${baseUrl}pId/${pId}`,
     method: HTTP_METHOD.GET
   })
 }
@@ -109,7 +102,7 @@ export function selectByPId (pId) {
  */
 export function selectAll () {
   return request({
-    url: api.selectAll,
+    url: `${baseUrl}all`,
     method: HTTP_METHOD.GET
   })
 }
@@ -121,7 +114,7 @@ export function selectAll () {
  */
 export function selectByTitle (title) {
   return request({
-    url: api.selectByTitle,
+    url: `${baseUrl}title`,
     method: HTTP_METHOD.GET,
     params: {
       title
@@ -140,7 +133,7 @@ export function selectByTitle (title) {
  */
 export function move (id, parent, oldParent, position, oldPosition) {
   return request({
-    url: api.move,
+    url: `${baseUrl}move`,
     method: HTTP_METHOD.POST,
     data: {
       id, parent, oldParent, position, oldPosition

@@ -2,14 +2,6 @@ import request from '@/utils/request'
 import { HTTP_METHOD } from '@/utils/const/http/method'
 
 const baseUrl = '/auth/sys/dept/'
-const api = {
-  add: baseUrl + 'add/',
-  batchRemove: baseUrl + 'batch/',
-  selectByPId: baseUrl + 'pId/',
-  selectAll: baseUrl + 'all',
-  selectByTitle: baseUrl + 'title',
-  move: baseUrl + 'move'
-}
 
 /**
  * 新增
@@ -18,7 +10,7 @@ const api = {
  */
 export function add (pId) {
   return request({
-    url: api.add + pId,
+    url: `${baseUrl}add/${pId}`,
     method: HTTP_METHOD.GET
   })
 }
@@ -30,7 +22,7 @@ export function add (pId) {
  */
 export function remove (id) {
   return request({
-    url: baseUrl + id,
+    url: `${baseUrl}${id}`,
     method: HTTP_METHOD.DELETE
   })
 }
@@ -43,7 +35,7 @@ export function remove (id) {
  */
 export function setStatus (ids, status) {
   return request({
-    url: baseUrl + 'set/' + ids + '/status/' + status,
+    url: `${baseUrl}${ids}/status/${status}`,
     method: HTTP_METHOD.POST
   })
 }
@@ -68,7 +60,7 @@ export function save (params) {
  */
 export function get (id) {
   return request({
-    url: baseUrl + id,
+    url: `${baseUrl}${id}`,
     method: HTTP_METHOD.GET
   })
 }
@@ -81,7 +73,7 @@ export function get (id) {
  */
 export function selectDeptTypeOption (pId, deptType) {
   return request({
-    url: baseUrl + 'dept/type/option',
+    url: `${baseUrl}dept/type/option`,
     method: HTTP_METHOD.GET,
     params: {
       pId,
@@ -98,7 +90,7 @@ export function selectDeptTypeOption (pId, deptType) {
  */
 export function selectUpDeptOption (pId, deptType) {
   return request({
-    url: baseUrl + 'up/dept/option',
+    url: `${baseUrl}up/dept/option`,
     method: HTTP_METHOD.GET,
     params: {
       pId,
@@ -115,7 +107,7 @@ export function selectUpDeptOption (pId, deptType) {
  */
 export function selectByPId (pId) {
   return request({
-    url: api.selectByPId + pId,
+    url: `${baseUrl}pId/${pId}`,
     method: HTTP_METHOD.GET
   })
 }
@@ -127,7 +119,7 @@ export function selectByPId (pId) {
  */
 export function selectByTitle (title) {
   return request({
-    url: api.selectByTitle,
+    url: `${baseUrl}title`,
     method: HTTP_METHOD.GET,
     params: {
       title
@@ -142,7 +134,7 @@ export function selectByTitle (title) {
  */
 export function selectDepartments (params) {
   return request({
-    url: api.selectByTitle,
+    url: `${baseUrl}departments`,
     method: HTTP_METHOD.GET,
     params
   })

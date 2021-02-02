@@ -13,14 +13,14 @@ export function select (params) {
 
 export function remove (ids) {
   return request({
-    url: baseUrl + ids,
+    url: `${baseUrl}${ids}`,
     method: HTTP_METHOD.DELETE
   })
 }
 
 export function get (id) {
   return request({
-    url: baseUrl + id,
+    url: `${baseUrl}${id}`,
     method: HTTP_METHOD.GET
   })
 }
