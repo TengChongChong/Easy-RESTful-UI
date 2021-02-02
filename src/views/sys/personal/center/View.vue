@@ -70,7 +70,7 @@
                     <a>{{ item.applyUser }}</a>
                   </div>
                   <div slot="description" class="card-description">
-                    <a slot="title" type="link" @click="handleTask(item)">
+                    <a slot="title" :title="item.businessTitle" type="link" @click="handleTask(item)">
                       {{ item.businessTitle }}
                     </a>
                   </div>

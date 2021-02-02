@@ -32,13 +32,13 @@
           </a-form-model-item>
         </a-col>
         <a-col :lg="12" :sm="24">
-          <a-form-model-item label="角色" prop="roles">
+          <a-form-model-item label="角色" prop="roleIds">
             <a-select
               show-search
               option-filter-prop="children"
               :allowClear="true"
               mode="multiple"
-              v-model="model.roles">
+              v-model="model.roleIds">
               <a-select-option v-for="item in roles" :key="item.id">
                 {{ item.name }}
               </a-select-option>
@@ -114,7 +114,7 @@ export default {
           { required: true, message: '请输入昵称', trigger: 'blur' },
           { max: 20, message: '昵称字数不能超过20个字符', trigger: 'blur' }
         ],
-        roles: [
+        roleIds: [
           { required: true, message: '请选择角色', trigger: 'blur' }
         ],
         sex: [
@@ -149,7 +149,7 @@ export default {
     edit (id) {
       get(id).then((res) => {
         this.model = res.data
-        this.roleCheckedKeys = res.data.roles
+        this.roleCheckedKeys = res.data.roleIds
         this.loadRoleTree()
       })
     },

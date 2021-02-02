@@ -29,7 +29,7 @@
                 <template slot="title">
                   <span>签收</span>
                 </template>
-                <a-button type="primary" size="small" icon="check" @click="claimTask(record.processInstanceId)"/>
+                <a-button type="primary" size="small" icon="check" @click="claimTask(record.id)"/>
               </a-tooltip>
               <a-tooltip v-else placement="top">
                 <template slot="title">
