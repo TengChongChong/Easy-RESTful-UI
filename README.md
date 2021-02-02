@@ -25,7 +25,7 @@ Overview
 基于 [Ant Design Pro](https://pro.antdv.com/) 开发的 [Easy-RESTful](https://gitee.com/tcc/easy-restful-ui)
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0121/222316_2510773b_74191.png "huaban (6).png")
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0104/235932_23e99e0f_74191.png "huaban (3).png")
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0104/235941_baf33ff4_74191.png "huaban (5).png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0126/230603_56ec7fea_74191.png "huaban (12).png")
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0104/235950_b078c99e_74191.png "huaban (6).png")
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0104/235959_31c1787c_74191.png "huaban (7).png")
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0105/000006_8ec910ef_74191.png "huaban (8).png")
@@ -34,6 +34,15 @@ Overview
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0121/222415_0bea9627_74191.png "huaban (4).png")
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0121/222424_fb7166a9_74191.png "huaban (3).png")
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0121/222432_045e0c21_74191.png "huaban (2).png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0126/230417_a1baf63e_74191.png "huaban (7).png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0126/230439_ca2c7446_74191.png "huaban (8).png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0126/230531_f9a4d620_74191.png "huaban (9).png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0126/230538_d45be860_74191.png "huaban (10).png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0126/230545_442f15c2_74191.png "huaban (11).png")
+
+
+
+
 
 环境和依赖
 ----
@@ -80,22 +89,3 @@ yarn run build
 ```
 yarn run lint
 ```
-
-
-
-其他说明
-----
-
-- 项目使用的 [vue-cli3](https://cli.vuejs.org/guide/), 请确保你所使用的 vue-cli 是新版，并且已经学习 cli 官方文档使用教程
-
-- 关闭 Eslint (不推荐) 移除 `package.json` 中 `eslintConfig` 整个节点代码, `vue.config.js` 下的 `lintOnSave` 值改为 `false`
-
-- 组件按需加载 `/src/main.js` L14 相关代码 `import './core/lazy_use'` / `import './core/use'`
-
-## 浏览器兼容
-
-Modern browsers and IE10.
-
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Opera |
-| --- | --- | --- | --- | --- |
-| IE10, Edge | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
