@@ -78,7 +78,7 @@ const columns = [
     title: '类型',
     dataIndex: 'type',
     sorter: true,
-    width: 200,
+    width: 100,
     scopedSlots: { customRender: 'type' }
   },
   {

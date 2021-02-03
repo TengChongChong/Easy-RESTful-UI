@@ -139,6 +139,7 @@ import {
 import { selectAll } from '@/api/sys/role'
 import { FORM_LAYOUT } from '@/utils/const/form'
 import EBtnSave from '@/components/Easy/general/BtnSave'
+import { SYS_PERMISSIONS_CODE } from '@/utils/const/sys/PermissionsCode'
 
 const baseId = '0'
 
@@ -152,6 +153,7 @@ export default {
   },
   data () {
     return {
+      SYS_PERMISSIONS_CODE: SYS_PERMISSIONS_CODE,
       query: '',
       search: false,
       noResults: false,

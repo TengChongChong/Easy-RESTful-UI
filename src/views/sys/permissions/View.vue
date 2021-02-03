@@ -32,7 +32,7 @@
               <a-menu-item key="edit" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_PERMISSIONS_SAVE)" :disabled="!rightMenuState.edit"><a-icon type="edit"/> 修改</a-menu-item>
               <a-menu-item key="remove" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_PERMISSIONS_REMOVE)" :disabled="!rightMenuState.remove"><a-icon type="delete"/> 删除</a-menu-item>
               <a-menu-item key="copy" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_PERMISSIONS_SAVE)" :disabled="!rightMenuState.copy"><a-icon type="copy"/> 复制</a-menu-item>
-              <a-menu-item key="paste" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_PERMISSIONS_SAVE)" :disabled="!rightMenuState.paste"><a-icon type="paste"/> 粘贴</a-menu-item>
+              <a-menu-item key="paste" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_PERMISSIONS_SAVE)" :disabled="!rightMenuState.paste"><a-icon type="snippets"/> 粘贴</a-menu-item>
               <a-menu-item key="enable" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_PERMISSIONS_SAVE)" :disabled="!rightMenuState.enable"><a-icon type="check"/> 启用</a-menu-item>
               <a-menu-item key="disable" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_PERMISSIONS_SAVE)" :disabled="!rightMenuState.disable"><a-icon type="stop"/> 禁用</a-menu-item>
             </a-menu>

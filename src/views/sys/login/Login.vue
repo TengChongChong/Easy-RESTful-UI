@@ -21,7 +21,7 @@
               placeholder="请输入用户名/手机号/邮箱登录"
               v-decorator="[
                 'username',
-                {rules: [{ required: true, message: '请输入帐户名或邮箱地址' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
+                {rules: [{ required: true, message: '请输入用户名/手机号/邮箱' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
               ]"
             >
               <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
@@ -39,6 +39,18 @@
             >
               <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
             </a-input-password>
+          </a-form-item>
+          <a-form-item v-if="needVerificationCode">
+            <a-input
+              placeholder="请输入验证码"
+              size="large"
+              :max-length="4"
+              v-decorator="[
+                'verificationCode',
+                {rules: [{ required: true, message: '请输入验证码' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
+              ]">
+              <img slot="suffix" alt="验证码" @click="changeVerificationCode" :src="`${VUE_APP_API_BASE_URL}/get/verification/code/${codeId}`">
+            </a-input>
           </a-form-item>
         </a-tab-pane>
         <a-tab-pane key="tab2" tab="手机号登录">
@@ -128,6 +140,8 @@ import TwoStepCaptcha from '@/components/tools/TwoStepCaptcha'
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
 import { getSmsCaptcha } from '@/api/sys/login'
+import { getByKey } from '@/api/sys/config'
+import { SYS_CONFIG_KEY } from '@/utils/const/sys/SysConfigKey'
 
 export default {
   components: {
@@ -135,7 +149,11 @@ export default {
   },
   data () {
     return {
+      VUE_APP_API_BASE_URL: process.env.VUE_APP_API_BASE_URL,
       customActiveKey: 'tab1',
+      // 是否需要输入验证码
+      codeId: null,
+      needVerificationCode: false,
       loginBtn: false,
       // login type: 0 email, 1 username, 2 telephone
       loginType: 0,
@@ -152,6 +170,14 @@ export default {
         smsSendBtn: false
       }
     }
+  },
+  mounted () {
+    getByKey(SYS_CONFIG_KEY.LOGIN_VERIFICATION_CODE).then(res => {
+      if (res.data) {
+        this.needVerificationCode = res.data.value === 'true'
+        this.codeId = Math.random()
+      }
+    })
   },
   methods: {
     ...mapActions(['Login', 'Logout']),
@@ -170,6 +196,9 @@ export default {
       this.customActiveKey = key
       // this.form.resetFields()
     },
+    changeVerificationCode () {
+      this.codeId = Math.random()
+    },
     handleSubmit (e) {
       e.preventDefault()
       const {
@@ -181,11 +210,14 @@ export default {
 
       state.loginBtn = true
 
-      const validateFieldsKey = customActiveKey === 'tab1' ? ['username', 'password'] : ['mobile', 'captcha']
+      const validateFieldsKey = customActiveKey === 'tab1' ? ['username', 'password', 'verificationCode'] : ['mobile', 'captcha']
 
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {
           const loginParams = { ...values }
+          if (this.needVerificationCode) {
+            loginParams.codeId = this.codeId + ''
+          }
           delete loginParams.username
           loginParams[!state.loginType ? 'email' : 'username'] = values.username
           loginParams.password = md5(values.password)
@@ -257,6 +289,9 @@ export default {
       this.isLoginError = false
     },
     requestFailed ({ response }) {
+      if (response.data.errorCode === '03014') {
+        this.changeVerificationCode()
+      }
       if (response.data.errorMessage) {
         this.isLoginError = true
         this.loginErrorMessage = response.data.errorMessage

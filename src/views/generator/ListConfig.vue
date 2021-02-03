@@ -1,11 +1,11 @@
 <template>
   <div>
-    <a-alert message="请拖动下方标签排序查询条件与表格显示顺序" type="info" show-icon style="margin-bottom: 10px"/>
+    <a-alert message="请拖动下方标签调整查询条件与表格显示顺序" type="info" show-icon style="margin-bottom: 10px"/>
     <a-card title="查询条件顺序">
       <div class="query-items">
         <a-row :gutter="16">
-          <draggable v-model="queryData">
-            <transition-group>
+          <draggable v-model="queryData" v-bind="{ghostClass: 'ghost'}">
+            <transition-group type="transition" :name="'flip-list'">
               <a-col
                 v-for="item in queryData"
                 :key="item.propertyName"
@@ -22,8 +22,8 @@
     </a-card>
     <a-card title="表格显示顺序">
       <div class="table-items">
-        <draggable v-model="tableData">
-          <transition-group>
+        <draggable v-model="tableData" v-bind="{ghostClass: 'ghost'}">
+          <transition-group type="transition" :name="'flip-list'">
             <span class="item" v-for="item in tableData" :key="item.propertyName">
               {{ item.title }}
               <br/>

@@ -12,7 +12,7 @@
                   </div>
                   <div class="content">
                     <div class="content-title">
-                      晚上好，{{ user.nickname }}
+                      {{ timeFix() }}，{{ user.nickname }}
                     </div>
                     <div>
                       <template v-if="user.sex != null && user.sex !== ''">
@@ -104,7 +104,7 @@ import MessageList from '@/views/sys/message/MessageList'
 import EAvatar from '@/components/Easy/data-display/Avatar'
 import EToDoList from '@/views/activiti/task/ToDoList'
 import { select } from '@/api/activiti/task'
-import { fromNow, openView } from '@/utils/util'
+import { fromNow, openView, timeFix } from '@/utils/util'
 
 export default {
   name: 'SysPersonalCenterView',
@@ -126,6 +126,7 @@ export default {
     this.loadToDoData()
   },
   methods: {
+    timeFix: timeFix,
     // 加载数据方法 必须为 Promise 对象
     loadToDoData () {
       return select('claimed', {
