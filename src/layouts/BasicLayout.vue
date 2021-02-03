@@ -10,9 +10,6 @@
     :i18nRender="i18nRender"
     v-bind="settings"
   >
-    <!-- 1.0.0+ 版本 pro-layout 提供 API，
-          我们推荐使用这种方式进行 LOGO 和 title 自定义
-    -->
     <template v-slot:menuHeaderRender>
       <div>
         <logo-svg />
@@ -56,6 +53,7 @@ import LogoSvg from '@/assets/logo.svg?inline'
 import BaseMenu from '@/components/RouteMenu'
 import { isNotBlank } from '@/utils/util'
 import HeaderSplitMenu from '@/components/GlobalHeader/HeaderSplitMenu'
+import storage from 'store'
 export default {
   name: 'BasicLayout',
   components: {
@@ -69,35 +67,16 @@ export default {
   },
   data () {
     return {
-      // preview.pro.antdv.com only use.
-      isProPreviewSite: process.env.VUE_APP_PREVIEW === 'true' && process.env.NODE_ENV !== 'development',
-      // end
-
       // base
       menus: [],
       // 侧栏收起状态
       collapsed: false,
       title: defaultSettings.title,
-      settings: {
-        // 布局类型
-        layout: defaultSettings.layout, // 'sidemenu', 'topmenu'
-        // CONTENT_WIDTH_TYPE
-        contentWidth: defaultSettings.layout === 'sidemenu' ? CONTENT_WIDTH_TYPE.Fluid : defaultSettings.contentWidth,
-        // 主题 'dark' | 'light'
-        theme: defaultSettings.navTheme,
-        // 主色调
-        primaryColor: defaultSettings.primaryColor,
-        fixedHeader: defaultSettings.fixedHeader,
-        fixSiderbar: defaultSettings.fixSiderbar,
-        colorWeak: defaultSettings.colorWeak,
-
-        splitMenu: defaultSettings.splitMenu,
-        hideHintAlert: false,
-        hideCopyButton: false
-      },
+      // 用户设置
+      userSettings: {},
+      settings: {},
       // 媒体查询
       query: {},
-
       // 是否手机模式
       isMobile: false
     }
@@ -121,6 +100,8 @@ export default {
       this.$store.commit(TOGGLE_MOBILE_TYPE, this.isMobile)
       this.$refs.headerSplitMenu && this.$refs.headerSplitMenu.setFirstLevelMenu()
     })
+    this.userSettings = storage.get('userSettings') || {}
+    this.initSetting()
   },
   mounted () {
     this.setMenu()
@@ -148,6 +129,24 @@ export default {
     }
   },
   methods: {
+    initSetting () {
+      this.settings = {
+        // 布局类型
+        layout: this.userSettings.layout || defaultSettings.layout, // 'sidemenu', 'topmenu'
+        // CONTENT_WIDTH_TYPE
+        contentWidth: this.userSettings.contentWidth || defaultSettings.layout === 'sidemenu' ? CONTENT_WIDTH_TYPE.Fluid : defaultSettings.contentWidth,
+        // 主题 'dark' | 'light'
+        theme: this.userSettings.theme || defaultSettings.navTheme,
+        // 主色调
+        primaryColor: this.userSettings.primaryColor || defaultSettings.primaryColor,
+        fixedHeader: this.userSettings.fixedHeader || defaultSettings.fixedHeader,
+        fixSiderbar: this.userSettings.fixSiderbar || defaultSettings.fixSiderbar,
+        colorWeak: this.userSettings.colorWeak || defaultSettings.colorWeak,
+        splitMenu: this.userSettings.splitMenu || defaultSettings.splitMenu,
+        hideHintAlert: false,
+        hideCopyButton: false
+      }
+    },
     setMenu (currentTopMenu) {
       const routes = this.mainMenu.menus.find(item => item.path === '/')
       this.menus = (routes && routes.children) || []
@@ -179,6 +178,7 @@ export default {
     },
     handleSettingChange ({ type, value }) {
       type && (this.settings[type] = value)
+      storage.set('userSettings', this.settings)
       switch (type) {
         case 'contentWidth':
           this.settings[type] = value
