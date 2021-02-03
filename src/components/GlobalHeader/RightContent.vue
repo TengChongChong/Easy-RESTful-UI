@@ -1,19 +1,17 @@
 <template>
   <div :class="wrpCls">
-    <a class="fullscreen-btn" :class="prefixCls" @click="onFullscreenClick">
+    <span class="fullscreen-btn" :class="prefixCls" @click="onFullscreenClick">
       <a-tooltip :title="isFullscreen ? '取消全屏' : '全屏'">
         <a-icon :type="isFullscreen ? 'fullscreen-exit' : 'fullscreen'"/>
       </a-tooltip>
-    </a>
+    </span>
     <message-dropdown :class="prefixCls"/>
     <avatar-dropdown :menu="showMenu" :current-user="user" :class="prefixCls"/>
-    <span :class="prefixCls" @click="setSettingDrawerShow(true)">
-      <a-tooltip title="偏好设置">
-        <a class="header-icon-btn" target="_blank">
-          <a-icon type="setting"/>
-        </a>
-      </a-tooltip>
-    </span>
+    <a-tooltip title="偏好设置">
+      <span :class="prefixCls" @click="setSettingDrawerShow(true)">
+        <a-icon type="setting"/>
+      </span>
+    </a-tooltip>
     <select-lang :class="prefixCls"/>
   </div>
 </template>
@@ -106,9 +104,3 @@ export default {
   }
 }
 </script>
-<style>
-.header-icon-btn {
-  font-size: 16px;
-  color: hsla(0, 0%, 100%, 0.85)
-}
-</style>
