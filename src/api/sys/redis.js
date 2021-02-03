@@ -18,13 +18,13 @@ export function remove (key) {
 /**
  * 保存
  *
- * @param params 表单内容
+ * @param data 表单数据
  */
-export function save (params) {
+export function save (data) {
   return request({
     url: baseUrl,
     method: HTTP_METHOD.POST,
-    data: params
+    data
   })
 }
 

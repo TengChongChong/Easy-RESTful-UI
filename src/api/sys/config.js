@@ -33,14 +33,14 @@ export function remove (ids) {
 /**
  * 保存
  *
- * @param params 查询条件
+ * @param data 表单数据
  * @return SysCode
  */
-export function save (params) {
+export function save (data) {
   return request({
     url: baseUrl,
     method: HTTP_METHOD.POST,
-    data: params
+    data
   })
 }
 
