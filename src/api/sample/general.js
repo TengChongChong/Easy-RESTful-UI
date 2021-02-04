@@ -68,3 +68,17 @@ export function save (data) {
     data
   })
 }
+
+/**
+ * 导出数据
+ *
+ * @param params 查询参数
+ * @return 文件下载id
+ */
+export function exportData (params) {
+  return request({
+    url: `${baseUrl}export`,
+    method: HTTP_METHOD.GET,
+    params
+  })
+}
