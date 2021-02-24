@@ -18,6 +18,8 @@ export const preferenceSetting = {
             like: ['name', 'simpleName', 'tips', 'code', 'content', 'url']
         }
     },
+    importExclude: ['id', 'pIds', 'createUser', 'createDate', 'editUser', 'editDate'],
+    exportExclude: ['id', 'pIds'],
     // 详情页面
     input: {
         // 一般不填写以下字段

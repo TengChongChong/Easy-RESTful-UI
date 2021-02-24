@@ -302,7 +302,6 @@ export default {
         genMethod: template.method || [],
         genFile: template.file || []
       })
-      this.$emit('input', this.model)
     },
     validate (callback) {
       this.$refs.form.validate(valid => {

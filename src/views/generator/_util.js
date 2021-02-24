@@ -106,18 +106,6 @@ export function selectQueryItems (fieldSet) {
   return queryItems
 }
 
-export function selectTableItems (fieldSet) {
-  const tableItems = []
-  if (fieldSet) {
-    fieldSet.map(item => {
-      if (item.showInList) {
-        tableItems.push(item)
-      }
-    })
-  }
-  return tableItems
-}
-
 export function selectFormItems (fieldSet) {
   const formItems = []
   if (fieldSet) {
@@ -128,4 +116,23 @@ export function selectFormItems (fieldSet) {
     })
   }
   return formItems
+}
+
+/**
+ * 查找启用字段
+ *
+ * @param fieldSet 设置
+ * @param field 字段名
+ * @return {[]}
+ */
+export function selectEnableItems (fieldSet, field) {
+  const items = []
+  if (fieldSet) {
+    fieldSet.map(item => {
+      if (item[field]) {
+        items.push(item)
+      }
+    })
+  }
+  return items
 }
