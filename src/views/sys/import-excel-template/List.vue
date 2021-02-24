@@ -28,7 +28,7 @@
 
     <template slot="button">
       <e-btn-add :permissions="SYS_PERMISSIONS_CODE.SYS_IMPORT_EXCEL_TEMPLATE_SAVE" to="/sys/import-excel-template/input"/>
-      <e-btn-remove-batch :permissions="SYS_PERMISSIONS_CODE.SYS_IMPORT_EXCEL_TEMPLATE_REMOVE" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+      <e-btn-remove-batch :permissions="SYS_PERMISSIONS_CODE.SYS_IMPORT_EXCEL_TEMPLATE_REMOVE" :loading.sync="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
     </template>
 
     <template slot="table">

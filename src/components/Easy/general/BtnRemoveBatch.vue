@@ -18,7 +18,11 @@ export default {
     icon: PropTypes.string.def('delete'),
     ids: PropTypes.array.def(),
     params: PropTypes.object.def(),
-    clickCallback: PropTypes.func.def(),
+    clickCallback: {
+      type: Function,
+      require: true,
+      default: () => {}
+    },
     loading: PropTypes.bool.def(false)
   },
   data () {

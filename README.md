@@ -1,27 +1,81 @@
-[English](./README.md) | 简体中文
-
 <h1 align="center">Easy-RESTful</h1>
 
 <div align="center">
 
-[![License](https://img.shields.io/npm/l/package.json.svg?style=flat)](https://github.com/vueComponent/ant-design-vue-pro/blob/master/LICENSE)
-[![Release](https://img.shields.io/github/release/vueComponent/ant-design-vue-pro.svg?style=flat)](https://github.com/vueComponent/ant-design-vue-pro/releases/latest)
-[![Travis branch](https://travis-ci.org/vueComponent/ant-design-vue-pro.svg?branch=master)](https://travis-ci.org/vueComponent/ant-design-vue-pro)
-
 </div>
 
+- 预览: http://rest.easy-frame.top (admin/admin123)
+- 文档: http://rest-doc.easy-frame.top/
+- 更新日志: https://gitee.com/tcc/easy-restful-ui/blob/master/CHANGELOG.md
+- 常见问题: http://rest-doc.easy-frame.top/front-end/faq.html
+  
 - Ant Design Pro: https://pro.antdv.com/
 - Ant Design of Vue: https://www.antdv.com/docs/vue/introduce-cn/
-  
-- 预览: http://rest.easy-frame.top (admin/admin123)
-- 文档: https://rest-doc.easy-frame.top
-- 更新日志: https://gitee.com/tcc/easy-restful-ui/blob/master/CHANGELOG.md
-- 常见问题: https://rest-doc.easy-frame.top/faq
+
+## 下载
+从 码云 仓库中直接安装最新的代码
+
+```
+$ git clone --depth=1 https://gitee.com/tcc/easy-restful-ui.git Easy-RESTful-UI
+```
+## 目录结构
+```
+├── public
+│   └── logo.png             # LOGO
+|   └── index.html           # Vue 入口模板
+├── src
+│   ├── api                  # Api ajax 等
+│   ├── assets               # 本地静态资源
+│   ├── config               # 项目基础配置，包含路由，全局设置
+│   ├── components           # 业务通用组件
+│   ├── core                 # 项目引导, 全局配置初始化，依赖包引入等
+│   ├── layouts              # 布局
+│   ├── router               # Vue-Router
+│   ├── store                # Vuex
+│   ├── utils                # 工具库
+│   ├── locales              # 国际化资源
+│   ├── less                 # 样式
+│   ├── views                # 业务页面入口和常用模板
+│   ├── App.vue              # Vue 模板入口
+│   └── main.js              # Vue 入口 JS
+│   └── permission.js        # 路由守卫(路由权限控制)
+├── README.md
+└── package.json
+```
+## 配置
+打开文件`/Easy-RESTful-UI/.env.development`，修改以下配置
+```yaml
+# 后端服务访问地址
+VUE_APP_API_BASE_URL=http://127.0.0.1
+# 代码生成 - 前端项目路径（填写前端项目所在磁盘路径）
+VUE_APP_FRONT_END_PATH=/Users/tengchong/workspaces/webStorm/vue/Easy-RESTful-UI
+```
+## 安装依赖
+```
+$ yarn install
+```
+
+> 如果网络状况不佳，可以设置 `yarn` 的 `npm` 加载源，如 `yarn config set registry https://registry.npm.taobao.org`
+
+## 启动服务
+```
+$ yarn run serve
+```
+当控制台显示一下信息表示启动成功
+```
+ DONE  Compiled successfully in 1493ms                                                                                                                                                                                                                12:28:20 PM
 
 
-Overview
+  App running at:
+  - Local:   http://localhost:8000/ 
+  - Network: http://192.168.1.68:8000/
+
+```
+使用浏览器访问 [http://localhost:8080/](http://localhost:8080/ 'http://localhost:8080/')
+
+
+预览
 ----
-
 基于 [Ant Design Pro](https://pro.antdv.com/) 开发的 [Easy-RESTful](https://gitee.com/tcc/easy-restful-ui)
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0203/092455_d0991366_74191.png "huaban (14).png")
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0203/092614_9e1b482a_74191.png "huaban (15).png")
@@ -40,53 +94,3 @@ Overview
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0126/230531_f9a4d620_74191.png "huaban (9).png")
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0126/230538_d45be860_74191.png "huaban (10).png")
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0126/230545_442f15c2_74191.png "huaban (11).png")
-
-
-
-
-
-环境和依赖
-----
-
-- node
-- yarn
-- webpack
-- eslint
-- @vue/cli ~3
-- [ant-design-vue](https://github.com/vueComponent/ant-design-vue) - Easy-RESTful Of Vue 实现
-- [vue-cropper](https://github.com/xyxiao001/vue-cropper) - 头像裁剪组件
-- [@antv/g2](https://antv.alipay.com/zh-cn/index.html) - Alipay AntV 数据可视化图表
-- [Viser-vue](https://viserjs.github.io/docs.html#/viser/guide/installation)  - antv/g2 封装实现
-
-> 请注意，我们强烈建议本项目使用 [Yarn](https://yarnpkg.com/) 包管理工具，这样可以与本项目演示站所加载完全相同的依赖版本 (yarn.lock) 。由于我们没有对依赖进行强制的版本控制，采用非 yarn 包管理进行引入时，可能由于 Pro 所依赖的库已经升级版本而引入了新版本所导致的问题。作者可能会由于时间问题无法及时排查而导致您采用本项目作为基项目而出现问题。
-
-
-
-项目下载和运行
-----
-
-- 拉取项目代码
-```bash
-git clone https://gitee.com/tcc/easy-restful-ui.git
-cd easy-restful-ui
-```
-
-- 安装依赖
-```
-yarn install
-```
-
-- 开发模式运行
-```
-yarn run serve
-```
-
-- 编译项目
-```
-yarn run build
-```
-
-- Lints and fixes files
-```
-yarn run lint
-```

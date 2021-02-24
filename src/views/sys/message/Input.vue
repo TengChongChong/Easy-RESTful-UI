@@ -8,7 +8,7 @@
     <a-row class="form-row" :gutter="16">
       <a-col>
         <a-form-model-item label="收信人" prop="receivers">
-          <e-user-search-select mode="multiple" placeholder="输入用户名、昵称、部门查询用户" v-model="model.receivers"/>
+          <e-user-search-select mode="multiple" v-model="model.receivers"/>
         </a-form-model-item>
         <a-form-model-item label="主题" prop="title">
           <a-input v-model="model.title"/>

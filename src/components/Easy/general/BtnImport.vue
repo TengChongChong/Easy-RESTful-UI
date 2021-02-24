@@ -18,10 +18,9 @@ export default {
     tabName: PropTypes.string.def('导入数据'),
     icon: PropTypes.string.def('upload'),
     params: PropTypes.object.def(),
-    to: {
+    importCode: {
       required: true,
-      type: String,
-      default: null
+      type: String
     }
   },
   data () {
@@ -36,7 +35,7 @@ export default {
   },
   methods: {
     onClick () {
-      openView(this.$router, this.to, this.tabName, this.query)
+      openView(this.$router, `/sys/import-excel-data/input?importCode=${this.importCode}`, this.tabName, this.query)
     }
   }
 }

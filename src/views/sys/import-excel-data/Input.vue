@@ -29,9 +29,10 @@
           :data="loadData"
           showPagination="auto"
         >
-          <span v-for="item in dictionaries" :key="item" :slot="item" slot-scope="text">
-            <e-dict-tag :type="item" :code="text"/>
-          </span>
+
+          <template v-for="item in dictionaries" :slot="item" slot-scope="text">
+            <e-dict-tag :key="item" :type="item" :code="text"/>
+          </template>
 
           <span slot="verificationResults" slot-scope="text, record">
             <a-tag :color="record.verificationStatus === '1' ? 'cyan' : 'red'">
@@ -265,7 +266,8 @@ export default {
     },
     // 清空指定导入代码中数据
     cleanMyImport () {
-      cleanMyImport(this.template.id).then(res => {})
+      cleanMyImport(this.template.id).then(res => {
+      })
     },
     reImport () {
       this.current = 0

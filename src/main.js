@@ -20,6 +20,7 @@ import './core/lazy_use' // use lazy load components
 import './permission' // permission control
 import './utils/filter' // global filter
 import './less/style.less' // global style
+import './core/echarts' // echarts
 
 Vue.config.productionTip = false
 

@@ -21,7 +21,7 @@
     <template slot="button">
       <e-btn-add :permissions="SYS_PERMISSIONS_CODE.SYS_CONFIG_SAVE" to="/sys/config/input"/>
       <a-button v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_CONFIG_SAVE)" type="primary" icon="sync" @click="refreshCache">更新缓存数据</a-button>
-      <e-btn-remove-batch :permissions="SYS_PERMISSIONS_CODE.SYS_CONFIG_REMOVE" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+      <e-btn-remove-batch :permissions="SYS_PERMISSIONS_CODE.SYS_CONFIG_REMOVE" :loading.sync="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
     </template>
 
     <template slot="table">

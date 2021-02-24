@@ -26,7 +26,7 @@
     </template>
 
     <template slot="button">
-      <e-btn-remove-batch :permissions="SYS_PERMISSIONS_CODE.SYS_EXCEPTION_REMOVE" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+      <e-btn-remove-batch :permissions="SYS_PERMISSIONS_CODE.SYS_EXCEPTION_REMOVE" :loading.sync="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
     </template>
 
     <template slot="table">

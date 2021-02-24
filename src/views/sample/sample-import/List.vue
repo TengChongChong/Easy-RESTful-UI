@@ -23,7 +23,7 @@
     </template>
 
     <template slot="button">
-      <e-btn-import to="/sys/import-excel-data/input?importCode=sample:general"/>
+      <e-btn-import import-code="sample:general"/>
       <a-button icon="download" @click="exportData">导出数据</a-button>
     </template>
 

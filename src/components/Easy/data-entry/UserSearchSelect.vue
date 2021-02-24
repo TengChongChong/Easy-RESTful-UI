@@ -33,10 +33,9 @@ export default {
   components: { EAvatar },
   props: {
     mode: PropTypes.string.def(),
-    placeholder: PropTypes.string.def(),
+    placeholder: PropTypes.string.def('输入用户名、昵称、部门查询用户'),
     disabled: PropTypes.bool.def(false),
     allowClear: PropTypes.bool.def(true),
-    type: PropTypes.string.def(),
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array])
   },
   data () {

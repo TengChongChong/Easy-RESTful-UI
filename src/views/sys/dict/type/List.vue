@@ -23,7 +23,7 @@
 
       <template slot="button">
         <a-button v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_DICT_TYPE_SAVE)" type="primary" icon="plus" @click="handleAdd">新增</a-button>
-        <e-btn-remove-batch :permissions="SYS_PERMISSIONS_CODE.SYS_DICT_TYPE_REMOVE" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+        <e-btn-remove-batch :permissions="SYS_PERMISSIONS_CODE.SYS_DICT_TYPE_REMOVE" :loading.sync="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
       </template>
 
       <template slot="table">

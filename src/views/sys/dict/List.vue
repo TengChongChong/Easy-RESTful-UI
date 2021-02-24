@@ -39,7 +39,7 @@
         :permissions="SYS_PERMISSIONS_CODE.SYS_DICT_SAVE"
         to="/sys/dict/input"
         :params="{dictType: queryParam.dictType}"/>
-      <router-link to="/sys/dict/type/list" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_DICT_TYPE_SAVE)">>
+      <router-link to="/sys/dict/type/list" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_DICT_TYPE_SAVE)">
         <a-button icon="bars">字典类型管理</a-button>
       </router-link>
       <a-tooltip placement="top" v-if="$permissions(SYS_PERMISSIONS_CODE.SYS_DICT_SAVE)">
@@ -51,7 +51,7 @@
 
       <e-btn-remove-batch
         :permissions="SYS_PERMISSIONS_CODE.SYS_DICT_REMOVE"
-        :loading="removeBathLoading"
+        :loading.sync="removeBathLoading"
         :ids="selectedRowKeys"
         :click-callback="remove"/>
     </template>

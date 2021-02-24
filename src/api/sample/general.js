@@ -6,7 +6,7 @@ const baseUrl = '/auth/sample/general/'
 /**
  * 查询数据
  *
- * @param params 查询参数
+ * @param params {object} 查询参数
  * @return Page<SampleGeneral>
  */
 export function select (params) {
@@ -20,12 +20,12 @@ export function select (params) {
 /**
  * 详情
  *
- * @param id id
+ * @param id {string} id
  * @return SampleGeneral
  */
 export function get (id) {
   return request({
-    url: `${baseUrl}${id}`,
+    url: baseUrl + id,
     method: HTTP_METHOD.GET
   })
 }
@@ -45,12 +45,12 @@ export function add () {
 /**
  * 删除
  *
- * @param ids {string} ids
+ * @param ids {string} ids 多个使用 , 隔开
  * @return true/false
  */
 export function remove (ids) {
   return request({
-    url: `${baseUrl}${ids}`,
+    url: baseUrl + ids,
     method: HTTP_METHOD.DELETE
   })
 }
@@ -58,14 +58,14 @@ export function remove (ids) {
 /**
  * 保存
  *
- * @param data 表单数据
+ * @param params {object} 表单数据
  * @return SampleGeneral
  */
-export function save (data) {
+export function save (params) {
   return request({
     url: baseUrl,
     method: HTTP_METHOD.POST,
-    data
+    data: params
   })
 }
 
@@ -77,7 +77,7 @@ export function save (data) {
  */
 export function exportData (params) {
   return request({
-    url: `${baseUrl}export`,
+    url: `${baseUrl}export/data`,
     method: HTTP_METHOD.GET,
     params
   })

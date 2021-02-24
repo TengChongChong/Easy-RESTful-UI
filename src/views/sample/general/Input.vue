@@ -18,18 +18,23 @@
           </a-form-model-item>
         </a-col>
         <a-col :lg="12" :sm="24">
+          <a-form-model-item label="年龄" prop="age">
+            <a-input-number v-model="model.age"/>
+          </a-form-model-item>
+        </a-col>
+        <a-col :lg="12" :sm="24">
           <a-form-model-item label="手机号码" prop="phone">
             <a-input v-model="model.phone"/>
           </a-form-model-item>
         </a-col>
         <a-col :lg="12" :sm="24">
-          <a-form-model-item label="年龄" prop="age">
-            <a-input-number v-model="model.age"/>
+          <a-form-model-item label="状态" prop="status">
+            <e-dict-select type="commonStatus" v-model="model.status"/>
           </a-form-model-item>
         </a-col>
         <a-col :sm="24">
           <a-form-model-item label="地址" :labelCol="FULL_FORM_LAYOUT.labelCol" :wrapperCol="FULL_FORM_LAYOUT.wrapperCol" prop="address">
-            <a-textarea v-model="model.address"/>
+            <a-input v-model="model.address"/>
           </a-form-model-item>
         </a-col>
 
@@ -69,21 +74,15 @@ export default {
       model: { },
       rules: {
         name: [
-          { required: true, message: '请输入姓名', trigger: 'blur' },
           { max: 16, message: '姓名不能超过16个字符', trigger: 'blur' }
-        ],
-        sex: [
-          { required: true, message: '请选择性别', trigger: 'blur' }
-        ],
-        phone: [
-          { required: true, message: '请输入手机号码', trigger: 'blur' },
-          { max: 16, message: '手机号码不能超过16个字符', trigger: 'blur' }
         ],
         age: [
         ],
+        phone: [
+          { max: 16, message: '手机号码不能超过16个字符', trigger: 'blur' }
+        ],
         address: [
-          { required: true, message: '请输入地址', trigger: 'blur' },
-          { max: 500, message: '地址不能超过500个字符', trigger: 'blur' }
+          { max: 16, message: '地址不能超过16个字符', trigger: 'blur' }
         ]
       }
     }

@@ -1,6 +1,11 @@
 import * as moment from 'moment'
 import { DATE_PATTERN } from '@/utils/const/datePattern'
 
+/**
+ * 根据时间获取xx号欢迎
+ *
+ * @return {string}
+ */
 export function timeFix () {
   const time = new Date()
   const hour = time.getHours()
@@ -17,6 +22,11 @@ export function triggerWindowResizeEvent () {
   window.dispatchEvent(event)
 }
 
+/**
+ * 滚动回调，添加延迟防止多次触发
+ *
+ * @param callback {function}
+ */
 export function handleScrollHeader (callback) {
   let timer = 0
 
@@ -43,6 +53,11 @@ export function handleScrollHeader (callback) {
   )
 }
 
+/**
+ * 是否为IE浏览器
+ *
+ * @return {boolean} true/false
+ */
 export function isIE () {
   const bw = window.navigator.userAgent
   const compare = (s) => bw.indexOf(s) >= 0
@@ -51,9 +66,10 @@ export function isIE () {
 }
 
 /**
- * Remove loading animate
- * @param id parent element id or class
- * @param timeout
+ * 移除加载动画
+ *
+ * @param id {string} parent element id or class
+ * @param timeout {number} 延迟
  */
 export function removeLoadingAnimate (id = '', timeout = 1500) {
   if (id === '') {
@@ -67,8 +83,8 @@ export function removeLoadingAnimate (id = '', timeout = 1500) {
 /**
  * 生成一个指定前缀的 unique ID
  *
- * @param prefix 前缀
- * @returns {string}
+ * @param prefix {string|number} 前缀
+ * @return {string}
  */
 export function getUniqueID (prefix) {
   return prefix + Math.floor(Math.random() * (new Date()).getTime())
@@ -78,7 +94,7 @@ export function getUniqueID (prefix) {
  * 检查对象是否是数组类型
  *
  * @param obj {object} 待检查对象
- * @returns {boolean} true/false
+ * @return {boolean} true/false
  */
 export function isArray (obj) {
   return obj && Array.isArray(obj)
@@ -88,7 +104,7 @@ export function isArray (obj) {
  * 判断是否为字符串类型
  *
  * @param obj {object} 待检查对象
- * @returns {boolean} true/false
+ * @return {boolean} true/false
  */
 export function isString (obj) {
   return typeof obj === 'string'
@@ -97,8 +113,8 @@ export function isString (obj) {
 /**
  * 判断字符串是否为`undefined`、`null`或`''`，反方法`isNotBlank(str)`
  *
- * @param str 待检查字符串
- * @returns {boolean} true/false
+ * @param str {string} 待检查字符串
+ * @return {boolean} true/false
  */
 export function isBlank (str) {
   return typeof str === 'undefined' || str === null || str === ''
@@ -107,8 +123,8 @@ export function isBlank (str) {
 /**
  * 判断字符串是否不为`undefined`、`null`或`''`，反方法`isBlank(str)`
  *
- * @param str 待检查字符串
- * @returns {boolean} true/false
+ * @param str {string} 待检查字符串
+ * @return {boolean} true/false
  */
 export function isNotBlank (str) {
   return !isBlank(str)
@@ -117,11 +133,12 @@ export function isNotBlank (str) {
 /**
  * 一维数组转树形结构
  *
- * @param data 数组
- * @param root 根节点
- * @param idTxt id属性名
- * @param pidTxt pId属性名
- * @param pushTxt children属性名
+ * @param data {array} 数组
+ * @param root {string} 根节点
+ * @param idTxt {string} id属性名
+ * @param pidTxt {string} pId属性名
+ * @param pushTxt {string} children属性名
+ * @return {array}
  */
 export function convertTree (data, root = '#', idTxt = 'id', pidTxt = 'pId', pushTxt = 'children') {
   function getNode (id) {
@@ -162,6 +179,14 @@ export function getElementOffset (element) {
   return { actualLeft, actualTop }
 }
 
+/**
+ * 打开页面
+ *
+ * @param router router
+ * @param to {string} 路由地址
+ * @param tabName {string} 标签页名称
+ * @param query {object} 参数
+ */
 export function openView (router, to, tabName, query) {
   query = Object.assign((query || {}), { customTabName: tabName || '未命名' })
   router.push({
@@ -170,6 +195,13 @@ export function openView (router, to, tabName, query) {
   })
 }
 
+/**
+ * 克隆对象
+ *
+ * @param source {object} 被克隆对象
+ * @param ignore {string} 忽略属性
+ * @return {object}
+ */
 export function deepClone (source, ignore) {
   if (!source && typeof source !== 'object') {
     throw new Error('error arguments deepClone')
@@ -266,12 +298,41 @@ export function refreshList (vm) {
   getTableNode(vm).refresh(true)
 }
 
-/** ****************** 字典 ********************/
+/**
+ * 全屏
+ *
+ * @param element {object} 要全屏的元素
+ */
+export function launchFullScreen (element = document.documentElement) {
+  if (element.requestFullscreen) {
+    element.requestFullscreen()
+  } else if (element.mozRequestFullScreen) {
+    element.mozRequestFullScreen()
+  } else if (element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen()
+  } else if (element.msRequestFullscreen) {
+    element.msRequestFullscreen()
+  }
+}
+
+/**
+ * 退出全屏
+ */
+export function exitFullscreen () {
+  if (document.exitFullscreen) {
+    document.exitFullscreen()
+  } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen()
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen()
+  }
+}
+
 /**
  * 根据字典类型获取字典数组
  *
  * @param dictType 字典类型
- * @returns 如没有返回`null` eg：[{...}, {...}]
+ * @return {null | array}
  */
 export function getSysDictArrayByDictType (dictType) {
   if (typeof SYS_DICT !== 'undefined' && isNotBlank(dictType)) {
@@ -285,7 +346,7 @@ export function getSysDictArrayByDictType (dictType) {
  * 根据字典类型获取字典对象
  *
  * @param dictType 字典类型
- * @returns 如没有返回`null` eg：{1 : {...}, 2: {...}}
+ * @return {null | object}
  */
 export function getSysDictionariesObjectByDictType (dictType) {
   const dictionaries = getSysDictArrayByDictType(dictType)
@@ -304,7 +365,7 @@ export function getSysDictionariesObjectByDictType (dictType) {
  *
  * @param dictType 字典类型
  * @param code 代码
- * @returns 字典对象或`null`
+ * @return {null | object}
  */
 export function getSysDictObjectByQuery (dictType, code) {
   if (typeof code === 'number') {
@@ -326,7 +387,7 @@ export function getSysDictObjectByQuery (dictType, code) {
  *
  * @param dictType 字典类型
  * @param code 编码
- * @returns 字典名称或`null`
+ * @return {null | String}
  */
 export function getSysDictNameByQuery (dictType, code) {
   const dict = getSysDictObjectByQuery(dictType, code)

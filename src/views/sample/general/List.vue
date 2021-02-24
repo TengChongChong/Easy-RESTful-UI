@@ -13,18 +13,35 @@
         </a-form-model-item>
       </a-col>
       <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
-        <a-form-model-item label="手机号码">
-          <a-input v-model="queryParam.phone"/>
+        <a-form-model-item label="年龄">
+          <a-input-number v-model="queryParam.age"/>
         </a-form-model-item>
       </a-col>
       <template v-if="advanced">
         <!-- 点击展开显示的查询条件 -->
+        <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
+          <a-form-model-item label="手机号码">
+            <a-input v-model="queryParam.phone"/>
+          </a-form-model-item>
+        </a-col>
+        <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
+          <a-form-model-item label="状态">
+            <e-dict-select type="commonStatus" v-model="queryParam.status" @change="$refs.eTable.refresh(true)"/>
+          </a-form-model-item>
+        </a-col>
+        <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
+          <a-form-model-item label="地址">
+            <a-input v-model="queryParam.address"/>
+          </a-form-model-item>
+        </a-col>
       </template>
     </template>
 
     <template slot="button">
       <e-btn-add permissions="sample:general:save" to="/sample/general/input"/>
-      <e-btn-remove-batch permissions="sample:general:remove" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+      <e-btn-remove-batch permissions="sample:general:remove" :loading.sync="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+      <e-btn-import import-code="sample:general"/>
+      <a-button icon="download" @click="exportData">导出数据</a-button>
     </template>
 
     <template slot="table">
@@ -39,6 +56,9 @@
         <span slot="sex" slot-scope="text">
           <e-dict-tag type="sex" :code="text"/>
         </span>
+        <span slot="status" slot-scope="text">
+          <e-dict-tag type="commonStatus" :code="text"/>
+        </span>
         <span slot="action" slot-scope="text, record">
           <template>
             <e-btn-edit permissions="sample:general:save" :to="`/sample/general/input`" :tab-name="record.key" :id="record.id"/>
@@ -51,7 +71,8 @@
 </template>
 
 <script>
-import { select, remove } from '@/api/sample/general'
+import { select, remove, exportData } from '@/api/sample/general'
+import { downloadFileById } from '@/utils/util'
 import { STable, Ellipsis } from '@/components'
 import EProTable from '@/components/Easy/data-display/ProTable'
 import EBtnAdd from '@/components/Easy/general/BtnAdd'
@@ -60,6 +81,7 @@ import EBtnRemove from '@/components/Easy/general/BtnRemove'
 import EBtnRemoveBatch from '@/components/Easy/general/BtnRemoveBatch'
 import EDictTag from '@/components/Easy/data-display/DictTag'
 import EDictSelect from '@/components/Easy/data-entry/DictSelect'
+import EBtnImport from '@/components/Easy/general/BtnImport'
 
 const columns = [
   {
@@ -76,6 +98,12 @@ const columns = [
     scopedSlots: { customRender: 'sex' }
   },
   {
+    title: '年龄',
+    dataIndex: 'age',
+    width: 100,
+    sorter: true
+  },
+  {
     title: '手机号码',
     dataIndex: 'phone',
     width: 100,
@@ -85,13 +113,8 @@ const columns = [
     title: '状态',
     dataIndex: 'status',
     width: 100,
-    sorter: true
-  },
-  {
-    title: '年龄',
-    dataIndex: 'age',
-    width: 100,
-    sorter: true
+    sorter: true,
+    scopedSlots: { customRender: 'status' }
   },
   {
     title: '操作',
@@ -113,7 +136,8 @@ export default {
     EBtnRemove,
     EBtnRemoveBatch,
     EDictTag,
-    EDictSelect
+    EDictSelect,
+    EBtnImport
   },
   data () {
     this.columns = columns
@@ -146,6 +170,11 @@ export default {
         .then(res => {
           return res.data
         })
+    },
+    exportData () {
+      exportData(this.queryParam).then(res => {
+        downloadFileById(res.data)
+      })
     },
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys

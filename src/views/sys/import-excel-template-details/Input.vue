@@ -112,7 +112,8 @@
         <draggable v-model="orderData" v-bind="{ghostClass: 'ghost'}">
           <transition-group type="transition" :name="'flip-list'">
             <span class="item" :key="item.fieldName" v-for="item in orderData">
-              {{ item.title }} ：{{ item.fieldName }}
+              {{ item.title }}<br/>
+              {{ item.fieldName }}
             </span>
           </transition-group>
         </draggable>

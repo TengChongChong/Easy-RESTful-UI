@@ -21,7 +21,7 @@
 
       <template slot="button">
         <e-btn-add :permissions="SCHEDULER_PERMISSIONS_CODE.JOB_SAVE" to="/scheduler/job/input"/>
-        <e-btn-remove-batch :permissions="SCHEDULER_PERMISSIONS_CODE.JOB_REMOVE" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+        <e-btn-remove-batch :permissions="SCHEDULER_PERMISSIONS_CODE.JOB_REMOVE" :loading.sync="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
       </template>
 
       <template slot="table">

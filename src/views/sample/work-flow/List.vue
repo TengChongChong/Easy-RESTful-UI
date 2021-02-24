@@ -11,7 +11,7 @@
 
       <template slot="button">
         <e-btn-add :permissions="SAMPLE_PERMISSIONS_CODE.SAMPLE_WORK_FLOW_SAVE" to="/sample/work-flow/input"/>
-        <e-btn-remove-batch :permissions="SAMPLE_PERMISSIONS_CODE.SAMPLE_WORK_FLOW_REMOVE" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+        <e-btn-remove-batch :permissions="SAMPLE_PERMISSIONS_CODE.SAMPLE_WORK_FLOW_REMOVE" :loading.sync="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
       </template>
 
       <template slot="table">
