@@ -1,5 +1,5 @@
 <template>
-  <activiti-task-list status="waitingClaim"/>
+  <activiti-task-list status="waitingClaim" title="待签任务"/>
 </template>
 
 <script>

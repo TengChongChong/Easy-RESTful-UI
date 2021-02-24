@@ -1,6 +1,6 @@
 <template>
   <div>
-    <e-pro-table title="流程跟踪" :no-advanced="true">
+    <e-pro-table :title="title" :no-advanced="true">
       <template slot="query">
         <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
           <a-form-model-item label="ID">
@@ -57,6 +57,7 @@ import { TASK_STATUS } from '@/utils/const/activiti/TaskStatus'
 import EBtnWorkFlowProgress from '@/components/Easy/general/work-flow/BtnProgress'
 import EBtnWorkFlowRevoke from '@/components/Easy/general/work-flow/BtnRevoke'
 import { successTip } from '@/utils/tips'
+import PropTypes from 'ant-design-vue/es/_util/vue-types'
 
 const columns = [
   {
@@ -123,6 +124,7 @@ export default {
     Ellipsis
   },
   props: {
+    title: PropTypes.string.def(''),
     status: {
       type: String,
       default: null

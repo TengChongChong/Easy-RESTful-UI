@@ -16,7 +16,7 @@
 
       <template slot="button">
         <a-button v-if="$permissions(ACTIVITI_PERMISSIONS_CODE.MODEL_SAVE)" type="primary" icon="plus" @click="handleAdd">新增</a-button>
-        <e-btn-remove-batch :permissions="ACTIVITI_PERMISSIONS_CODE.MODEL_REMOVE" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+        <e-btn-remove-batch :permissions="ACTIVITI_PERMISSIONS_CODE.MODEL_REMOVE" :loading.sync="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
       </template>
 
       <template slot="table">

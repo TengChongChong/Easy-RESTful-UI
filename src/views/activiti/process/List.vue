@@ -1,6 +1,6 @@
 <template>
   <div>
-    <e-pro-table title="流程" :no-advanced="true">
+    <e-pro-table title="流程管理" :no-advanced="true">
       <template slot="query">
         <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
           <a-form-model-item label="ID">
@@ -21,7 +21,7 @@
       </template>
 
       <template slot="button">
-        <e-btn-remove-batch :permissions="ACTIVITI_PERMISSIONS_CODE.PROCESS_REMOVE" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+        <e-btn-remove-batch :permissions="ACTIVITI_PERMISSIONS_CODE.PROCESS_REMOVE" :loading.sync="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
       </template>
 
       <template slot="table">

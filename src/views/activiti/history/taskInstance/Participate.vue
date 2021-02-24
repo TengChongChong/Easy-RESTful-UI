@@ -1,6 +1,6 @@
 <template>
   <div>
-    <e-pro-table title="我发起的" :no-advanced="true">
+    <e-pro-table title="我办理的" :no-advanced="true">
       <template slot="query">
         <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
           <a-form-model-item label="ID">

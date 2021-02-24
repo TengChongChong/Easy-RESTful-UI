@@ -1,5 +1,5 @@
 <template>
-  <activiti-task-list status="claimed"/>
+  <activiti-task-list status="claimed" title="待办任务"/>
 </template>
 
 <script>
