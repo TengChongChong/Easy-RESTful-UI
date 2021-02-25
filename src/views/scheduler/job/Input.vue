@@ -19,7 +19,7 @@
         </a-col>
         <a-col :lg="12" :sm="24">
           <a-form-model-item label="cron" prop="cron">
-            <a-input v-model="model.cron"/>
+            <e-cron v-model="model.cron"/>
           </a-form-model-item>
         </a-col>
 
@@ -67,10 +67,12 @@ import { isNotBlank } from '@/utils/util'
 import EBtnSave from '@/components/Easy/general/BtnSave'
 import EDictRadio from '@/components/Easy/data-entry/DictRadio'
 import { SCHEDULER_PERMISSIONS_CODE } from '@/utils/const/scheduler/PermissionsCode'
+import ECron from '@/components/Easy/data-entry/corn/Cron'
 
 export default {
   name: 'SchedulerJobInput',
   components: {
+    ECron,
     EDictRadio,
     EBtnSave
   },
