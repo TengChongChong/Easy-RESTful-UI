@@ -107,6 +107,13 @@ export default {
       Object.assign(this.localPagination, {
         showSizeChanger: val
       })
+    },
+    columns () {
+      this.columns && this.columns instanceof Array && this.columns.forEach(column => {
+        if (typeof column.ellipsis === 'undefined') {
+          column.ellipsis = true
+        }
+      })
     }
   },
   created () {
@@ -203,9 +210,6 @@ export default {
     initTotalList (columns) {
       const totalList = []
       columns && columns instanceof Array && columns.forEach(column => {
-        if (typeof column.ellipsis === 'undefined') {
-          column.ellipsis = true
-        }
         if (column.needTotal) {
           totalList.push({
             ...column,
