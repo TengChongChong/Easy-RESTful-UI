@@ -234,6 +234,7 @@ export default {
             this.$refs.eTable.refresh(true)
             saveSuccessTip()
             this.addModalVisible = false
+            this.model = res.data
           })
         }
       })

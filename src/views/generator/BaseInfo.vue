@@ -269,7 +269,7 @@ export default {
           modelName: entityName,
           permissionsCode: getPermissionsCode(name),
           packagePath: `com.easy.restful.${name.substr(0, name.indexOf('_'))}`,
-          controllerMapping: getControllerMapping(name),
+          controllerMapping: `/${getControllerMapping(name)}`,
           viewPath: `/views/${getControllerMapping(name)}`,
           apiPath: `/api/${getControllerMapping(name)}.js`,
           tableFields: fields

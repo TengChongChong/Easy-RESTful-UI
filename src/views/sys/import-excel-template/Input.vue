@@ -157,6 +157,7 @@ export default {
           save(this.model).then((res) => {
             this.saveLoading = false
             saveSuccessTip()
+            this.model = res.data
           }).catch(({ response }) => {
             this.saveLoading = false
           })

@@ -11,6 +11,7 @@
         <a-popover placement="top">
           <template slot="content">
             <span>列名：{{ record.columnName }}</span><br/>
+            <span>类型：{{ record.columnType }}</span><br/>
             <span>属性：{{ record.propertyName }}</span><br/>
             <span>注释：{{ record.columnComment ? record.columnComment : '-' }}</span>
           </template>
@@ -311,6 +312,7 @@ export default {
       // 使用定时器调用，防止持续拖动多次调用
       clearInterval(this.timer)
       this.timer = setTimeout(() => {
+        this.calcHeight()
       }, 500)
     },
     calcHeight () {

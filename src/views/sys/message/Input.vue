@@ -132,6 +132,7 @@ export default {
             if (MESSAGE_CONST.STATUS_HAS_BEEN_SENT === res.data.status) {
               this.showBtn = false
             }
+            this.model = res.data
           }).catch(({ response }) => {
             this.saveLoading = false
           })
