@@ -139,7 +139,7 @@ const RouteMenu = {
       const routes = this.$route.matched.concat()
       const { hidden } = this.$route.meta
       const openKeys = routes[routes.length - 1].meta.paths
-      if (this.settings.splitMenu) {
+      if (this.settings.splitMenu && this.settings.layout === 'sidemenu') {
         // 分割菜单，需要设置顶部菜单选中值
         if (openKeys.length >= 2) {
           store.dispatch('setCurrentTopMenu', openKeys[1])
@@ -153,7 +153,9 @@ const RouteMenu = {
       } else {
         this.selectedKeys = [routes.pop().path]
       }
-      this.collapsed ? (this.cachedOpenKeys = openKeys) : (this.openKeys = openKeys)
+      if (this.settings.layout === 'sidemenu') {
+        this.collapsed ? (this.cachedOpenKeys = openKeys) : (this.openKeys = openKeys)
+      }
     }
   },
   computed: {
