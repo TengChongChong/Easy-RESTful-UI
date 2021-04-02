@@ -32,7 +32,13 @@ Vue.component('page-container', PageHeaderWrapper)
 Vue.component('page-header-wrapper', PageHeaderWrapper)
 
 // eslint-disable-next-line no-undef
-Vue.prototype.SYS_DICT = SYS_DICT
+if (typeof SYS_DICT !== 'undefined') {
+  // eslint-disable-next-line no-undef
+  Vue.prototype.SYS_DICT = SYS_DICT
+} else {
+  Vue.prototype.SYS_DICT = {}
+  console.warn('后端字典数据加载失败[static/data/js/sys-dict.js]，请检查后端访问地址是否正确')
+}
 
 window.umi_plugin_ant_themeVar = themePluginConfig.theme
 
