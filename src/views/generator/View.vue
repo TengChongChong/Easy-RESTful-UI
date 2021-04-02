@@ -73,7 +73,7 @@ export default {
       },
       steps: [
         { title: '基本信息', disabled: false },
-        { title: '字段信息', disabled: false },
+        { title: '字段信息', disabled: true },
         { title: '列表页面', disabled: true },
         { title: '详情页面', disabled: true },
         { title: '导入&导出', disabled: true },
@@ -88,6 +88,7 @@ export default {
           // this.steps[this.current + 1].disabled = false
           switch (this.current) {
             case 0:
+              this.steps[1].disabled = this.model.genFile.indexOf(GENERATOR_FILE.LIST_VUE) === -1 && this.model.genFile.indexOf(GENERATOR_FILE.INPUT_VUE) === -1
               break
             case 1:
               this.model.fieldSets = this.$refs.steps1.data
