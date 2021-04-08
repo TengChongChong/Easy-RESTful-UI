@@ -217,7 +217,7 @@ export default {
         ],
         name: [
           { required: true, message: '请输入菜单名称', trigger: 'blur' },
-          { max: 10, message: '菜单名称字数不能超过10个字符', trigger: 'blur' }
+          { max: 15, message: '菜单名称字数不能超过15个字符', trigger: 'blur' }
         ],
         code: [
           { max: 50, message: '权限标识不能超过50个字符', trigger: 'blur' }

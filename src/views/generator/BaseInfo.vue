@@ -205,6 +205,14 @@ export default {
       default: null
     }
   },
+  watch: {
+    model: {
+      deep: true,
+      handler: function () {
+        this.$emit('input', this.model)
+      }
+    }
+  },
   data () {
     return {
       FORM_LAYOUT: FORM_LAYOUT,
@@ -274,7 +282,6 @@ export default {
           apiPath: `/api/${getControllerMapping(name)}.js`,
           tableFields: fields
         })
-        this.$emit('input', this.model)
       })
       if (isBlank(this.model.backEndPath)) {
         let matchingModule
